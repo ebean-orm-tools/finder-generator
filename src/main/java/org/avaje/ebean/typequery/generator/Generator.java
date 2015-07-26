@@ -1,13 +1,13 @@
 package org.avaje.ebean.typequery.generator;
 
-import org.avaje.ebean.typequery.generator.asm.tree.AnnotationNode;
 import org.avaje.ebean.typequery.generator.read.EntityBeanPropertyReader;
 import org.avaje.ebean.typequery.generator.read.MetaReader;
 import org.avaje.ebean.typequery.generator.write.SimpleEntityBeanWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import java.io.IOException;
+import java.util.Collection;
 
 /**
  * Reads meta data on entity beans by reading the .class files and generates
@@ -19,67 +19,51 @@ public class Generator {
 
   private final GeneratorConfig config;
 
-  private List<EntityBeanPropertyReader> metaData;
+  private final GenerationMetaData generationMetaData;
 
   /**
    * Construct with configuration for reading and writing.
    */
   public Generator(GeneratorConfig config) {
     this.config = config;
+    this.generationMetaData = new GenerationMetaData(config);
   }
 
   /**
    * Process the code generation.
    */
-  public void process() {
+  public void process() throws IOException {
 
     MetaReader reader = new MetaReader(config.getSourceDirectory());
     reader.process(config.getSourcePackage());
 
-    metaData = reader.getClassMetaData();
+    generationMetaData.addAll(reader.getClassMetaData());
 
-    for (EntityBeanPropertyReader classMeta : metaData) {
-      if (ignore(classMeta)) {
-        logger.info("ignore generate for {}", classMeta.name);
+    Collection<EntityBeanPropertyReader> allEntities = generationMetaData.getAllEntities();
 
-      } else {
-        logger.info("generate for {}", classMeta.name);
-        generateCode(classMeta);
-      }
+    for (EntityBeanPropertyReader classMeta : allEntities) {
+      logger.info("generate for {}", classMeta.name);
+      generateRootQueryBeans(classMeta);
+    }
+
+    for (EntityBeanPropertyReader classMeta : allEntities) {
+      logger.info("generate for {}", classMeta.name);
+      generateAssocBeans(classMeta);
     }
   }
 
-  private void generateCode(EntityBeanPropertyReader classMeta) {
-
-    // if is embedded bean ...
-    // if is entity bean ...
-    generateCodeForEntityBean(classMeta);
+  private void generateAssocBeans(EntityBeanPropertyReader classMeta) {
 
   }
 
-  private void generateCodeForEntityBean(EntityBeanPropertyReader classMeta) {
+  private void generateRootQueryBeans(EntityBeanPropertyReader classMeta) throws IOException {
+
+    // if is entity bean ...
 
     // find extra inherited fields
-    SimpleEntityBeanWriter writer = new SimpleEntityBeanWriter(config, classMeta);
+    SimpleEntityBeanWriter writer = new SimpleEntityBeanWriter(config, classMeta, generationMetaData);
     writer.write();
-
+    writer.writeAssocBean();
   }
 
-  private boolean ignore(EntityBeanPropertyReader classMeta) {
-
-    List<AnnotationNode> visibleAnnotations = classMeta.visibleAnnotations;
-    if (visibleAnnotations == null) {
-      return true;
-    }
-    for (AnnotationNode annotation : visibleAnnotations) {
-      if (annotation.desc.equals("Ljavax/persistence/Entity;")) {
-        return false;
-      }
-      if (annotation.desc.equals("Ljavax/persistence/Embedded;")) {
-        return false;
-      }
-    }
-
-    return true;
-  }
 }

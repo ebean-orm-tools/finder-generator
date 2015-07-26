@@ -12,6 +12,7 @@ public class GeneratorConfig {
   String destDirectory;
 
   String destPackage;
+  String destAssocPackage;
 
   public String getSourceDirectory() {
     return sourceDirectory;
@@ -43,5 +44,10 @@ public class GeneratorConfig {
 
   public void setDestPackage(String destPackage) {
     this.destPackage = destPackage;
+    this.destAssocPackage = destPackage+".assoc";
+  }
+
+  public String getAssocPackage() {
+    return destAssocPackage;
   }
 }
