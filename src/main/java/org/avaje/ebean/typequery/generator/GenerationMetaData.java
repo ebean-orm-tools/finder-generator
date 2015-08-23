@@ -37,7 +37,6 @@ public class GenerationMetaData {
 
   public PropertyType getPropertyType(FieldNode field, EntityBeanPropertyReader ownerClassMeta) {
 
-
     String fieldTypeClassName = Type.getType(field.desc).getClassName();
 
     PropertyType type = propertyMap.getType(fieldTypeClassName);
@@ -58,19 +57,9 @@ public class GenerationMetaData {
 
     EntityBeanPropertyReader assocEntity = entityMap.get(fieldTypeClassName);
     if (assocEntity != null) {
-//      String ownerClassName = asDotNotation(ownerClassMeta.name);
-//      String backRelationshipName = findBackRelationship(assocEntity, ownerClassMeta, ownerClassName);
-//      if (backRelationshipName != null) {
-//        String ownerShortName = deriveShortName(ownerClassName);
-//        //  public QCustomerContact<QCustomer> contacts;
-//        String propertyType = "Q"+ownerShortName+deriveShortName(fieldTypeClassName);
-//        return new PropertyTypeAssoc(propertyType, config.getAssocPackage());
-//
-//      } else {
         //  public QAssocContact<QCustomer> contacts;
         String propertyName = "QAssoc"+deriveShortName(fieldTypeClassName);
         return new PropertyTypeAssoc(propertyName, config.getAssocPackage());
-//      }
     }
     String collectParamType = deriveCollectionParameterType(field.signature);
     assocEntity = entityMap.get(collectParamType);
@@ -92,20 +81,6 @@ public class GenerationMetaData {
     }
     return asDotNotation(signature.substring(typeStart+2, signature.length()-3));
   }
-
-//  private String findBackRelationship(EntityBeanPropertyReader assocEntity, EntityBeanPropertyReader ownerClassMeta, String ownerClassName) {
-//
-//    List<FieldNode> fields = assocEntity.fields;
-//    for (FieldNode field : fields) {
-//      if (field.desc.equals(ownerClassMeta.name)){
-//        return field.name;
-//      }
-//      if (field.signature != null && field.signature.contains(ownerClassMeta.name)) {
-//        return field.name;
-//      }
-//    }
-//    return null;
-//  }
 
   protected String deriveClassNameWithInnerClass(String className) {
     return className.replace('$', '.');
