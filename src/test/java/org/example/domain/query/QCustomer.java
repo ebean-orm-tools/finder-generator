@@ -22,6 +22,9 @@ public class QCustomer extends TQRootBean<Customer,QCustomer> {
   public QAssocContact<QCustomer> contacts;
 
   public QCustomer() {
+    this(3);
+  }
+  public QCustomer(int maxDepth) {
     super(Customer.class);
     setRoot(this);
     this.status = new PEnum<>("status", this);
@@ -29,8 +32,8 @@ public class QCustomer extends TQRootBean<Customer,QCustomer> {
     this.name = new PString<>("name", this);
     this.registered = new PUtilDate<>("registered", this);
     this.comments = new PString<>("comments", this);
-    this.billingAddress = new QAssocAddress<>("billingAddress", this, 3);
-    this.shippingAddress = new QAssocAddress<>("shippingAddress", this, 3);
-    this.contacts = new QAssocContact<>("contacts", this, 3);
+    this.billingAddress = new QAssocAddress<>("billingAddress", this, maxDepth);
+    this.shippingAddress = new QAssocAddress<>("shippingAddress", this, maxDepth);
+    this.contacts = new QAssocContact<>("contacts", this, maxDepth);
   }
 }

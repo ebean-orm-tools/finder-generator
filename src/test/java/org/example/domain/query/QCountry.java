@@ -10,6 +10,9 @@ public class QCountry extends TQRootBean<Country,QCountry> {
   public PString<QCountry> name;
 
   public QCountry() {
+    this(3);
+  }
+  public QCountry(int maxDepth) {
     super(Country.class);
     setRoot(this);
     this.code = new PString<>("code", this);

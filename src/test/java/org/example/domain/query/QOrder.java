@@ -19,13 +19,16 @@ public class QOrder extends TQRootBean<Order,QOrder> {
   public QAssocOrderDetail<QOrder> details;
 
   public QOrder() {
+    this(3);
+  }
+  public QOrder(int maxDepth) {
     super(Order.class);
     setRoot(this);
     this.status = new PEnum<>("status", this);
     this.orderDate = new PSqlDate<>("orderDate", this);
     this.shipDate = new PSqlDate<>("shipDate", this);
-    this.customer = new QAssocCustomer<>("customer", this, 3);
-    this.shippingAddress = new QAssocAddress<>("shippingAddress", this, 3);
-    this.details = new QAssocOrderDetail<>("details", this, 3);
+    this.customer = new QAssocCustomer<>("customer", this, maxDepth);
+    this.shippingAddress = new QAssocAddress<>("shippingAddress", this, maxDepth);
+    this.details = new QAssocOrderDetail<>("details", this, maxDepth);
   }
 }

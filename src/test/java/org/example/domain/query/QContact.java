@@ -16,13 +16,16 @@ public class QContact extends TQRootBean<Contact,QContact> {
   public QAssocContactNote<QContact> notes;
 
   public QContact() {
+    this(3);
+  }
+  public QContact(int maxDepth) {
     super(Contact.class);
     setRoot(this);
     this.firstName = new PString<>("firstName", this);
     this.lastName = new PString<>("lastName", this);
     this.email = new PString<>("email", this);
     this.phone = new PString<>("phone", this);
-    this.customer = new QAssocCustomer<>("customer", this, 3);
-    this.notes = new QAssocContactNote<>("notes", this, 3);
+    this.customer = new QAssocCustomer<>("customer", this, maxDepth);
+    this.notes = new QAssocContactNote<>("notes", this, maxDepth);
   }
 }

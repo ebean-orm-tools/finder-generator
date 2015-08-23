@@ -35,10 +35,7 @@ public class PropertyMeta {
 
 
   /**
-   * Return the type definition given the
-   * @param shortName
-   * @param assoc
-   * @return
+   * Return the type definition given the type short name and flag indicating if it is an associated bean type.
    */
   public String getTypeDefn(String shortName, boolean assoc) {
     return type.getTypeDefn(shortName, assoc);
@@ -51,21 +48,21 @@ public class PropertyMeta {
     writer.append(" ").append(name).append(";");
   }
 
-  public void writeConstructorSimple(Writer writer, String shortName, boolean assoc, int maxDepth) throws IOException {
+  public void writeConstructorSimple(Writer writer, String shortName, boolean assoc) throws IOException {
 
     if (!type.isAssociation()) {
       writer.append("    this.").append(name).append(" = new ");
-      type.writeConstructor(writer, name, assoc, maxDepth);
+      type.writeConstructor(writer, name, assoc);
     }
   }
 
-  public void writeConstructorAssoc(Writer writer, String shortName, boolean assoc, int maxDepth) throws IOException {
+  public void writeConstructorAssoc(Writer writer, String shortName, boolean assoc) throws IOException {
     if (type.isAssociation()) {
       if (assoc) {
         writer.append("  ");
       }
       writer.append("    this.").append(name).append(" = new ");
-      type.writeConstructor(writer, name, assoc, maxDepth);
+      type.writeConstructor(writer, name, assoc);
     }
   }
 

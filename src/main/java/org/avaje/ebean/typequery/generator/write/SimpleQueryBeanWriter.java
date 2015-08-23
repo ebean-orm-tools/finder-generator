@@ -148,16 +148,21 @@ public class SimpleQueryBeanWriter {
   }
 
   protected void writeRootBeanConstructor() throws IOException {
+
     writer.append("  public Q").append(shortName).append("() {").append(NEWLINE);
+    writer.append("    this(").append(""+config.getMaxPathTraversalDepth()).append(");").append(NEWLINE);
+    writer.append("  }").append(NEWLINE);
+
+    writer.append("  public Q").append(shortName).append("(int maxDepth) {").append(NEWLINE);
     writer.append("    super(").append(shortName).append(".class);").append(NEWLINE);
     writer.append("    setRoot(this);").append(NEWLINE);
 
     for (PropertyMeta property : properties) {
-      property.writeConstructorSimple(writer, shortName, false, config.getMaxPathTraversalDepth());
+      property.writeConstructorSimple(writer, shortName, false);
     }
 
     for (PropertyMeta property : properties) {
-      property.writeConstructorAssoc(writer, shortName, false, config.getMaxPathTraversalDepth());
+      property.writeConstructorAssoc(writer, shortName, false);
     }
     writer.append("  }").append(NEWLINE);
   }
@@ -170,12 +175,12 @@ public class SimpleQueryBeanWriter {
     writer.append("  public Q").append(shortName).append("(String name, R root, String prefix, int depth) {").append(NEWLINE);
     writer.append("    String path = TQPath.add(prefix, name);").append(NEWLINE);
     for (PropertyMeta property : properties) {
-      property.writeConstructorSimple(writer, shortName, true, config.getMaxPathTraversalDepth());
+      property.writeConstructorSimple(writer, shortName, true);
     }
     if (hasAssocProperties()) {
       writer.append("    if (--depth > 0) {").append(NEWLINE);
       for (PropertyMeta property : properties) {
-        property.writeConstructorAssoc(writer, shortName, true, config.getMaxPathTraversalDepth());
+        property.writeConstructorAssoc(writer, shortName, true);
       }
       writer.append("    }").append(NEWLINE);
     }

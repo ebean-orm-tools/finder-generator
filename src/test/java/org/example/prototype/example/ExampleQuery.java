@@ -15,8 +15,11 @@ public class ExampleQuery {
   @Test
   public void test() {
 
-    Customer rob = new QCustomer()
+    QCustomer qc = new QCustomer(5);
+
+    Customer rob = new QCustomer(2)
         .select("id, name")
+        .status.equalTo(Customer.Status.GOOD)
         .name.ilike("Asd")
         .name.isNull()
         .billingAddress.country.code.equalTo("NZ")

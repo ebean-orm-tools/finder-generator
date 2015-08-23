@@ -45,7 +45,7 @@ public class PropertyTypeAssoc extends PropertyType {
    * Write the constructor source code to writer.
    */
   @Override
-  public void writeConstructor(Writer writer, String name, boolean assoc, int maxDepth) throws IOException {
+  public void writeConstructor(Writer writer, String name, boolean assoc) throws IOException {
 
     writer.append(propertyType).append("<>(\"").append(name).append("\"");
     if (assoc) {
@@ -54,7 +54,7 @@ public class PropertyTypeAssoc extends PropertyType {
 
     } else {
       // root level
-      writer.append(", this, ").append(String.valueOf(maxDepth)).append(");").append(NEWLINE);
+      writer.append(", this, ").append("maxDepth);").append(NEWLINE);
     }
   }
 }

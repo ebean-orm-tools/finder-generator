@@ -10,6 +10,9 @@ public class QProduct extends TQRootBean<Product,QProduct> {
   public PString<QProduct> name;
 
   public QProduct() {
+    this(3);
+  }
+  public QProduct(int maxDepth) {
     super(Product.class);
     setRoot(this);
     this.sku = new PString<>("sku", this);

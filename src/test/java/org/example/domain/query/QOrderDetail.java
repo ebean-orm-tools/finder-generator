@@ -16,12 +16,15 @@ public class QOrderDetail extends TQRootBean<OrderDetail,QOrderDetail> {
   public QAssocProduct<QOrderDetail> product;
 
   public QOrderDetail() {
+    this(3);
+  }
+  public QOrderDetail(int maxDepth) {
     super(OrderDetail.class);
     setRoot(this);
     this.orderQty = new PInteger<>("orderQty", this);
     this.shipQty = new PInteger<>("shipQty", this);
     this.unitPrice = new PDouble<>("unitPrice", this);
-    this.order = new QAssocOrder<>("order", this, 3);
-    this.product = new QAssocProduct<>("product", this, 3);
+    this.order = new QAssocOrder<>("order", this, maxDepth);
+    this.product = new QAssocProduct<>("product", this, maxDepth);
   }
 }

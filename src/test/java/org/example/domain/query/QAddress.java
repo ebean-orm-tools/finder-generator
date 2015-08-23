@@ -5,9 +5,6 @@ import org.avaje.ebean.typequery.TQRootBean;
 import org.example.domain.Address;
 import org.example.domain.query.assoc.QAssocCountry;
 
-import javax.annotation.Generated;
-
-@Generated(value = "")
 public class QAddress extends TQRootBean<Address,QAddress> {
 
   public PString<QAddress> line1;
@@ -16,11 +13,14 @@ public class QAddress extends TQRootBean<Address,QAddress> {
   public QAssocCountry<QAddress> country;
 
   public QAddress() {
+    this(3);
+  }
+  public QAddress(int maxDepth) {
     super(Address.class);
     setRoot(this);
     this.line1 = new PString<>("line1", this);
     this.line2 = new PString<>("line2", this);
     this.city = new PString<>("city", this);
-    this.country = new QAssocCountry<>("country", this, 3);
+    this.country = new QAssocCountry<>("country", this, maxDepth);
   }
 }

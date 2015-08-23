@@ -62,9 +62,8 @@ public class PropertyType {
    * @param writer The writer java source code is written to
    * @param name   the property name
    * @param assoc  if true the property is on an a associated bean (not at root level)
-   * @param maxDepth the maximum path traversals allowed (set on the root query bean).
    */
-  public void writeConstructor(Writer writer, String name, boolean assoc, int maxDepth) throws IOException {
+  public void writeConstructor(Writer writer, String name, boolean assoc) throws IOException {
 
     //PLong<>("id", this);
     //PLong<>("id", root, path);
