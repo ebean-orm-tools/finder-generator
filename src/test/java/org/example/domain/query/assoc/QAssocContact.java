@@ -2,8 +2,6 @@ package org.example.domain.query.assoc;
 
 import org.avaje.ebean.typequery.PString;
 import org.avaje.ebean.typequery.TQPath;
-import org.example.domain.query.assoc.QAssocContactNote;
-import org.example.domain.query.assoc.QAssocCustomer;
 
 public class QAssocContact<R> {
 

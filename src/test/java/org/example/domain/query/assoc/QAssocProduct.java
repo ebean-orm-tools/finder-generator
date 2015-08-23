@@ -15,6 +15,5 @@ public class QAssocProduct<R> {
     String path = TQPath.add(prefix, name);
     this.sku = new PString<>("sku", root, path);
     this.name = new PString<>("name", root, path);
-    }
   }
 }

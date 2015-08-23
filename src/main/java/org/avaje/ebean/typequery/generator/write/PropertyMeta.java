@@ -4,24 +4,42 @@ import java.io.IOException;
 import java.io.Writer;
 
 /**
- *
+ * Meta data for a property.
  */
 public class PropertyMeta {
 
-  final String name;
+  /**
+   * The property name.
+   */
+  private final String name;
 
-  final PropertyType type;
+  /**
+   * The property type.
+   */
+  private final PropertyType type;
 
+  /**
+   * Construct given the property name and type.
+   */
   public PropertyMeta(String name, PropertyType type) {
     this.name = name;
     this.type = type;
   }
 
+  /**
+   * Return true if this is an associated bean property (OneToMany, ManyToOne etc).
+   */
   public boolean isAssociation() {
     return type.isAssociation();
   }
 
 
+  /**
+   * Return the type definition given the
+   * @param shortName
+   * @param assoc
+   * @return
+   */
   public String getTypeDefn(String shortName, boolean assoc) {
     return type.getTypeDefn(shortName, assoc);
   }
@@ -33,21 +51,21 @@ public class PropertyMeta {
     writer.append(" ").append(name).append(";");
   }
 
-  public void writeConstructorSimple(Writer writer, String shortName, boolean assoc) throws IOException {
+  public void writeConstructorSimple(Writer writer, String shortName, boolean assoc, int maxDepth) throws IOException {
 
     if (!type.isAssociation()) {
       writer.append("    this.").append(name).append(" = new ");
-      type.writeConstructor(writer, name, assoc);
+      type.writeConstructor(writer, name, assoc, maxDepth);
     }
   }
 
-  public void writeConstructorAssoc(Writer writer, String shortName, boolean assoc) throws IOException {
+  public void writeConstructorAssoc(Writer writer, String shortName, boolean assoc, int maxDepth) throws IOException {
     if (type.isAssociation()) {
       if (assoc) {
         writer.append("  ");
       }
       writer.append("    this.").append(name).append(" = new ");
-      type.writeConstructor(writer, name, assoc);
+      type.writeConstructor(writer, name, assoc, maxDepth);
     }
   }
 

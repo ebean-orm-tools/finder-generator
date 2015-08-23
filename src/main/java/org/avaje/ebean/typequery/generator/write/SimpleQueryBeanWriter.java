@@ -12,38 +12,39 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 /**
- *
+ * A simple implementation that generates and writes query beans.
  */
-public class SimpleEntityBeanWriter {
+public class SimpleQueryBeanWriter {
 
-  private static final Logger logger = LoggerFactory.getLogger(SimpleEntityBeanWriter.class);
+  protected static final Logger logger = LoggerFactory.getLogger(SimpleQueryBeanWriter.class);
 
   public static final String NEWLINE = "\n";
 
-  private final GeneratorConfig config;
+  protected final GeneratorConfig config;
 
-  private final EntityBeanPropertyReader classMeta;
+  protected final EntityBeanPropertyReader classMeta;
 
-  private final GenerationMetaData generationMetaData;
+  protected final GenerationMetaData generationMetaData;
 
-  private boolean writingAssocBean;
+  protected boolean writingAssocBean;
 
-  String destPackage;
+  protected String destPackage;
 
-  String shortName;
+  protected String shortName;
 
-  FileWriter writer;
+  protected FileWriter writer;
 
-  Set<String> importTypes = new TreeSet<>();
+  protected Set<String> importTypes = new TreeSet<>();
 
-  List<PropertyMeta> properties = new ArrayList<>();
+  protected List<PropertyMeta> properties = new ArrayList<>();
 
-  public SimpleEntityBeanWriter(GeneratorConfig config, EntityBeanPropertyReader classMeta, GenerationMetaData generationMetaData) {
+  public SimpleQueryBeanWriter(GeneratorConfig config, EntityBeanPropertyReader classMeta, GenerationMetaData generationMetaData) {
     this.config = config;
     this.classMeta = classMeta;
     this.generationMetaData = generationMetaData;
@@ -52,7 +53,7 @@ public class SimpleEntityBeanWriter {
     shortName = deriveShortName(classMeta.name);
   }
 
-  private void gatherPropertyDetails() {
+  protected void gatherPropertyDetails() {
 
     importTypes.add(asDotNotation(classMeta.name));
     importTypes.add("org.avaje.ebean.typequery.TQRootBean");
@@ -72,7 +73,11 @@ public class SimpleEntityBeanWriter {
   }
 
 
-  private boolean includeField(FieldNode field) {
+  /**
+   * Return true if the field should be included.
+   */
+  protected boolean includeField(FieldNode field) {
+    // at the moment not filtering out transient fields?
     return true;
   }
 
@@ -99,9 +104,7 @@ public class SimpleEntityBeanWriter {
     destPackage = destPackage+".assoc";
     shortName = "Assoc"+shortName;
 
-    importTypes.remove(asDotNotation(classMeta.name));
-    importTypes.remove("org.avaje.ebean.typequery.TQRootBean");
-    importTypes.add("org.avaje.ebean.typequery.TQPath");
+    prepareAssocBeanImports();
 
     writer = createFileWriter();
 
@@ -116,8 +119,26 @@ public class SimpleEntityBeanWriter {
     writer.close();
   }
 
+  protected void prepareAssocBeanImports() {
 
-  private void writeConstructors() throws IOException {
+    importTypes.remove(asDotNotation(classMeta.name));
+    importTypes.remove("org.avaje.ebean.typequery.TQRootBean");
+    importTypes.add("org.avaje.ebean.typequery.TQPath");
+
+    // remove imports for the same package
+    Iterator<String> importsIterator = importTypes.iterator();
+    while (importsIterator.hasNext()){
+      String importType = importsIterator.next();
+      // there are no subpackages so just use startsWith(destPackage)
+      if (importType.startsWith(destPackage)) {
+        importsIterator.remove();
+      }
+    }
+
+  }
+
+
+  protected void writeConstructors() throws IOException {
 
     if (writingAssocBean) {
       writeAssocBeanConstructor();
@@ -126,42 +147,42 @@ public class SimpleEntityBeanWriter {
     }
   }
 
-  private void writeRootBeanConstructor() throws IOException {
-    writer.append("  public Q" + shortName + "() {").append(NEWLINE);
-    writer.append("    super(" + shortName + ".class);").append(NEWLINE);
+  protected void writeRootBeanConstructor() throws IOException {
+    writer.append("  public Q").append(shortName).append("() {").append(NEWLINE);
+    writer.append("    super(").append(shortName).append(".class);").append(NEWLINE);
     writer.append("    setRoot(this);").append(NEWLINE);
 
     for (PropertyMeta property : properties) {
-      property.writeConstructorSimple(writer, shortName, false);
+      property.writeConstructorSimple(writer, shortName, false, config.getMaxPathTraversalDepth());
     }
 
     for (PropertyMeta property : properties) {
-      property.writeConstructorAssoc(writer, shortName, false);
+      property.writeConstructorAssoc(writer, shortName, false, config.getMaxPathTraversalDepth());
     }
     writer.append("  }").append(NEWLINE);
   }
 
-  private void writeAssocBeanConstructor() throws IOException {
-    writer.append("  public Q" + shortName + "(String name, R root, int depth) {").append(NEWLINE);
+  protected void writeAssocBeanConstructor() throws IOException {
+    writer.append("  public Q").append(shortName).append("(String name, R root, int depth) {").append(NEWLINE);
     writer.append("    this(name, root, null, depth);").append(NEWLINE);
     writer.append("  }").append(NEWLINE);
 
-    writer.append("  public Q" + shortName + "(String name, R root, String prefix, int depth) {").append(NEWLINE);
+    writer.append("  public Q").append(shortName).append("(String name, R root, String prefix, int depth) {").append(NEWLINE);
     writer.append("    String path = TQPath.add(prefix, name);").append(NEWLINE);
     for (PropertyMeta property : properties) {
-      property.writeConstructorSimple(writer, shortName, true);
+      property.writeConstructorSimple(writer, shortName, true, config.getMaxPathTraversalDepth());
     }
     if (hasAssocProperties()) {
       writer.append("    if (--depth > 0) {").append(NEWLINE);
       for (PropertyMeta property : properties) {
-        property.writeConstructorAssoc(writer, shortName, true);
+        property.writeConstructorAssoc(writer, shortName, true, config.getMaxPathTraversalDepth());
       }
+      writer.append("    }").append(NEWLINE);
     }
-    writer.append("    }").append(NEWLINE);
     writer.append("  }").append(NEWLINE);
   }
 
-  private boolean hasAssocProperties() {
+  protected boolean hasAssocProperties() {
     for (PropertyMeta property : properties) {
       if (property.isAssociation()) {
         return true;
@@ -170,7 +191,7 @@ public class SimpleEntityBeanWriter {
     return false;
   }
 
-  private void writeFields() throws IOException {
+  protected void writeFields() throws IOException {
 
     for (PropertyMeta property : properties) {
       property.writeFieldDefn(writer, shortName, writingAssocBean);
@@ -179,7 +200,7 @@ public class SimpleEntityBeanWriter {
     writer.append(NEWLINE);
   }
 
-  private void writeClass() throws IOException {
+  protected void writeClass() throws IOException {
 
     if (writingAssocBean) {
       //public class QAssocContact<R>
@@ -188,17 +209,17 @@ public class SimpleEntityBeanWriter {
     } else {
       //  public class QContact extends TQRootBean<Contact,QContact> {
       writer.append("public class ").append("Q").append(shortName)
-          .append(" extends TQRootBean<" + shortName + ",Q" + shortName+"> {").append(NEWLINE);
+          .append(" extends TQRootBean<").append(shortName).append(",Q").append(shortName).append("> {").append(NEWLINE);
     }
 
     writer.append(NEWLINE);
   }
 
-  private void writeClassEnd() throws IOException {
+  protected void writeClassEnd() throws IOException {
     writer.append("}").append(NEWLINE);
   }
 
-  private void writeImports() throws IOException {
+  protected void writeImports() throws IOException {
 
     for (String importType : importTypes) {
       writer.append("import ").append(importType).append(";").append(NEWLINE);
@@ -206,12 +227,12 @@ public class SimpleEntityBeanWriter {
     writer.append(NEWLINE);
   }
 
-  private void writePackage() throws IOException {
+  protected void writePackage() throws IOException {
     writer.append("package ").append(destPackage).append(";").append(NEWLINE).append(NEWLINE);
   }
 
 
-  private FileWriter createFileWriter() throws IOException {
+  protected FileWriter createFileWriter() throws IOException {
 
     String destDirectory = config.getDestDirectory();
     File destDir = new File(destDirectory);
@@ -219,8 +240,8 @@ public class SimpleEntityBeanWriter {
     String packageAsDir = asSlashNotation(destPackage);
 
     File packageDir = new File(destDir, packageAsDir);
-    if (!packageDir.mkdirs()) {
-      logger.error("Failed to create directories [{}]for generated code", packageDir.getAbsoluteFile());
+    if (!packageDir.exists() && !packageDir.mkdirs()) {
+      logger.error("Failed to create directory [{}] for generated code", packageDir.getAbsoluteFile());
     }
 
     String fileName = "Q"+shortName+".java";
@@ -231,15 +252,15 @@ public class SimpleEntityBeanWriter {
     return new FileWriter(dest);
   }
 
-  private String asDotNotation(String path) {
+  protected String asDotNotation(String path) {
     return path.replace('/', '.');
   }
 
-  private String asSlashNotation(String path) {
+  protected String asSlashNotation(String path) {
     return path.replace('.', '/');
   }
 
-  private String deriveShortName(String name) {
+  protected String deriveShortName(String name) {
     int startPos = name.lastIndexOf('/');
     if (startPos == -1) {
       return name;

@@ -6,8 +6,6 @@ import org.avaje.ebean.typequery.PString;
 import org.avaje.ebean.typequery.PUtilDate;
 import org.avaje.ebean.typequery.TQPath;
 import org.example.domain.Customer.Status;
-import org.example.domain.query.assoc.QAssocAddress;
-import org.example.domain.query.assoc.QAssocContact;
 
 public class QAssocCustomer<R> {
 

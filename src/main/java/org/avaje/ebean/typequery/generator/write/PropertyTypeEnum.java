@@ -4,7 +4,7 @@ package org.avaje.ebean.typequery.generator.write;
 import java.util.Set;
 
 /**
- *
+ * Enum property type.
  */
 public class PropertyTypeEnum extends PropertyType {
 

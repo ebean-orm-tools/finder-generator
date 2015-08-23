@@ -29,8 +29,8 @@ public class QCustomer extends TQRootBean<Customer,QCustomer> {
     this.name = new PString<>("name", this);
     this.registered = new PUtilDate<>("registered", this);
     this.comments = new PString<>("comments", this);
-    this.billingAddress = new QAssocAddress<>("billingAddress", this, 5);
-    this.shippingAddress = new QAssocAddress<>("shippingAddress", this, 5);
-    this.contacts = new QAssocContact<>("contacts", this, 5);
+    this.billingAddress = new QAssocAddress<>("billingAddress", this, 3);
+    this.shippingAddress = new QAssocAddress<>("shippingAddress", this, 3);
+    this.contacts = new QAssocContact<>("contacts", this, 3);
   }
 }

@@ -24,8 +24,8 @@ public class QOrder extends TQRootBean<Order,QOrder> {
     this.status = new PEnum<>("status", this);
     this.orderDate = new PSqlDate<>("orderDate", this);
     this.shipDate = new PSqlDate<>("shipDate", this);
-    this.customer = new QAssocCustomer<>("customer", this, 5);
-    this.shippingAddress = new QAssocAddress<>("shippingAddress", this, 5);
-    this.details = new QAssocOrderDetail<>("details", this, 5);
+    this.customer = new QAssocCustomer<>("customer", this, 3);
+    this.shippingAddress = new QAssocAddress<>("shippingAddress", this, 3);
+    this.details = new QAssocOrderDetail<>("details", this, 3);
   }
 }

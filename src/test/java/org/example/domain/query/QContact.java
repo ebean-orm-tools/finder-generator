@@ -22,7 +22,7 @@ public class QContact extends TQRootBean<Contact,QContact> {
     this.lastName = new PString<>("lastName", this);
     this.email = new PString<>("email", this);
     this.phone = new PString<>("phone", this);
-    this.customer = new QAssocCustomer<>("customer", this, 5);
-    this.notes = new QAssocContactNote<>("notes", this, 5);
+    this.customer = new QAssocCustomer<>("customer", this, 3);
+    this.notes = new QAssocContactNote<>("notes", this, 3);
   }
 }

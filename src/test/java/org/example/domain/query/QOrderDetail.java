@@ -21,7 +21,7 @@ public class QOrderDetail extends TQRootBean<OrderDetail,QOrderDetail> {
     this.orderQty = new PInteger<>("orderQty", this);
     this.shipQty = new PInteger<>("shipQty", this);
     this.unitPrice = new PDouble<>("unitPrice", this);
-    this.order = new QAssocOrder<>("order", this, 5);
-    this.product = new QAssocProduct<>("product", this, 5);
+    this.order = new QAssocOrder<>("order", this, 3);
+    this.product = new QAssocProduct<>("product", this, 3);
   }
 }

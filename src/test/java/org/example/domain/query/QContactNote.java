@@ -16,6 +16,6 @@ public class QContactNote extends TQRootBean<ContactNote,QContactNote> {
     setRoot(this);
     this.title = new PString<>("title", this);
     this.note = new PString<>("note", this);
-    this.contact = new QAssocContact<>("contact", this, 5);
+    this.contact = new QAssocContact<>("contact", this, 3);
   }
 }

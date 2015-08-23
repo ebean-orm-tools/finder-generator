@@ -10,13 +10,14 @@ public class GeneratorTest {
   public void test() throws IOException {
 
     GeneratorConfig config = new GeneratorConfig();
-    config.setSourceDirectory("./target/test-classes");
-    config.setSourcePackage("org.example.domain");
+    config.setClassesDirectory("./target/test-classes");
+    config.setEntityBeanPackage("org.example.domain");
     config.setDestDirectory("./src/test/java");
     config.setDestPackage("org.example.domain.query");
+    config.setMaxPathTraversalDepth(3);
 
     Generator generator = new Generator(config);
-    generator.process();
+    generator.generateQueryBeans();
 
   }
 }

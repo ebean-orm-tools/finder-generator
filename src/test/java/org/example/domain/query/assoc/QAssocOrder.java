@@ -4,9 +4,6 @@ import org.avaje.ebean.typequery.PEnum;
 import org.avaje.ebean.typequery.PSqlDate;
 import org.avaje.ebean.typequery.TQPath;
 import org.example.domain.Order.Status;
-import org.example.domain.query.assoc.QAssocAddress;
-import org.example.domain.query.assoc.QAssocCustomer;
-import org.example.domain.query.assoc.QAssocOrderDetail;
 
 public class QAssocOrder<R> {
 

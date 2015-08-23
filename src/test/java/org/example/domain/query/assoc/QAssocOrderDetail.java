@@ -3,8 +3,6 @@ package org.example.domain.query.assoc;
 import org.avaje.ebean.typequery.PDouble;
 import org.avaje.ebean.typequery.PInteger;
 import org.avaje.ebean.typequery.TQPath;
-import org.example.domain.query.assoc.QAssocOrder;
-import org.example.domain.query.assoc.QAssocProduct;
 
 public class QAssocOrderDetail<R> {
 

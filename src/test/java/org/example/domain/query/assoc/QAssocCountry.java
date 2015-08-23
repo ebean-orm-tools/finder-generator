@@ -15,6 +15,5 @@ public class QAssocCountry<R> {
     String path = TQPath.add(prefix, name);
     this.code = new PString<>("code", root, path);
     this.name = new PString<>("name", root, path);
-    }
   }
 }

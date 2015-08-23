@@ -2,7 +2,7 @@ package org.avaje.ebean.typequery.generator;
 
 import org.avaje.ebean.typequery.generator.read.EntityBeanPropertyReader;
 import org.avaje.ebean.typequery.generator.read.MetaReader;
-import org.avaje.ebean.typequery.generator.write.SimpleEntityBeanWriter;
+import org.avaje.ebean.typequery.generator.write.SimpleQueryBeanWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,11 +31,26 @@ public class Generator {
 
   /**
    * Process the code generation.
+   *
+   * <h3>Example usage:</h3>
+   * <pre>{@code
+   *
+   *       GeneratorConfig config = new GeneratorConfig();
+   *       config.setClassesDirectory("./target/test-classes");
+   *       config.setEntityBeanPackage("org.example.domain");
+   *       config.setDestDirectory("./src/test/java");
+   *       config.setDestPackage("org.example.domain.query");
+   *
+   *       Generator generator = new Generator(config);
+   *
+   *       generator.generateQueryBeans();
+   *
+   * }</pre>
    */
-  public void process() throws IOException {
+  public void generateQueryBeans() throws IOException {
 
-    MetaReader reader = new MetaReader(config.getSourceDirectory());
-    reader.process(config.getSourcePackage());
+    MetaReader reader = new MetaReader(config.getClassesDirectory());
+    reader.process(config.getEntityBeanPackage());
 
     generationMetaData.addAll(reader.getClassMetaData());
 
@@ -52,16 +67,16 @@ public class Generator {
     }
   }
 
-  private void generateAssocBeans(EntityBeanPropertyReader classMeta) {
+  protected void generateAssocBeans(EntityBeanPropertyReader classMeta) {
 
   }
 
-  private void generateRootQueryBeans(EntityBeanPropertyReader classMeta) throws IOException {
+  protected void generateRootQueryBeans(EntityBeanPropertyReader classMeta) throws IOException {
 
     // if is entity bean ...
 
     // find extra inherited fields
-    SimpleEntityBeanWriter writer = new SimpleEntityBeanWriter(config, classMeta, generationMetaData);
+    SimpleQueryBeanWriter writer = new SimpleQueryBeanWriter(config, classMeta, generationMetaData);
     writer.write();
     writer.writeAssocBean();
   }

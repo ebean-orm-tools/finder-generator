@@ -80,9 +80,6 @@ public class GenerationMetaData {
     }
 
     return null;
-
-//    20:08:06.047 [main] WARN  o.a.e.t.g.w.SimpleEntityBeanWriter - No support for field [contacts] desc[Ljava/util/List;] signature [Ljava/util/List<Lorg/example/domain/Contact;>;]
-
   }
 
   private String deriveCollectionParameterType(String signature) {
