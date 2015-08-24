@@ -19,6 +19,7 @@ public class ExampleQuery {
 
     Customer rob = new QCustomer(2)
         .select("id, name")
+        .id.greaterThan(42)
         .status.equalTo(Customer.Status.GOOD)
         .name.ilike("Asd")
         .name.isNull()
