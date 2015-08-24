@@ -35,6 +35,20 @@ public class GenerationMetaData {
     this.config = config;
   }
 
+  /**
+   * Return the meta data for the given super class.
+   * <p>
+   * This is used to read inherited properties from mapped super class and inheritance hierarchies.
+   * </p>
+   */
+  public EntityBeanPropertyReader getSuperClass(String superClassName) {
+    EntityBeanPropertyReader superMeta = otherMap.get(superClassName);
+    if (superMeta == null) {
+      superMeta = entityMap.get(superClassName);
+    }
+    return superMeta;
+  }
+
   public PropertyType getPropertyType(FieldNode field, EntityBeanPropertyReader ownerClassMeta) {
 
     String fieldTypeClassName = Type.getType(field.desc).getClassName();

@@ -58,7 +58,33 @@ public class SimpleQueryBeanWriter {
     importTypes.add(asDotNotation(classMeta.name));
     importTypes.add("org.avaje.ebean.typequery.TQRootBean");
 
-    List<FieldNode> fields = classMeta.fields;
+    addClassProperties(classMeta);
+  }
+
+  /**
+   * Recursively add properties from the inheritance hierarchy.
+   * <p>
+   * Includes properties from mapped super classes and usual inheritance.
+   * </p>
+   */
+  protected void addClassProperties(EntityBeanPropertyReader classMetaData) {
+
+    String superClassName = asDotNotation(classMetaData.superName);
+    if (!"java.lang.Object".equals(superClassName)) {
+      // look for mappedSuperclass or inheritance etc
+      EntityBeanPropertyReader superClass = generationMetaData.getSuperClass(superClassName);
+      if (superClass != null) {
+        logger.debug("... super type {}", superClassName);
+        addClassProperties(superClass);
+      }
+    }
+    addProperties(classMetaData.fields);
+  }
+
+  /**
+   * Add the list of fields as properties on the query bean.
+   */
+  protected void addProperties(List<FieldNode> fields) {
     for (FieldNode field : fields) {
       if (includeField(field)) {
         PropertyType type = generationMetaData.getPropertyType(field, classMeta);
@@ -71,7 +97,6 @@ public class SimpleQueryBeanWriter {
       }
     }
   }
-
 
   /**
    * Return true if the field should be included.
