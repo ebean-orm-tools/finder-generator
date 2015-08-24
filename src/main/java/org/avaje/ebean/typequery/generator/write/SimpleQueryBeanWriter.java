@@ -57,6 +57,7 @@ public class SimpleQueryBeanWriter {
 
     importTypes.add(asDotNotation(classMeta.name));
     importTypes.add("org.avaje.ebean.typequery.TQRootBean");
+    importTypes.add("org.avaje.ebean.typequery.TypeQueryBean");
 
     addClassProperties(classMeta);
   }
@@ -234,10 +235,12 @@ public class SimpleQueryBeanWriter {
 
     if (writingAssocBean) {
       //public class QAssocContact<R>
+      writer.append("@TypeQueryBean").append(NEWLINE);
       writer.append("public class ").append("Q").append(shortName).append("<R> {").append(NEWLINE);
 
     } else {
       //  public class QContact extends TQRootBean<Contact,QContact> {
+      writer.append("@TypeQueryBean").append(NEWLINE);
       writer.append("public class ").append("Q").append(shortName)
           .append(" extends TQRootBean<").append(shortName).append(",Q").append(shortName).append("> {").append(NEWLINE);
     }

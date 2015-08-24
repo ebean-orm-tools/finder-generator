@@ -4,8 +4,10 @@ import org.avaje.ebean.typequery.PLong;
 import org.avaje.ebean.typequery.PString;
 import org.avaje.ebean.typequery.PTimestamp;
 import org.avaje.ebean.typequery.TQRootBean;
+import org.avaje.ebean.typequery.TypeQueryBean;
 import org.example.domain.Product;
 
+@TypeQueryBean
 public class QProduct extends TQRootBean<Product,QProduct> {
 
   public PLong<QProduct> id;

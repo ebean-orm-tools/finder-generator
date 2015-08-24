@@ -4,9 +4,11 @@ import org.avaje.ebean.typequery.PLong;
 import org.avaje.ebean.typequery.PString;
 import org.avaje.ebean.typequery.PTimestamp;
 import org.avaje.ebean.typequery.TQRootBean;
+import org.avaje.ebean.typequery.TypeQueryBean;
 import org.example.domain.Address;
 import org.example.domain.query.assoc.QAssocCountry;
 
+@TypeQueryBean
 public class QAddress extends TQRootBean<Address,QAddress> {
 
   public PLong<QAddress> id;

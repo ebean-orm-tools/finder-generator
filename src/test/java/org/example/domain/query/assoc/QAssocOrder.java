@@ -5,8 +5,10 @@ import org.avaje.ebean.typequery.PLong;
 import org.avaje.ebean.typequery.PSqlDate;
 import org.avaje.ebean.typequery.PTimestamp;
 import org.avaje.ebean.typequery.TQPath;
+import org.avaje.ebean.typequery.TypeQueryBean;
 import org.example.domain.Order.Status;
 
+@TypeQueryBean
 public class QAssocOrder<R> {
 
   public PLong<R> id;

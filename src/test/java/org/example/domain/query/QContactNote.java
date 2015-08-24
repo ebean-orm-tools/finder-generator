@@ -4,9 +4,11 @@ import org.avaje.ebean.typequery.PLong;
 import org.avaje.ebean.typequery.PString;
 import org.avaje.ebean.typequery.PTimestamp;
 import org.avaje.ebean.typequery.TQRootBean;
+import org.avaje.ebean.typequery.TypeQueryBean;
 import org.example.domain.ContactNote;
 import org.example.domain.query.assoc.QAssocContact;
 
+@TypeQueryBean
 public class QContactNote extends TQRootBean<ContactNote,QContactNote> {
 
   public PLong<QContactNote> id;

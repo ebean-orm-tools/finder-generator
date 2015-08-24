@@ -5,10 +5,12 @@ import org.avaje.ebean.typequery.PInteger;
 import org.avaje.ebean.typequery.PLong;
 import org.avaje.ebean.typequery.PTimestamp;
 import org.avaje.ebean.typequery.TQRootBean;
+import org.avaje.ebean.typequery.TypeQueryBean;
 import org.example.domain.OrderDetail;
 import org.example.domain.query.assoc.QAssocOrder;
 import org.example.domain.query.assoc.QAssocProduct;
 
+@TypeQueryBean
 public class QOrderDetail extends TQRootBean<OrderDetail,QOrderDetail> {
 
   public PLong<QOrderDetail> id;

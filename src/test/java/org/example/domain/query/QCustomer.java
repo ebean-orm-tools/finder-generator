@@ -7,11 +7,13 @@ import org.avaje.ebean.typequery.PString;
 import org.avaje.ebean.typequery.PTimestamp;
 import org.avaje.ebean.typequery.PUtilDate;
 import org.avaje.ebean.typequery.TQRootBean;
+import org.avaje.ebean.typequery.TypeQueryBean;
 import org.example.domain.Customer;
 import org.example.domain.Customer.Status;
 import org.example.domain.query.assoc.QAssocAddress;
 import org.example.domain.query.assoc.QAssocContact;
 
+@TypeQueryBean
 public class QCustomer extends TQRootBean<Customer,QCustomer> {
 
   public PLong<QCustomer> id;

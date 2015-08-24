@@ -7,8 +7,10 @@ import org.avaje.ebean.typequery.PString;
 import org.avaje.ebean.typequery.PTimestamp;
 import org.avaje.ebean.typequery.PUtilDate;
 import org.avaje.ebean.typequery.TQPath;
+import org.avaje.ebean.typequery.TypeQueryBean;
 import org.example.domain.Customer.Status;
 
+@TypeQueryBean
 public class QAssocCustomer<R> {
 
   public PLong<R> id;
