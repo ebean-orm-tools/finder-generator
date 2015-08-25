@@ -1,6 +1,8 @@
 package org.example.domain.query;
 
+import org.avaje.ebean.typequery.PJodaDateTime;
 import org.avaje.ebean.typequery.PLong;
+import org.avaje.ebean.typequery.PMonth;
 import org.avaje.ebean.typequery.PString;
 import org.avaje.ebean.typequery.PTimestamp;
 import org.avaje.ebean.typequery.TQRootBean;
@@ -16,6 +18,8 @@ public class QProduct extends TQRootBean<Product,QProduct> {
   public PTimestamp<QProduct> whenUpdated;
   public PString<QProduct> sku;
   public PString<QProduct> name;
+  public PJodaDateTime<QProduct> jdDateTime;
+  public PMonth<QProduct> month;
 
   public QProduct() {
     this(3);
@@ -29,5 +33,7 @@ public class QProduct extends TQRootBean<Product,QProduct> {
     this.whenUpdated = new PTimestamp<>("whenUpdated", this);
     this.sku = new PString<>("sku", this);
     this.name = new PString<>("name", this);
+    this.jdDateTime = new PJodaDateTime<>("jdDateTime", this);
+    this.month = new PMonth<>("month", this);
   }
 }

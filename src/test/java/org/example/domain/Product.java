@@ -1,8 +1,11 @@
 package org.example.domain;
 
+import org.joda.time.DateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
+import java.time.Month;
 
 /**
  * Product entity bean.
@@ -15,6 +18,10 @@ public class Product extends BaseModel {
   String sku;
 
   String name;
+
+  DateTime jdDateTime;
+
+  Month month;
 
   /**
    * Return sku.
@@ -43,5 +50,7 @@ public class Product extends BaseModel {
   public void setName(String name) {
     this.name = name;
   }
+
+
 
 }

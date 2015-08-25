@@ -1,6 +1,8 @@
 package org.example.domain.query.assoc;
 
+import org.avaje.ebean.typequery.PJodaDateTime;
 import org.avaje.ebean.typequery.PLong;
+import org.avaje.ebean.typequery.PMonth;
 import org.avaje.ebean.typequery.PString;
 import org.avaje.ebean.typequery.PTimestamp;
 import org.avaje.ebean.typequery.TQPath;
@@ -15,6 +17,8 @@ public class QAssocProduct<R> {
   public PTimestamp<R> whenUpdated;
   public PString<R> sku;
   public PString<R> name;
+  public PJodaDateTime<R> jdDateTime;
+  public PMonth<R> month;
 
   public QAssocProduct(String name, R root, int depth) {
     this(name, root, null, depth);
@@ -27,5 +31,7 @@ public class QAssocProduct<R> {
     this.whenUpdated = new PTimestamp<>("whenUpdated", root, path);
     this.sku = new PString<>("sku", root, path);
     this.name = new PString<>("name", root, path);
+    this.jdDateTime = new PJodaDateTime<>("jdDateTime", root, path);
+    this.month = new PMonth<>("month", root, path);
   }
 }
