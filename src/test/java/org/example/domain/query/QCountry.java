@@ -1,5 +1,6 @@
 package org.example.domain.query;
 
+import com.avaje.ebean.EbeanServer;
 import org.avaje.ebean.typequery.PString;
 import org.avaje.ebean.typequery.TQRootBean;
 import org.avaje.ebean.typequery.TypeQueryBean;
@@ -11,13 +12,17 @@ public class QCountry extends TQRootBean<Country,QCountry> {
   public PString<QCountry> code;
   public PString<QCountry> name;
 
+  /**
+   * Construct using the default EbeanServer.
+   */
   public QCountry() {
-    this(3);
-  }
-  public QCountry(int maxDepth) {
     super(Country.class);
-    setRoot(this);
-    this.code = new PString<>("code", this);
-    this.name = new PString<>("name", this);
+  }
+
+  /**
+   * Construct with a given EbeanServer.
+   */
+  public QCountry(EbeanServer server) {
+    super(Country.class, server);
   }
 }

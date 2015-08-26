@@ -1,6 +1,7 @@
 package org.avaje.ebean.typequery.generator.write;
 
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.avaje.ebean.typequery.generator.GenerationMetaData;
 import org.avaje.ebean.typequery.generator.GeneratorConfig;
 import org.avaje.ebean.typequery.generator.asm.tree.FieldNode;
@@ -58,6 +59,7 @@ public class SimpleQueryBeanWriter {
     importTypes.add(asDotNotation(classMeta.name));
     importTypes.add("org.avaje.ebean.typequery.TQRootBean");
     importTypes.add("org.avaje.ebean.typequery.TypeQueryBean");
+    importTypes.add("com.avaje.ebean.EbeanServer");
 
     addClassProperties(classMeta);
   }
@@ -149,7 +151,10 @@ public class SimpleQueryBeanWriter {
 
     importTypes.remove(asDotNotation(classMeta.name));
     importTypes.remove("org.avaje.ebean.typequery.TQRootBean");
-    importTypes.add("org.avaje.ebean.typequery.TQPath");
+    importTypes.remove("com.avaje.ebean.EbeanServer");
+    if (!config.isAopStyle()) {
+      importTypes.add("org.avaje.ebean.typequery.TQPath");
+    }
 
     // remove imports for the same package
     Iterator<String> importsIterator = importTypes.iterator();
@@ -175,42 +180,63 @@ public class SimpleQueryBeanWriter {
 
   protected void writeRootBeanConstructor() throws IOException {
 
-    writer.append("  public Q").append(shortName).append("() {").append(NEWLINE);
-    writer.append("    this(").append(""+config.getMaxPathTraversalDepth()).append(");").append(NEWLINE);
-    writer.append("  }").append(NEWLINE);
+    if (config.isAopStyle()) {
+      writer.append("  /**").append(NEWLINE);
+      writer.append("   * Construct using the default EbeanServer.").append(NEWLINE);
+      writer.append("   */").append(NEWLINE);
+      writer.append("  public Q").append(shortName).append("() {").append(NEWLINE);
+      writer.append("    super(").append(shortName).append(".class);").append(NEWLINE);
+      writer.append("  }").append(NEWLINE);
+      writer.append(NEWLINE);
+      writer.append("  /**").append(NEWLINE);
+      writer.append("   * Construct with a given EbeanServer.").append(NEWLINE);
+      writer.append("   */").append(NEWLINE);
+      writer.append("  public Q").append(shortName).append("(EbeanServer server) {").append(NEWLINE);
+      writer.append("    super(").append(shortName).append(".class, server);").append(NEWLINE);
+      writer.append("  }").append(NEWLINE);
 
-    writer.append("  public Q").append(shortName).append("(int maxDepth) {").append(NEWLINE);
-    writer.append("    super(").append(shortName).append(".class);").append(NEWLINE);
-    writer.append("    setRoot(this);").append(NEWLINE);
+    } else {
+      // verbose manual style requiring manual depth control (non-AOP)
+      writer.append("  public Q").append(shortName).append("() {").append(NEWLINE);
+      writer.append("    this(").append("" + config.getMaxPathTraversalDepth()).append(");").append(NEWLINE);
+      writer.append("  }").append(NEWLINE);
 
-    for (PropertyMeta property : properties) {
-      property.writeConstructorSimple(writer, shortName, false);
+      writer.append("  public Q").append(shortName).append("(int maxDepth) {").append(NEWLINE);
+      writer.append("    super(").append(shortName).append(".class);").append(NEWLINE);
+      writer.append("    setRoot(this);").append(NEWLINE);
+
+      for (PropertyMeta property : properties) {
+        property.writeConstructorSimple(writer, shortName, false);
+      }
+
+      for (PropertyMeta property : properties) {
+        property.writeConstructorAssoc(writer, shortName, false);
+      }
+      writer.append("  }").append(NEWLINE);
     }
-
-    for (PropertyMeta property : properties) {
-      property.writeConstructorAssoc(writer, shortName, false);
-    }
-    writer.append("  }").append(NEWLINE);
   }
 
   protected void writeAssocBeanConstructor() throws IOException {
-    writer.append("  public Q").append(shortName).append("(String name, R root, int depth) {").append(NEWLINE);
-    writer.append("    this(name, root, null, depth);").append(NEWLINE);
-    writer.append("  }").append(NEWLINE);
+    if (!config.isAopStyle()) {
+      // only generate the constructor for non-AOP manual/verbose style
+      writer.append("  public Q").append(shortName).append("(String name, R root, int depth) {").append(NEWLINE);
+      writer.append("    this(name, root, null, depth);").append(NEWLINE);
+      writer.append("  }").append(NEWLINE);
 
-    writer.append("  public Q").append(shortName).append("(String name, R root, String prefix, int depth) {").append(NEWLINE);
-    writer.append("    String path = TQPath.add(prefix, name);").append(NEWLINE);
-    for (PropertyMeta property : properties) {
-      property.writeConstructorSimple(writer, shortName, true);
-    }
-    if (hasAssocProperties()) {
-      writer.append("    if (--depth > 0) {").append(NEWLINE);
+      writer.append("  public Q").append(shortName).append("(String name, R root, String prefix, int depth) {").append(NEWLINE);
+      writer.append("    String path = TQPath.add(prefix, name);").append(NEWLINE);
       for (PropertyMeta property : properties) {
-        property.writeConstructorAssoc(writer, shortName, true);
+        property.writeConstructorSimple(writer, shortName, true);
       }
-      writer.append("    }").append(NEWLINE);
+      if (hasAssocProperties()) {
+        writer.append("    if (--depth > 0) {").append(NEWLINE);
+        for (PropertyMeta property : properties) {
+          property.writeConstructorAssoc(writer, shortName, true);
+        }
+        writer.append("    }").append(NEWLINE);
+      }
+      writer.append("  }").append(NEWLINE);
     }
-    writer.append("  }").append(NEWLINE);
   }
 
   protected boolean hasAssocProperties() {

@@ -1,5 +1,6 @@
 package org.example.domain.query;
 
+import com.avaje.ebean.EbeanServer;
 import org.avaje.ebean.typequery.PDouble;
 import org.avaje.ebean.typequery.PInteger;
 import org.avaje.ebean.typequery.PLong;
@@ -23,20 +24,17 @@ public class QOrderDetail extends TQRootBean<OrderDetail,QOrderDetail> {
   public PDouble<QOrderDetail> unitPrice;
   public QAssocProduct<QOrderDetail> product;
 
+  /**
+   * Construct using the default EbeanServer.
+   */
   public QOrderDetail() {
-    this(3);
-  }
-  public QOrderDetail(int maxDepth) {
     super(OrderDetail.class);
-    setRoot(this);
-    this.id = new PLong<>("id", this);
-    this.version = new PLong<>("version", this);
-    this.whenCreated = new PTimestamp<>("whenCreated", this);
-    this.whenUpdated = new PTimestamp<>("whenUpdated", this);
-    this.orderQty = new PInteger<>("orderQty", this);
-    this.shipQty = new PInteger<>("shipQty", this);
-    this.unitPrice = new PDouble<>("unitPrice", this);
-    this.order = new QAssocOrder<>("order", this, maxDepth);
-    this.product = new QAssocProduct<>("product", this, maxDepth);
+  }
+
+  /**
+   * Construct with a given EbeanServer.
+   */
+  public QOrderDetail(EbeanServer server) {
+    super(OrderDetail.class, server);
   }
 }

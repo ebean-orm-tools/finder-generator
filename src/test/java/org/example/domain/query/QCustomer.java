@@ -1,5 +1,6 @@
 package org.example.domain.query;
 
+import com.avaje.ebean.EbeanServer;
 import org.avaje.ebean.typequery.PBoolean;
 import org.avaje.ebean.typequery.PEnum;
 import org.avaje.ebean.typequery.PLong;
@@ -29,23 +30,17 @@ public class QCustomer extends TQRootBean<Customer,QCustomer> {
   public QAssocAddress<QCustomer> shippingAddress;
   public QAssocContact<QCustomer> contacts;
 
+  /**
+   * Construct using the default EbeanServer.
+   */
   public QCustomer() {
-    this(3);
-  }
-  public QCustomer(int maxDepth) {
     super(Customer.class);
-    setRoot(this);
-    this.id = new PLong<>("id", this);
-    this.version = new PLong<>("version", this);
-    this.whenCreated = new PTimestamp<>("whenCreated", this);
-    this.whenUpdated = new PTimestamp<>("whenUpdated", this);
-    this.status = new PEnum<>("status", this);
-    this.inactive = new PBoolean<>("inactive", this);
-    this.name = new PString<>("name", this);
-    this.registered = new PUtilDate<>("registered", this);
-    this.comments = new PString<>("comments", this);
-    this.billingAddress = new QAssocAddress<>("billingAddress", this, maxDepth);
-    this.shippingAddress = new QAssocAddress<>("shippingAddress", this, maxDepth);
-    this.contacts = new QAssocContact<>("contacts", this, maxDepth);
+  }
+
+  /**
+   * Construct with a given EbeanServer.
+   */
+  public QCustomer(EbeanServer server) {
+    super(Customer.class, server);
   }
 }

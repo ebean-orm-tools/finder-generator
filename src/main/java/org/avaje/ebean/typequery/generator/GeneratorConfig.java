@@ -33,8 +33,10 @@ public class GeneratorConfig {
 
   String destAssocPackage;
 
+  boolean aopStyle = true;
+
   /**
-   * The maximum path depth allowed in the generated code.
+   * The maximum path depth allowed in the generated code (non AOP manual style).
    */
   int maxPathTraversalDepth = 4;
 
@@ -165,5 +167,19 @@ public class GeneratorConfig {
    */
   public void setMaxPathTraversalDepth(int maxPathTraversalDepth) {
     this.maxPathTraversalDepth = maxPathTraversalDepth;
+  }
+
+  /**
+   * Return true if code generation orientated to AOP style (so minimal constructor).
+   */
+  public boolean isAopStyle() {
+    return aopStyle;
+  }
+
+  /**
+   * Set to false if code generation should use verbose manual style (not minimal AOP style).
+   */
+  public void setAopStyle(boolean aopStyle) {
+    this.aopStyle = aopStyle;
   }
 }

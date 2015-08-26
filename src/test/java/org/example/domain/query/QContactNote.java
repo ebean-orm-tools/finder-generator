@@ -1,5 +1,6 @@
 package org.example.domain.query;
 
+import com.avaje.ebean.EbeanServer;
 import org.avaje.ebean.typequery.PLong;
 import org.avaje.ebean.typequery.PString;
 import org.avaje.ebean.typequery.PTimestamp;
@@ -19,18 +20,17 @@ public class QContactNote extends TQRootBean<ContactNote,QContactNote> {
   public PString<QContactNote> title;
   public PString<QContactNote> note;
 
+  /**
+   * Construct using the default EbeanServer.
+   */
   public QContactNote() {
-    this(3);
-  }
-  public QContactNote(int maxDepth) {
     super(ContactNote.class);
-    setRoot(this);
-    this.id = new PLong<>("id", this);
-    this.version = new PLong<>("version", this);
-    this.whenCreated = new PTimestamp<>("whenCreated", this);
-    this.whenUpdated = new PTimestamp<>("whenUpdated", this);
-    this.title = new PString<>("title", this);
-    this.note = new PString<>("note", this);
-    this.contact = new QAssocContact<>("contact", this, maxDepth);
+  }
+
+  /**
+   * Construct with a given EbeanServer.
+   */
+  public QContactNote(EbeanServer server) {
+    super(ContactNote.class, server);
   }
 }

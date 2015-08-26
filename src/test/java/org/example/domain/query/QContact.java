@@ -1,5 +1,6 @@
 package org.example.domain.query;
 
+import com.avaje.ebean.EbeanServer;
 import org.avaje.ebean.typequery.PLong;
 import org.avaje.ebean.typequery.PString;
 import org.avaje.ebean.typequery.PTimestamp;
@@ -23,21 +24,17 @@ public class QContact extends TQRootBean<Contact,QContact> {
   public QAssocCustomer<QContact> customer;
   public QAssocContactNote<QContact> notes;
 
+  /**
+   * Construct using the default EbeanServer.
+   */
   public QContact() {
-    this(3);
-  }
-  public QContact(int maxDepth) {
     super(Contact.class);
-    setRoot(this);
-    this.id = new PLong<>("id", this);
-    this.version = new PLong<>("version", this);
-    this.whenCreated = new PTimestamp<>("whenCreated", this);
-    this.whenUpdated = new PTimestamp<>("whenUpdated", this);
-    this.firstName = new PString<>("firstName", this);
-    this.lastName = new PString<>("lastName", this);
-    this.email = new PString<>("email", this);
-    this.phone = new PString<>("phone", this);
-    this.customer = new QAssocCustomer<>("customer", this, maxDepth);
-    this.notes = new QAssocContactNote<>("notes", this, maxDepth);
+  }
+
+  /**
+   * Construct with a given EbeanServer.
+   */
+  public QContact(EbeanServer server) {
+    super(Contact.class, server);
   }
 }

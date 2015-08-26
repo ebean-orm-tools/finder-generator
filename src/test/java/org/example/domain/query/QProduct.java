@@ -1,5 +1,6 @@
 package org.example.domain.query;
 
+import com.avaje.ebean.EbeanServer;
 import org.avaje.ebean.typequery.PJodaDateTime;
 import org.avaje.ebean.typequery.PLong;
 import org.avaje.ebean.typequery.PMonth;
@@ -21,19 +22,17 @@ public class QProduct extends TQRootBean<Product,QProduct> {
   public PJodaDateTime<QProduct> jdDateTime;
   public PMonth<QProduct> month;
 
+  /**
+   * Construct using the default EbeanServer.
+   */
   public QProduct() {
-    this(3);
-  }
-  public QProduct(int maxDepth) {
     super(Product.class);
-    setRoot(this);
-    this.id = new PLong<>("id", this);
-    this.version = new PLong<>("version", this);
-    this.whenCreated = new PTimestamp<>("whenCreated", this);
-    this.whenUpdated = new PTimestamp<>("whenUpdated", this);
-    this.sku = new PString<>("sku", this);
-    this.name = new PString<>("name", this);
-    this.jdDateTime = new PJodaDateTime<>("jdDateTime", this);
-    this.month = new PMonth<>("month", this);
+  }
+
+  /**
+   * Construct with a given EbeanServer.
+   */
+  public QProduct(EbeanServer server) {
+    super(Product.class, server);
   }
 }

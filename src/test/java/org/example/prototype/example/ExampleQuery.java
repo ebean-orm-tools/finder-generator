@@ -15,9 +15,9 @@ public class ExampleQuery {
   @Test
   public void test() {
 
-    QCustomer qc = new QCustomer(5);
+    QCustomer qc = new QCustomer();
 
-    Customer rob = new QCustomer(2)
+    Customer rob = new QCustomer()
         .select("id, name")
         .id.greaterThan(42)
         .status.equalTo(Customer.Status.GOOD)
