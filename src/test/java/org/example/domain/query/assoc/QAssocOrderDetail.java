@@ -4,10 +4,12 @@ import org.avaje.ebean.typequery.PDouble;
 import org.avaje.ebean.typequery.PInteger;
 import org.avaje.ebean.typequery.PLong;
 import org.avaje.ebean.typequery.PTimestamp;
+import org.avaje.ebean.typequery.TQAssocBean;
 import org.avaje.ebean.typequery.TypeQueryBean;
+import org.example.domain.OrderDetail;
 
 @TypeQueryBean
-public class QAssocOrderDetail<R> {
+public class QAssocOrderDetail<R> extends TQAssocBean<OrderDetail,R> {
 
   public PLong<R> id;
   public PLong<R> version;
@@ -19,4 +21,7 @@ public class QAssocOrderDetail<R> {
   public PDouble<R> unitPrice;
   public QAssocProduct<R> product;
 
+  public QAssocOrderDetail(String name, R root) {
+    super(name, root);
+  }
 }

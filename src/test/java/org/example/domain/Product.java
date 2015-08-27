@@ -17,7 +17,6 @@ public class Product extends BaseModel {
 
   public static final ProductFinder find = new ProductFinder();
 
-
   @Size(max = 20)
   String sku;
 
@@ -54,7 +53,6 @@ public class Product extends BaseModel {
   public void setName(String name) {
     this.name = name;
   }
-
 
 
 }

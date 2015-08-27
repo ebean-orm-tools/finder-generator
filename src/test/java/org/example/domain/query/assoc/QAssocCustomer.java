@@ -6,11 +6,13 @@ import org.avaje.ebean.typequery.PLong;
 import org.avaje.ebean.typequery.PString;
 import org.avaje.ebean.typequery.PTimestamp;
 import org.avaje.ebean.typequery.PUtilDate;
+import org.avaje.ebean.typequery.TQAssocBean;
 import org.avaje.ebean.typequery.TypeQueryBean;
+import org.example.domain.Customer;
 import org.example.domain.Customer.Status;
 
 @TypeQueryBean
-public class QAssocCustomer<R> {
+public class QAssocCustomer<R> extends TQAssocBean<Customer,R> {
 
   public PLong<R> id;
   public PLong<R> version;
@@ -25,4 +27,7 @@ public class QAssocCustomer<R> {
   public QAssocAddress<R> shippingAddress;
   public QAssocContact<R> contacts;
 
+  public QAssocCustomer(String name, R root) {
+    super(name, root);
+  }
 }

@@ -41,6 +41,11 @@ public class Generator {
    *
    *       Generator generator = new Generator(config);
    *       generator.generateQueryBeans();
+
+   *       // additionally generate finders
+   *       generator.generateFinders();
+   *       // additionally link the finders into existing entity beans
+   *       generator.modifyEntityBeansAddFinderField();
    *
    * }</pre>
    *
@@ -61,6 +66,12 @@ public class Generator {
    *
    *       Generator generator = new Generator(config);
    *       generator.generateQueryBeans();
+   *
+   *       // additionally generate finders
+   *       generator.generateFinders();
+   *
+   *       // additionally link the finders into existing entity beans
+   *       generator.modifyEntityBeansAddFinderField();
    *
    * }</pre>
    */

@@ -37,6 +37,7 @@ public class SimpleQueryBeanWriter {
   protected String destPackage;
 
   protected String shortName;
+  protected String origShortName;
 
   protected FileWriter writer;
 
@@ -112,6 +113,7 @@ public class SimpleQueryBeanWriter {
 
     writingAssocBean = true;
     destPackage = destPackage+".assoc";
+    origShortName = shortName;
     shortName = "Assoc"+shortName;
 
     prepareAssocBeanImports();
@@ -137,6 +139,8 @@ public class SimpleQueryBeanWriter {
     importTypes.remove(asDotNotation(classMeta.name));
     importTypes.remove("org.avaje.ebean.typequery.TQRootBean");
     importTypes.remove("com.avaje.ebean.EbeanServer");
+    importTypes.add("org.avaje.ebean.typequery.TQAssocBean");
+    importTypes.add(config.getEntityBeanPackage()+"."+origShortName);
     if (!config.isAopStyle()) {
       importTypes.add("org.avaje.ebean.typequery.TQPath");
     }
@@ -210,13 +214,21 @@ public class SimpleQueryBeanWriter {
    * Write constructor for 'assoc' type query bean.
    */
   protected void writeAssocBeanConstructor() throws IOException {
-    if (!config.isAopStyle()) {
-      // only generate the constructor for non-AOP manual/verbose style
+
+    if (config.isAopStyle()) {
+      // minimal constructor
+      writer.append("  public Q").append(shortName).append("(String name, R root) {").append(NEWLINE);
+      writer.append("    super(name, root);").append(NEWLINE);
+      writer.append("  }").append(NEWLINE);
+
+    } else {
+      // generate the constructor for non-AOP manual/verbose style
       writer.append("  public Q").append(shortName).append("(String name, R root, int depth) {").append(NEWLINE);
       writer.append("    this(name, root, null, depth);").append(NEWLINE);
       writer.append("  }").append(NEWLINE);
 
       writer.append("  public Q").append(shortName).append("(String name, R root, String prefix, int depth) {").append(NEWLINE);
+      writer.append("    super(name, root, prefix);").append(NEWLINE);
       writer.append("    String path = TQPath.add(prefix, name);").append(NEWLINE);
       for (PropertyMeta property : properties) {
         property.writeConstructorSimple(writer, shortName, true);
@@ -264,7 +276,8 @@ public class SimpleQueryBeanWriter {
     if (writingAssocBean) {
       //public class QAssocContact<R>
       writer.append("@TypeQueryBean").append(NEWLINE);
-      writer.append("public class ").append("Q").append(shortName).append("<R> {").append(NEWLINE);
+      writer.append("public class ").append("Q").append(shortName);
+      writer.append("<R> extends TQAssocBean<").append(origShortName).append(",R> {").append(NEWLINE);
 
     } else {
       //  public class QContact extends TQRootBean<Contact,QContact> {
