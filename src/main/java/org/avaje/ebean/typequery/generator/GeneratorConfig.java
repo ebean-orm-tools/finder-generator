@@ -143,15 +143,20 @@ public class GeneratorConfig {
 
   /**
    * Set the package name used to the generated query beans.
-   * For example, this is typically a subpackage of the entity beans.
+   * <p>
+   * If not set this defaults to 'query' subpackage of the entity bean packages.
+   * </p>
    *
+   * <p>
+   * For example, this is typically a subpackage of the entity beans.
+   * </p>
    * <pre>{@code
    *
    *       GeneratorConfig config = new GeneratorConfig();
    *       config.setClassesDirectory("./target/classes");
-   *       config.setEntityBeanPackage("org.example.domain");
-   *
    *       config.setDestDirectory("./src/main/java");
+   *
+   *       config.setEntityBeanPackage("org.example.domain");
    *       config.setDestPackage("org.example.domain.query");
    *       ...
    *

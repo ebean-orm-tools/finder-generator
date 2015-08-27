@@ -45,8 +45,6 @@ public class SimpleManifestWriter {
     String destDirectory = config.getDestResourceDirectory();
     File destDir = new File(destDirectory);
 
-    //String packageAsDir = asSlashNotation(destPackage);
-
     File packageDir = new File(destDir, META_INF);
     if (!packageDir.exists() && !packageDir.mkdirs()) {
       logger.error("Failed to create directory [{}] for ebean-typequery.mf", packageDir.getAbsoluteFile());

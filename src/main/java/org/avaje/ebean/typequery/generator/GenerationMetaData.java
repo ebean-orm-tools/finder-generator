@@ -16,22 +16,29 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Meta data gathered on the beans as part of the generation.
  */
 public class GenerationMetaData {
 
-  private final PropertyTypeMap propertyMap = new PropertyTypeMap();
+  protected static final String EMBEDDED_ANNOTATION = "Ljavax/persistence/Embedded;";
 
-  private final Map<String,EntityBeanPropertyReader> entityMap = new LinkedHashMap<>();
-  private final Map<String,EntityBeanPropertyReader> embeddedMap = new LinkedHashMap<>();
-  private final Map<String,EntityBeanPropertyReader> otherMap = new LinkedHashMap<>();
+  protected static final String ENTITY_ANNOTATION = "Ljavax/persistence/Entity;";
 
-  private final Map<String,EntityBeanPropertyReader> enumMap = new HashMap<>();
+  protected static final String ENUM = "java/lang/Enum";
 
-  private final GeneratorConfig config;
+  protected final PropertyTypeMap propertyMap = new PropertyTypeMap();
+
+  protected final Map<String,EntityBeanPropertyReader> entityMap = new LinkedHashMap<>();
+
+  protected final Map<String,EntityBeanPropertyReader> embeddedMap = new LinkedHashMap<>();
+
+  protected final Map<String,EntityBeanPropertyReader> otherMap = new LinkedHashMap<>();
+
+  protected final Map<String,EntityBeanPropertyReader> enumMap = new HashMap<>();
+
+  protected final GeneratorConfig config;
 
   public GenerationMetaData(GeneratorConfig config) {
-
     this.config = config;
   }
 
@@ -85,7 +92,7 @@ public class GenerationMetaData {
     return null;
   }
 
-  private String deriveCollectionParameterType(String signature) {
+  protected String deriveCollectionParameterType(String signature) {
     if (signature == null) {
       return null;
     }
@@ -100,7 +107,7 @@ public class GenerationMetaData {
     return className.replace('$', '.');
   }
 
-  private String deriveShortName(String className) {
+  protected String deriveShortName(String className) {
     int startPos = className.lastIndexOf('.');
     if (startPos == -1) {
       return className;
@@ -133,44 +140,42 @@ public class GenerationMetaData {
     }
   }
 
-  private String asDotNotation(String path) {
+  protected String asDotNotation(String path) {
     return path.replace('/', '.');
   }
 
 
-  private boolean hasClassAnnotations(EntityBeanPropertyReader classMeta) {
+  protected boolean hasClassAnnotations(EntityBeanPropertyReader classMeta) {
 
     List<AnnotationNode> visibleAnnotations = classMeta.visibleAnnotations;
     return (visibleAnnotations != null);
   }
 
-  private boolean isEntity(EntityBeanPropertyReader classMeta) {
+  protected boolean isEntity(EntityBeanPropertyReader classMeta) {
 
     for (AnnotationNode annotation : classMeta.visibleAnnotations) {
-      if (annotation.desc.equals("Ljavax/persistence/Entity;")) {
+      if (annotation.desc.equals(ENTITY_ANNOTATION)) {
         return true;
       }
     }
     return false;
   }
 
-  private boolean isEmbedded(EntityBeanPropertyReader classMeta) {
+  protected boolean isEmbedded(EntityBeanPropertyReader classMeta) {
 
     for (AnnotationNode annotation : classMeta.visibleAnnotations) {
-      if (annotation.desc.equals("Ljavax/persistence/Embedded;")) {
+      if (annotation.desc.equals(EMBEDDED_ANNOTATION)) {
         return true;
       }
     }
     return false;
   }
 
-  private boolean isEnum(EntityBeanPropertyReader classMeta) {
-
-    return "java/lang/Enum".equals(classMeta.superName);
+  protected boolean isEnum(EntityBeanPropertyReader classMeta) {
+    return ENUM.equals(classMeta.superName);
   }
 
-  public Collection<EntityBeanPropertyReader> getAllEntities() {
-
+  protected Collection<EntityBeanPropertyReader> getAllEntities() {
     return entityMap.values();
   }
 

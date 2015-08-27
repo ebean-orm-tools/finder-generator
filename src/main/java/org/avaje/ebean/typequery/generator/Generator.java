@@ -32,29 +32,44 @@ public class Generator {
 
   /**
    * Process the code generation.
+   * <h3>Example usage:</h3>
+   * <pre>{@code
+   *
+   *       GeneratorConfig config = new GeneratorConfig();
+   *       config.setEntityBeanPackage("org.example.domain");
+   *
+   *       Generator generator = new Generator(config);
+   *       generator.generateQueryBeans();
+   *
+   * }</pre>
    *
    * <h3>Example usage:</h3>
    * <pre>{@code
    *
    *       GeneratorConfig config = new GeneratorConfig();
+   *
+   *       // specify directories when different from maven defaults
    *       config.setClassesDirectory("./target/test-classes");
-   *       config.setEntityBeanPackage("org.example.domain");
    *       config.setDestDirectory("./src/test/java");
-   *       config.setDestPackage("org.example.domain.query");
+   *       config.setDestResourceDirectory("./src/test/resources");
+   *
+   *       config.setEntityBeanPackage("org.example.domain");
+   *
+   *       // specify a different destination package
+   *       config.setDestPackage("org.example.domain.querybeans");
    *
    *       Generator generator = new Generator(config);
-   *
    *       generator.generateQueryBeans();
    *
    * }</pre>
    */
   public void generateQueryBeans() throws IOException {
 
-    generateQueryBeansOnly();
+    generateBeans();
     generateManifest();
   }
 
-  protected void generateQueryBeansOnly() throws IOException {
+  protected void generateBeans() throws IOException {
 
     MetaReader reader = new MetaReader(config.getClassesDirectory());
     reader.process(config.getEntityBeanPackage());
@@ -74,14 +89,12 @@ public class Generator {
     writer.write();
   }
 
-
-
   protected void generateTypeQueryBeans(EntityBeanPropertyReader classMeta) throws IOException {
 
     // if is entity bean ...
 
     SimpleQueryBeanWriter writer = new SimpleQueryBeanWriter(config, classMeta, generationMetaData);
-    writer.write();
+    writer.writeRootBean();
     writer.writeAssocBean();
   }
 

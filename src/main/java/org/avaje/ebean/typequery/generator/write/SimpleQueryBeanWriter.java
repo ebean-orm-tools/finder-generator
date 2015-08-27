@@ -111,6 +111,9 @@ public class SimpleQueryBeanWriter {
     return persistentField(field);
   }
 
+  /**
+   * Return true if it is a persistent field.
+   */
   protected boolean persistentField(FieldNode field) {
 
     // note transient modifier fields are already filtered out
@@ -127,7 +130,10 @@ public class SimpleQueryBeanWriter {
     return true;
   }
 
-  public void write() throws IOException {
+  /**
+   * Write the type query bean (root bean).
+   */
+  public void writeRootBean() throws IOException {
 
     gatherPropertyDetails();
 
@@ -144,6 +150,9 @@ public class SimpleQueryBeanWriter {
     writer.close();
   }
 
+  /**
+   * Write the type query assoc bean.
+   */
   public void writeAssocBean() throws IOException {
 
     writingAssocBean = true;
@@ -165,6 +174,9 @@ public class SimpleQueryBeanWriter {
     writer.close();
   }
 
+  /**
+   * Prepare the imports for writing assoc bean.
+   */
   protected void prepareAssocBeanImports() {
 
     importTypes.remove(asDotNotation(classMeta.name));
@@ -186,7 +198,9 @@ public class SimpleQueryBeanWriter {
 
   }
 
-
+  /**
+   * Write constructors.
+   */
   protected void writeConstructors() throws IOException {
 
     if (writingAssocBean) {
@@ -196,6 +210,9 @@ public class SimpleQueryBeanWriter {
     }
   }
 
+  /**
+   * Write the constructors for 'root' type query bean.
+   */
   protected void writeRootBeanConstructor() throws IOException {
 
     if (config.isAopStyle()) {
@@ -234,6 +251,9 @@ public class SimpleQueryBeanWriter {
     }
   }
 
+  /**
+   * Write constructor for 'assoc' type query bean.
+   */
   protected void writeAssocBeanConstructor() throws IOException {
     if (!config.isAopStyle()) {
       // only generate the constructor for non-AOP manual/verbose style
@@ -257,6 +277,9 @@ public class SimpleQueryBeanWriter {
     }
   }
 
+  /**
+   * Return true if this has at least one 'assoc' property.
+   */
   protected boolean hasAssocProperties() {
     for (PropertyMeta property : properties) {
       if (property.isAssociation()) {
@@ -266,6 +289,9 @@ public class SimpleQueryBeanWriter {
     return false;
   }
 
+  /**
+   * Write all the fields.
+   */
   protected void writeFields() throws IOException {
 
     for (PropertyMeta property : properties) {
@@ -275,6 +301,9 @@ public class SimpleQueryBeanWriter {
     writer.append(NEWLINE);
   }
 
+  /**
+   * Write the class definition.
+   */
   protected void writeClass() throws IOException {
 
     if (writingAssocBean) {
@@ -296,6 +325,9 @@ public class SimpleQueryBeanWriter {
     writer.append("}").append(NEWLINE);
   }
 
+  /**
+   * Write all the imports.
+   */
   protected void writeImports() throws IOException {
 
     for (String importType : importTypes) {
