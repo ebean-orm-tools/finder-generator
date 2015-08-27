@@ -1,5 +1,7 @@
 package org.example.domain;
 
+//import org.example.domain.finder.CountryFinder;
+
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -11,6 +13,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "o_country")
 public class Country {
+
+//  public static CountryFinder find = new CountryFinder();
 
   @Id
   String code;

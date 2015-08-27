@@ -39,11 +39,17 @@ public class SimpleFinderWriter {
 
   protected Set<String> importTypes = new TreeSet<>();
 
+  protected boolean addWhereMethod;
+
+  protected boolean addPublicMethods;
+
   public SimpleFinderWriter(GeneratorConfig config, EntityBeanPropertyReader classMeta, GenerationMetaData generationMetaData) {
     this.config = config;
     this.classMeta = classMeta;
     this.generationMetaData = generationMetaData;
     this.finderPackage = config.getDestFinderPackage();
+    this.addWhereMethod = config.isAddFinderWhereMethod();
+    this.addPublicMethods = config.isAddFinderWherePublic();
     this.shortName = deriveShortName(classMeta.name);
   }
 
@@ -54,7 +60,7 @@ public class SimpleFinderWriter {
   public void write() throws IOException {
 
     File file = createFile();
-    if (file.exists()) {
+    if (file.exists() && !config.isOverwriteExistingFinders()) {
       logger.debug("skip existing finder - {}", file.getAbsoluteFile());
       return;
     }
@@ -63,7 +69,7 @@ public class SimpleFinderWriter {
     if (idProperty == null) {
       return;
     }
-    String typeDesc = idProperty.desc.substring(1, idProperty.desc.length()-1);
+    String typeDesc = idProperty.desc.substring(1, idProperty.desc.length() - 1);
     Type objectType = Type.getObjectType(typeDesc);
     String className = objectType.getClassName();
     if (!className.startsWith("java.lang.")) {
@@ -74,11 +80,17 @@ public class SimpleFinderWriter {
     importTypes.add(asDotNotation(classMeta.name));
     importTypes.add("com.avaje.ebean.Finder");
 
+    if (addWhereMethod) {
+      String queryBean = config.getDestPackage()+".Q"+shortName;
+      importTypes.add(queryBean);
+    }
+
     writer = createFileWriter(file);
     writePackage();
     writeImports();
     writeClass();
     writeConstructors();
+    writeMethods();
     writeClassEnd();
     writer.flush();
     writer.close();
@@ -110,7 +122,33 @@ public class SimpleFinderWriter {
     writer.append("  public ").append(shortName).append("Finder(String serverName) {").append(NEWLINE);
     writer.append("    super(serverName, ").append(shortName).append(".class);").append(NEWLINE);
     writer.append("  }").append(NEWLINE);
- }
+  }
+
+  /**
+   * Potentially add a where() method for typed query building.
+   */
+  protected void writeMethods() throws IOException {
+
+    if (addWhereMethod) {
+      /**
+       * Start a new typed query.
+       */
+      writer.append(NEWLINE);
+      writer.append("  /**").append(NEWLINE);
+      writer.append("   * Start a new typed query.").append(NEWLINE);
+      writer.append("   */").append(NEWLINE);
+      writer.append("  ").append(getModifier()).append(" Q").append(shortName).append(" where() {").append(NEWLINE);
+      writer.append("     return new Q").append(shortName).append("();").append(NEWLINE);
+      writer.append("  }").append(NEWLINE);
+    }
+  }
+
+  /**
+   * Return the protected or public modifier for extra methods.
+   */
+  protected String getModifier() {
+    return addPublicMethods ? "public" : "protected";
+  }
 
   /**
    * Write the class definition.
@@ -156,7 +194,7 @@ public class SimpleFinderWriter {
       logger.error("Failed to create directory [{}] for generated code", packageDir.getAbsoluteFile());
     }
 
-    String fileName = shortName+"Finder.java";
+    String fileName = shortName + "Finder.java";
     return new File(packageDir, fileName);
   }
 

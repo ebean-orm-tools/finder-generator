@@ -2,6 +2,7 @@ package org.example.domain.finder;
 
 import com.avaje.ebean.Finder;
 import org.example.domain.Country;
+import org.example.domain.query.QCountry;
 
 public class CountryFinder extends Finder<String,Country> {
 
@@ -17,5 +18,12 @@ public class CountryFinder extends Finder<String,Country> {
    */
   public CountryFinder(String serverName) {
     super(serverName, Country.class);
+  }
+
+  /**
+   * Start a new typed query.
+   */
+  protected QCountry where() {
+     return new QCountry();
   }
 }

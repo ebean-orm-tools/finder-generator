@@ -2,6 +2,7 @@ package org.example.domain.finder;
 
 import com.avaje.ebean.Finder;
 import org.example.domain.Address;
+import org.example.domain.query.QAddress;
 
 public class AddressFinder extends Finder<Long,Address> {
 
@@ -17,5 +18,12 @@ public class AddressFinder extends Finder<Long,Address> {
    */
   public AddressFinder(String serverName) {
     super(serverName, Address.class);
+  }
+
+  /**
+   * Start a new typed query.
+   */
+  protected QAddress where() {
+     return new QAddress();
   }
 }

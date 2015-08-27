@@ -2,6 +2,7 @@ package org.example.domain.finder;
 
 import com.avaje.ebean.Finder;
 import org.example.domain.Order;
+import org.example.domain.query.QOrder;
 
 public class OrderFinder extends Finder<Long,Order> {
 
@@ -17,5 +18,12 @@ public class OrderFinder extends Finder<Long,Order> {
    */
   public OrderFinder(String serverName) {
     super(serverName, Order.class);
+  }
+
+  /**
+   * Start a new typed query.
+   */
+  protected QOrder where() {
+     return new QOrder();
   }
 }

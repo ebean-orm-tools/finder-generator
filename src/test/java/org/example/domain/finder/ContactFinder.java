@@ -2,6 +2,7 @@ package org.example.domain.finder;
 
 import com.avaje.ebean.Finder;
 import org.example.domain.Contact;
+import org.example.domain.query.QContact;
 
 public class ContactFinder extends Finder<Long,Contact> {
 
@@ -17,5 +18,12 @@ public class ContactFinder extends Finder<Long,Contact> {
    */
   public ContactFinder(String serverName) {
     super(serverName, Contact.class);
+  }
+
+  /**
+   * Start a new typed query.
+   */
+  protected QContact where() {
+     return new QContact();
   }
 }

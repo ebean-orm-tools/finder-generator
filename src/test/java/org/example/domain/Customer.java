@@ -1,6 +1,7 @@
 package org.example.domain;
 
 import com.avaje.ebean.Model;
+import org.example.domain.finder.CustomerFinder;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,10 +20,7 @@ import java.util.List;
 @Table(name="be_customer")
 public class Customer extends BaseModel {
 
-  /**
-   * Convenience Finder for 'active record' style.
-   */
-  public static final Model.Finder<Long,Customer> find = new Model.Finder<>(Customer.class);
+  public static final CustomerFinder find = new CustomerFinder();
 
   public enum Status {
     GOOD, BAD, MIDDLING

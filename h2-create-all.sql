@@ -26,20 +26,18 @@ create table be_contact (
 create sequence be_contact_seq;
 
 create table contact_note (
-  id                            bigint not null,
+  id                            varchar(40) not null,
   contact_id                    bigint not null,
   title                         varchar(255),
   note                          clob,
-  version                       bigint not null,
-  when_created                  timestamp not null,
-  when_updated                  timestamp not null,
   constraint pk_contact_note primary key (id)
 );
-create sequence contact_note_seq;
 
 create table o_country (
   code                          varchar(255) not null,
   name                          varchar(255),
+  description                   varchar(255),
+  value                         varchar(255),
   constraint pk_o_country primary key (code)
 );
 
@@ -93,9 +91,12 @@ create table o_product (
   id                            bigint not null,
   sku                           varchar(20),
   name                          varchar(255),
+  jd_date_time                  timestamp,
+  month                         integer(1),
   version                       bigint not null,
   when_created                  timestamp not null,
   when_updated                  timestamp not null,
+  constraint ck_o_product_month check (month in ('1','2','3','4','5','6','7','8','9','10','11','12')),
   constraint pk_o_product primary key (id)
 );
 create sequence o_product_seq;

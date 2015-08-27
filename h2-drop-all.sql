@@ -32,7 +32,6 @@ drop table if exists be_contact;
 drop sequence if exists be_contact_seq;
 
 drop table if exists contact_note;
-drop sequence if exists contact_note_seq;
 
 drop table if exists o_country;
 

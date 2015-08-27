@@ -1,12 +1,9 @@
 package org.example.prototype.example;
 
+import org.example.domain.Country;
 import org.example.domain.Customer;
-import org.example.domain.Order;
 import org.example.domain.query.QCustomer;
-import org.example.domain.query.QOrder;
 import org.junit.Test;
-
-import java.util.List;
 
 /**
  */
@@ -15,7 +12,19 @@ public class ExampleQuery {
   @Test
   public void test() {
 
-    QCustomer qc = new QCustomer();
+//    QCustomer qc = new QCustomer();
+
+//    Country nz = Country.find.ref("NZ");
+
+
+//    Customer.find
+//        .where()
+//        .billingAddress.country.code.equalTo(nz.getCode())
+//        .id.greaterThan(12)
+//        .name.ilike("rob")
+//        .order()
+//        .id.asc()
+//        .findList();
 
 //    Customer rob = new QCustomer()
 //        .select("id, name")

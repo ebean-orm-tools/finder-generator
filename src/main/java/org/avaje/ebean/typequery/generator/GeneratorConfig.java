@@ -38,6 +38,12 @@ public class GeneratorConfig {
 
   String destFinderPackage;
 
+  boolean addFinderWhereMethod = true;
+
+  boolean addFinderWherePublic;
+
+  boolean overwriteExistingFinders;
+
   boolean aopStyle = true;
 
   /**
@@ -195,6 +201,57 @@ public class GeneratorConfig {
    */
   public void setDestFinderPackage(String destFinderPackage) {
     this.destFinderPackage = destFinderPackage;
+  }
+
+  /**
+   * Return true if the where() method should be included on the generated finder.
+   */
+  public boolean isAddFinderWhereMethod() {
+    return addFinderWhereMethod;
+  }
+
+  /**
+   * Set true if the where() method should be included on the generated finder.
+   * <p>
+   * This defaults to true.
+   * </p>
+   */
+  public void setAddFinderWhereMethod(boolean addFinderWhereMethod) {
+    this.addFinderWhereMethod = addFinderWhereMethod;
+  }
+
+  /**
+   * Return true if extra generated methods on finder should be public.
+   */
+  public boolean isAddFinderWherePublic() {
+    return addFinderWherePublic;
+  }
+
+  /**
+   * Set to true if extra generated methods on finder should be public.
+   * <p>
+   * By default the methods are added as protected.
+   * </p>
+   */
+  public void setAddFinderWherePublic(boolean addFinderWherePublic) {
+    this.addFinderWherePublic = addFinderWherePublic;
+  }
+
+  /**
+   * Return true if existing finders should be overwritten.
+   */
+  public boolean isOverwriteExistingFinders() {
+    return overwriteExistingFinders;
+  }
+
+  /**
+   * Set to true if existing finders should be overwritten.
+   * <p>
+   * This defaults to false.
+   * </p>
+   */
+  public void setOverwriteExistingFinders(boolean overwriteExistingFinders) {
+    this.overwriteExistingFinders = overwriteExistingFinders;
   }
 
   /**
