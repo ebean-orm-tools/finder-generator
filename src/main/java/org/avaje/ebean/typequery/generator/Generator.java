@@ -2,13 +2,13 @@ package org.avaje.ebean.typequery.generator;
 
 import org.avaje.ebean.typequery.generator.read.EntityBeanPropertyReader;
 import org.avaje.ebean.typequery.generator.read.MetaReader;
+import org.avaje.ebean.typequery.generator.write.SimpleFinderWriter;
 import org.avaje.ebean.typequery.generator.write.SimpleManifestWriter;
 import org.avaje.ebean.typequery.generator.write.SimpleQueryBeanWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.Collection;
 
 /**
  * Reads meta data on entity beans by reading the .class files and generates
@@ -69,6 +69,24 @@ public class Generator {
     generateManifest();
   }
 
+  /**
+   * Generate 'finders'
+   */
+  public void generateFinders() throws IOException {
+
+    for (EntityBeanPropertyReader classMeta : generationMetaData.getAllEntities()) {
+      if (classMeta.isEntity()) {
+        logger.info("generate finder for {}", classMeta.name);
+        generateFinder(classMeta);
+      }
+    }
+  }
+
+  private void generateFinder(EntityBeanPropertyReader classMeta) throws IOException {
+    SimpleFinderWriter writer = new SimpleFinderWriter(config, classMeta, generationMetaData);
+    writer.write();
+  }
+
   protected void generateBeans() throws IOException {
 
     MetaReader reader = new MetaReader(config.getClassesDirectory());
@@ -76,8 +94,7 @@ public class Generator {
 
     generationMetaData.addAll(reader.getClassMetaData());
 
-    Collection<EntityBeanPropertyReader> allEntities = generationMetaData.getAllEntities();
-    for (EntityBeanPropertyReader classMeta : allEntities) {
+    for (EntityBeanPropertyReader classMeta : generationMetaData.getAllEntities()) {
       logger.info("generate for {}", classMeta.name);
       generateTypeQueryBeans(classMeta);
     }

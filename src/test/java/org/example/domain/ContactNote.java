@@ -1,15 +1,16 @@
 package org.example.domain;
 
-import com.avaje.ebean.Model;
-
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import java.util.UUID;
 
 @Entity
-public class ContactNote extends BaseModel {
+public class ContactNote {
 
-  public static final Model.Finder<Long, ContactNote> find = new Model.Finder<>(ContactNote.class);
+  @Id
+  UUID id;
 
   @ManyToOne(optional = false)
   Contact contact;
@@ -18,6 +19,14 @@ public class ContactNote extends BaseModel {
 
   @Lob
   String note;
+
+  public UUID getId() {
+    return id;
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
+  }
 
   public String getTitle() {
     return title;

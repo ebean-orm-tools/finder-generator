@@ -3,7 +3,6 @@ package org.avaje.ebean.typequery.generator.write;
 
 import org.avaje.ebean.typequery.generator.GenerationMetaData;
 import org.avaje.ebean.typequery.generator.GeneratorConfig;
-import org.avaje.ebean.typequery.generator.asm.tree.AnnotationNode;
 import org.avaje.ebean.typequery.generator.asm.tree.FieldNode;
 import org.avaje.ebean.typequery.generator.read.EntityBeanPropertyReader;
 import org.slf4j.Logger;
@@ -24,8 +23,6 @@ import java.util.TreeSet;
 public class SimpleQueryBeanWriter {
 
   protected static final Logger logger = LoggerFactory.getLogger(SimpleQueryBeanWriter.class);
-
-  public static final String TRANSIENT_ANNOTATION = "Ljavax/persistence/Transient;";
 
   public static final String NEWLINE = "\n";
 
@@ -74,60 +71,16 @@ public class SimpleQueryBeanWriter {
    */
   protected void addClassProperties(EntityBeanPropertyReader classMetaData) {
 
-    String superClassName = asDotNotation(classMetaData.superName);
-    if (!"java.lang.Object".equals(superClassName)) {
-      // look for mappedSuperclass or inheritance etc
-      EntityBeanPropertyReader superClass = generationMetaData.getSuperClass(superClassName);
-      if (superClass != null) {
-        logger.debug("... super type {}", superClassName);
-        addClassProperties(superClass);
+    List<FieldNode> allProperties = classMetaData.getAllProperties(generationMetaData);
+    for (FieldNode field : allProperties) {
+      PropertyType type = generationMetaData.getPropertyType(field, classMeta);
+      if (type == null) {
+        logger.warn("No support for field [" + field.name + "] desc[" + field.desc + "] signature [" + field.signature + "]");
+      } else {
+        type.addImports(importTypes);
+        properties.add(new PropertyMeta(field.name, type));
       }
     }
-    addProperties(classMetaData.fields);
-  }
-
-  /**
-   * Add the list of fields as properties on the query bean.
-   */
-  protected void addProperties(List<FieldNode> fields) {
-    for (FieldNode field : fields) {
-      if (includeField(field)) {
-        PropertyType type = generationMetaData.getPropertyType(field, classMeta);
-        if (type == null) {
-          logger.warn("No support for field [" + field.name + "] desc[" + field.desc + "] signature [" + field.signature + "]");
-        } else {
-          type.addImports(importTypes);
-          properties.add(new PropertyMeta(field.name, type));
-        }
-      }
-    }
-  }
-
-  /**
-   * Return true if the field should be included.
-   */
-  protected boolean includeField(FieldNode field) {
-    // at the moment not filtering out transient fields?
-    return persistentField(field);
-  }
-
-  /**
-   * Return true if it is a persistent field.
-   */
-  protected boolean persistentField(FieldNode field) {
-
-    // note transient modifier fields are already filtered out
-    // along with static fields and ebean added fields
-
-    if (field.visibleAnnotations != null) {
-      // look for @Transient annotation
-      for (AnnotationNode annotation : field.visibleAnnotations) {
-        if (annotation.desc.equals(TRANSIENT_ANNOTATION)) {
-          return false;
-        }
-      }
-    }
-    return true;
   }
 
   /**
