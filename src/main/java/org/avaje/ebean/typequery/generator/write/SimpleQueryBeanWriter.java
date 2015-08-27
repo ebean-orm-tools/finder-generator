@@ -137,17 +137,19 @@ public class SimpleQueryBeanWriter {
 
     gatherPropertyDetails();
 
-    writer = createFileWriter();
+    if (classMeta.isEntity()) {
+      writer = createFileWriter();
 
-    writePackage();
-    writeImports();
-    writeClass();
-    writeFields();
-    writeConstructors();
-    writeClassEnd();
+      writePackage();
+      writeImports();
+      writeClass();
+      writeFields();
+      writeConstructors();
+      writeClassEnd();
 
-    writer.flush();
-    writer.close();
+      writer.flush();
+      writer.close();
+    }
   }
 
   /**
@@ -233,7 +235,7 @@ public class SimpleQueryBeanWriter {
     } else {
       // verbose manual style requiring manual depth control (non-AOP)
       writer.append("  public Q").append(shortName).append("() {").append(NEWLINE);
-      writer.append("    this(").append("" + config.getMaxPathTraversalDepth()).append(");").append(NEWLINE);
+      writer.append("    this(").append(String.valueOf(config.getMaxPathTraversalDepth())).append(");").append(NEWLINE);
       writer.append("  }").append(NEWLINE);
 
       writer.append("  public Q").append(shortName).append("(int maxDepth) {").append(NEWLINE);

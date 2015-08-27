@@ -77,7 +77,6 @@ public class Generator {
     generationMetaData.addAll(reader.getClassMetaData());
 
     Collection<EntityBeanPropertyReader> allEntities = generationMetaData.getAllEntities();
-
     for (EntityBeanPropertyReader classMeta : allEntities) {
       logger.info("generate for {}", classMeta.name);
       generateTypeQueryBeans(classMeta);

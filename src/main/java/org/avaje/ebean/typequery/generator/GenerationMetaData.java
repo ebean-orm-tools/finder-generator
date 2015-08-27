@@ -1,7 +1,6 @@
 package org.avaje.ebean.typequery.generator;
 
 import org.avaje.ebean.typequery.generator.asm.Type;
-import org.avaje.ebean.typequery.generator.asm.tree.AnnotationNode;
 import org.avaje.ebean.typequery.generator.asm.tree.FieldNode;
 import org.avaje.ebean.typequery.generator.read.EntityBeanPropertyReader;
 import org.avaje.ebean.typequery.generator.write.PropertyType;
@@ -12,7 +11,6 @@ import org.avaje.ebean.typequery.generator.write.PropertyTypeMap;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,17 +18,9 @@ import java.util.Map;
  */
 public class GenerationMetaData {
 
-  protected static final String EMBEDDED_ANNOTATION = "Ljavax/persistence/Embedded;";
-
-  protected static final String ENTITY_ANNOTATION = "Ljavax/persistence/Entity;";
-
-  protected static final String ENUM = "java/lang/Enum";
-
   protected final PropertyTypeMap propertyMap = new PropertyTypeMap();
 
   protected final Map<String,EntityBeanPropertyReader> entityMap = new LinkedHashMap<>();
-
-  protected final Map<String,EntityBeanPropertyReader> embeddedMap = new LinkedHashMap<>();
 
   protected final Map<String,EntityBeanPropertyReader> otherMap = new LinkedHashMap<>();
 
@@ -123,16 +113,12 @@ public class GenerationMetaData {
   protected void separateTypes(Collection<EntityBeanPropertyReader> classMetaData) {
 
     for (EntityBeanPropertyReader classMeta : classMetaData) {
-      if (isEnum(classMeta)) {
+      if (classMeta.isEnum()) {
         enumMap.put(asDotNotation(classMeta.name), classMeta);
       } else {
         String className = asDotNotation(classMeta.name);
-        if (!hasClassAnnotations(classMeta)) {
-          otherMap.put(className, classMeta);
-        } else if (isEntity(classMeta)) {
+        if (classMeta.isEntity() || classMeta.isEmbeddable()) {
           entityMap.put(className, classMeta);
-        } else if (isEmbedded(classMeta)) {
-          embeddedMap.put(className, classMeta);
         } else {
           otherMap.put(className, classMeta);
         }
@@ -142,37 +128,6 @@ public class GenerationMetaData {
 
   protected String asDotNotation(String path) {
     return path.replace('/', '.');
-  }
-
-
-  protected boolean hasClassAnnotations(EntityBeanPropertyReader classMeta) {
-
-    List<AnnotationNode> visibleAnnotations = classMeta.visibleAnnotations;
-    return (visibleAnnotations != null);
-  }
-
-  protected boolean isEntity(EntityBeanPropertyReader classMeta) {
-
-    for (AnnotationNode annotation : classMeta.visibleAnnotations) {
-      if (annotation.desc.equals(ENTITY_ANNOTATION)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  protected boolean isEmbedded(EntityBeanPropertyReader classMeta) {
-
-    for (AnnotationNode annotation : classMeta.visibleAnnotations) {
-      if (annotation.desc.equals(EMBEDDED_ANNOTATION)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  protected boolean isEnum(EntityBeanPropertyReader classMeta) {
-    return ENUM.equals(classMeta.superName);
   }
 
   protected Collection<EntityBeanPropertyReader> getAllEntities() {

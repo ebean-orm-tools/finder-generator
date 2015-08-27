@@ -4,10 +4,10 @@ import org.avaje.ebean.typequery.PString;
 import org.avaje.ebean.typequery.TypeQueryBean;
 
 @TypeQueryBean
-public class QAssocCountry<R> {
+public class QAssocAttributes<R> {
 
-  public PString<R> code;
   public PString<R> name;
-  public QAssocAttributes<R> attributes;
+  public PString<R> description;
+  public PString<R> value;
 
 }
