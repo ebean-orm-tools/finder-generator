@@ -24,6 +24,7 @@ public class GeneratorTest {
     Generator generator = new Generator(config);
     generator.generateQueryBeans();
     generator.generateFinders();
+    generator.modifyEntityBeansAddFinderField();
 
   }
 }

@@ -1,5 +1,6 @@
 package org.example.domain;
 
+import org.example.domain.finder.ProductFinder;
 import org.joda.time.DateTime;
 
 import javax.persistence.Entity;
@@ -13,6 +14,9 @@ import java.time.Month;
 @Entity
 @Table(name = "o_product")
 public class Product extends BaseModel {
+
+  public static final ProductFinder find = new ProductFinder();
+
 
   @Size(max = 20)
   String sku;

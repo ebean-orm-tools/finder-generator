@@ -2,6 +2,7 @@ package org.avaje.ebean.typequery.generator;
 
 import org.avaje.ebean.typequery.generator.read.EntityBeanPropertyReader;
 import org.avaje.ebean.typequery.generator.read.MetaReader;
+import org.avaje.ebean.typequery.generator.write.SimpleFinderLinkWriter;
 import org.avaje.ebean.typequery.generator.write.SimpleFinderWriter;
 import org.avaje.ebean.typequery.generator.write.SimpleManifestWriter;
 import org.avaje.ebean.typequery.generator.write.SimpleQueryBeanWriter;
@@ -82,8 +83,25 @@ public class Generator {
     }
   }
 
-  private void generateFinder(EntityBeanPropertyReader classMeta) throws IOException {
+  /**
+   * For each of the entity beans add a finder field into them if they don't already have one.
+   */
+  public void modifyEntityBeansAddFinderField() throws IOException {
+    for (EntityBeanPropertyReader classMeta : generationMetaData.getAllEntities()) {
+      if (classMeta.isEntity()) {
+        logger.info("link finder for {}", classMeta.name);
+        linkFinder(classMeta);
+      }
+    }
+  }
+
+  protected void generateFinder(EntityBeanPropertyReader classMeta) throws IOException {
     SimpleFinderWriter writer = new SimpleFinderWriter(config, classMeta, generationMetaData);
+    writer.write();
+  }
+
+  protected void linkFinder(EntityBeanPropertyReader classMeta) throws IOException {
+    SimpleFinderLinkWriter writer = new SimpleFinderLinkWriter(config, classMeta);
     writer.write();
   }
 

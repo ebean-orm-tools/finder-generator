@@ -1,6 +1,6 @@
 package org.example.domain;
 
-import com.avaje.ebean.Model;
+import org.example.domain.finder.ContactFinder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,27 +13,24 @@ import java.util.List;
  * Contact entity bean.
  */
 @Entity
-@Table(name="be_contact")
+@Table(name = "be_contact")
 public class Contact extends BaseModel {
 
-  /**
-   * Convenience Finder for 'active record' style.
-   */
-  public static final Model.Finder<Long,Contact> find = new Model.Finder<>(Contact.class);
-  
-  @Column(length=50)
+  public static final ContactFinder find = new ContactFinder();
+
+  @Column(length = 50)
   String firstName;
-  
-  @Column(length=50)
+
+  @Column(length = 50)
   String lastName;
-  
-  @Column(length=200)
+
+  @Column(length = 200)
   String email;
 
-  @Column(length=20)
+  @Column(length = 20)
   String phone;
-  
-  @ManyToOne(optional=false)
+
+  @ManyToOne(optional = false)
   Customer customer;
 
   @OneToMany(mappedBy = "contact")
@@ -44,7 +41,7 @@ public class Contact extends BaseModel {
    */
   public Contact() {
   }
-  
+
   /**
    * Construct with a firstName and lastName.
    */
@@ -52,7 +49,7 @@ public class Contact extends BaseModel {
     this.firstName = firstName;
     this.lastName = lastName;
   }
-  
+
   public String getFirstName() {
     return firstName;
   }

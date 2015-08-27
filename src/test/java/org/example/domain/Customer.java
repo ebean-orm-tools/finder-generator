@@ -1,6 +1,5 @@
 package org.example.domain;
 
-import com.avaje.ebean.Model;
 import org.example.domain.finder.CustomerFinder;
 
 import javax.persistence.CascadeType;
