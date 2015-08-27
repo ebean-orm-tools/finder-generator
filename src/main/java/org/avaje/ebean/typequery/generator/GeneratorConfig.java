@@ -22,12 +22,15 @@ public class GeneratorConfig {
 
   /**
    * The directory where the compiled classes are found.
+   * Default to maven target/classes.
    */
-  String classesDirectory;
+  String classesDirectory = "target/classes";
 
   String entityBeanPackage;
 
-  String destDirectory;
+  String destDirectory = "src/main/java";
+
+  String destResourceDirectory = "src/main/resources";
 
   String destPackage;
 
@@ -87,6 +90,9 @@ public class GeneratorConfig {
    */
   public void setEntityBeanPackage(String entityBeanPackage) {
     this.entityBeanPackage = entityBeanPackage;
+    if (destPackage == null) {
+      setDestPackage(entityBeanPackage+".query");
+    }
   }
 
   /**
@@ -112,6 +118,20 @@ public class GeneratorConfig {
    */
   public void setDestDirectory(String destDirectory) {
     this.destDirectory = destDirectory;
+  }
+
+  /**
+   * Return the destination directory for where the META-INF/ebean-typequery.mf manifest is written to.
+   */
+  public String getDestResourceDirectory() {
+    return destResourceDirectory;
+  }
+
+  /**
+   * Set the destination directory for where the META-INF/ebean-typequery.mf manifest is written to.
+   */
+  public void setDestResourceDirectory(String destResourceDirectory) {
+    this.destResourceDirectory = destResourceDirectory;
   }
 
   /**

@@ -2,6 +2,7 @@ package org.avaje.ebean.typequery.generator;
 
 import org.avaje.ebean.typequery.generator.read.EntityBeanPropertyReader;
 import org.avaje.ebean.typequery.generator.read.MetaReader;
+import org.avaje.ebean.typequery.generator.write.SimpleManifestWriter;
 import org.avaje.ebean.typequery.generator.write.SimpleQueryBeanWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +50,12 @@ public class Generator {
    */
   public void generateQueryBeans() throws IOException {
 
+    generateQueryBeansOnly();
+    generateManifest();
+  }
+
+  protected void generateQueryBeansOnly() throws IOException {
+
     MetaReader reader = new MetaReader(config.getClassesDirectory());
     reader.process(config.getEntityBeanPackage());
 
@@ -58,24 +65,21 @@ public class Generator {
 
     for (EntityBeanPropertyReader classMeta : allEntities) {
       logger.info("generate for {}", classMeta.name);
-      generateRootQueryBeans(classMeta);
-    }
-
-    for (EntityBeanPropertyReader classMeta : allEntities) {
-      logger.info("generate for {}", classMeta.name);
-      generateAssocBeans(classMeta);
+      generateTypeQueryBeans(classMeta);
     }
   }
 
-  protected void generateAssocBeans(EntityBeanPropertyReader classMeta) {
-
+  protected void generateManifest() throws IOException {
+    SimpleManifestWriter writer = new SimpleManifestWriter(config);
+    writer.write();
   }
 
-  protected void generateRootQueryBeans(EntityBeanPropertyReader classMeta) throws IOException {
+
+
+  protected void generateTypeQueryBeans(EntityBeanPropertyReader classMeta) throws IOException {
 
     // if is entity bean ...
 
-    // find extra inherited fields
     SimpleQueryBeanWriter writer = new SimpleQueryBeanWriter(config, classMeta, generationMetaData);
     writer.write();
     writer.writeAssocBean();

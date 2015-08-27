@@ -3,6 +3,7 @@ package org.example.domain;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
 /**
@@ -23,6 +24,11 @@ public class Address extends BaseModel {
 
   @ManyToOne
   Country country;
+
+  transient int someTransient;
+
+  @Transient
+  int otherTransient;
 
   /**
    * Create a copy of the address. Used to provide a 'snapshot' of 
@@ -97,4 +103,19 @@ public class Address extends BaseModel {
     this.country = country;
   }
 
+  public int getSomeTransient() {
+    return someTransient;
+  }
+
+  public void setSomeTransient(int someTransient) {
+    this.someTransient = someTransient;
+  }
+
+  public int getOtherTransient() {
+    return otherTransient;
+  }
+
+  public void setOtherTransient(int otherTransient) {
+    this.otherTransient = otherTransient;
+  }
 }

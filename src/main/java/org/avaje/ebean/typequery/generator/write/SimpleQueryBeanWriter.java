@@ -1,9 +1,9 @@
 package org.avaje.ebean.typequery.generator.write;
 
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.avaje.ebean.typequery.generator.GenerationMetaData;
 import org.avaje.ebean.typequery.generator.GeneratorConfig;
+import org.avaje.ebean.typequery.generator.asm.tree.AnnotationNode;
 import org.avaje.ebean.typequery.generator.asm.tree.FieldNode;
 import org.avaje.ebean.typequery.generator.read.EntityBeanPropertyReader;
 import org.slf4j.Logger;
@@ -24,6 +24,8 @@ import java.util.TreeSet;
 public class SimpleQueryBeanWriter {
 
   protected static final Logger logger = LoggerFactory.getLogger(SimpleQueryBeanWriter.class);
+
+  public static final String TRANSIENT_ANNOTATION = "Ljavax/persistence/Transient;";
 
   public static final String NEWLINE = "\n";
 
@@ -106,6 +108,22 @@ public class SimpleQueryBeanWriter {
    */
   protected boolean includeField(FieldNode field) {
     // at the moment not filtering out transient fields?
+    return persistentField(field);
+  }
+
+  protected boolean persistentField(FieldNode field) {
+
+    // note transient modifier fields are already filtered out
+    // along with static fields and ebean added fields
+
+    if (field.visibleAnnotations != null) {
+      // look for @Transient annotation
+      for (AnnotationNode annotation : field.visibleAnnotations) {
+        if (annotation.desc.equals(TRANSIENT_ANNOTATION)) {
+          return false;
+        }
+      }
+    }
     return true;
   }
 

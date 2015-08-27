@@ -11,10 +11,13 @@ public class GeneratorTest {
 
     GeneratorConfig config = new GeneratorConfig();
     config.setClassesDirectory("./target/test-classes");
-    config.setEntityBeanPackage("org.example.domain");
     config.setDestDirectory("./src/test/java");
-    config.setDestPackage("org.example.domain.query");
-    config.setMaxPathTraversalDepth(3);
+    config.setDestResourceDirectory("./src/test/resources");
+
+    config.setEntityBeanPackage("org.example.domain");
+    //config.setDestPackage("org.example.domain.query");
+    //config.setMaxPathTraversalDepth(3);
+    //config.setAopStyle(false);
 
     Generator generator = new Generator(config);
     generator.generateQueryBeans();
