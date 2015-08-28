@@ -17,7 +17,7 @@ public class ProductFinder extends Finder<Long,Product> {
    * Construct with a given EbeanServer.
    */
   public ProductFinder(String serverName) {
-    super(serverName, Product.class);
+    super(Product.class, serverName);
   }
 
   /**

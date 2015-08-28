@@ -17,7 +17,7 @@ public class AddressFinder extends Finder<Long,Address> {
    * Construct with a given EbeanServer.
    */
   public AddressFinder(String serverName) {
-    super(serverName, Address.class);
+    super(Address.class, serverName);
   }
 
   /**

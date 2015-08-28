@@ -1,29 +1,42 @@
 package org.example.prototype.example;
 
+import com.avaje.ebean.ExpressionList;
+import org.example.BaseTestCase;
+import org.example.domain.Contact;
 import org.example.domain.Country;
 import org.example.domain.Customer;
-import org.example.domain.query.QCustomer;
+import org.example.domain.query.QContact;
 import org.junit.Test;
 
 /**
  */
-public class ExampleQuery {
+public class ExampleQuery extends BaseTestCase {
 
   @Test
   public void test() {
 
 //    QCustomer qc = new QCustomer();
 
-//    Country nz = Country.find.ref("NZ");
+    Country nz = Country.find.ref("NZ");
 
 
+    ExpressionList<Contact> filter = new QContact()
+        .email.like("some@foo%")
+        .getExpressionList();
+//
+//
 //    Customer.find
 //        .where()
-//        .billingAddress.country.code.equalTo(nz.getCode())
-//        .id.greaterThan(12)
-//        .name.ilike("rob")
+//        .billingAddress.country.equalTo(nz)
+//        //.id.greaterThan(12)
+//        //.name.ilike("rob")
 //        .order()
 //        .id.asc()
+//        .contacts.filterMany(filter)
+//        //.select("name")
+//        //.fetch("contacts", "email")
+//          //.query().filterMany("contacts").like("email","rob%@foo.com")
+//        //.contacts.filterMany(where)
 //        .findList();
 
 //    Customer rob = new QCustomer()

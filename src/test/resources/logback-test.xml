@@ -10,7 +10,7 @@
   </appender>
 
   <appender name="APPLICATION" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <File>log/ebean.log</File>
+    <File>log/application.log</File>
     <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
       <level>TRACE</level>
     </filter>
@@ -24,8 +24,8 @@
   </appender>
 
 
-  <logger name="com.avaje" level="TRACE"/>
-  <logger name="org.avaje" level="TRACE"/>
+  <logger name="com.avaje" level="INFO"/>
+  <logger name="org.avaje" level="INFO"/>
 
   <root level="WARN">
     <appender-ref ref="APPLICATION"/>

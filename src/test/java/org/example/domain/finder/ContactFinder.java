@@ -17,7 +17,7 @@ public class ContactFinder extends Finder<Long,Contact> {
    * Construct with a given EbeanServer.
    */
   public ContactFinder(String serverName) {
-    super(serverName, Contact.class);
+    super(Contact.class, serverName);
   }
 
   /**

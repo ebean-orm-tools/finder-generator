@@ -120,7 +120,7 @@ public class SimpleFinderWriter {
     writer.append("   * Construct with a given EbeanServer.").append(NEWLINE);
     writer.append("   */").append(NEWLINE);
     writer.append("  public ").append(shortName).append("Finder(String serverName) {").append(NEWLINE);
-    writer.append("    super(serverName, ").append(shortName).append(".class);").append(NEWLINE);
+    writer.append("    super(").append(shortName).append(".class, serverName);").append(NEWLINE);
     writer.append("  }").append(NEWLINE);
   }
 

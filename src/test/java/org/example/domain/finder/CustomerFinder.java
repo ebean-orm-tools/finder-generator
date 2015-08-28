@@ -17,7 +17,7 @@ public class CustomerFinder extends Finder<Long,Customer> {
    * Construct with a given EbeanServer.
    */
   public CustomerFinder(String serverName) {
-    super(serverName, Customer.class);
+    super(Customer.class, serverName);
   }
 
   /**

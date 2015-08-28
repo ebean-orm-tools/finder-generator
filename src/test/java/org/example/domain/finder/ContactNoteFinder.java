@@ -18,7 +18,7 @@ public class ContactNoteFinder extends Finder<UUID,ContactNote> {
    * Construct with a given EbeanServer.
    */
   public ContactNoteFinder(String serverName) {
-    super(serverName, ContactNote.class);
+    super(ContactNote.class, serverName);
   }
 
   /**

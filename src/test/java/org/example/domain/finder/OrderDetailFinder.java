@@ -17,7 +17,7 @@ public class OrderDetailFinder extends Finder<Long,OrderDetail> {
    * Construct with a given EbeanServer.
    */
   public OrderDetailFinder(String serverName) {
-    super(serverName, OrderDetail.class);
+    super(OrderDetail.class, serverName);
   }
 
   /**

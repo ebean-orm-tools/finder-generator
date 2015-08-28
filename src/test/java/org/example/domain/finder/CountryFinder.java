@@ -17,7 +17,7 @@ public class CountryFinder extends Finder<String,Country> {
    * Construct with a given EbeanServer.
    */
   public CountryFinder(String serverName) {
-    super(serverName, Country.class);
+    super(Country.class, serverName);
   }
 
   /**
