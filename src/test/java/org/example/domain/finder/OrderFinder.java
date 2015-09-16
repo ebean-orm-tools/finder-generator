@@ -24,6 +24,6 @@ public class OrderFinder extends Finder<Long,Order> {
    * Start a new typed query.
    */
   protected QOrder where() {
-     return new QOrder();
+     return new QOrder(db());
   }
 }

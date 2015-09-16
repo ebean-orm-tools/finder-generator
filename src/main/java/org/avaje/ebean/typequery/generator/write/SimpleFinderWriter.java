@@ -138,7 +138,7 @@ public class SimpleFinderWriter {
       writer.append("   * Start a new typed query.").append(NEWLINE);
       writer.append("   */").append(NEWLINE);
       writer.append("  ").append(getModifier()).append(" Q").append(shortName).append(" where() {").append(NEWLINE);
-      writer.append("     return new Q").append(shortName).append("();").append(NEWLINE);
+      writer.append("     return new Q").append(shortName).append("(db());").append(NEWLINE);
       writer.append("  }").append(NEWLINE);
     }
   }

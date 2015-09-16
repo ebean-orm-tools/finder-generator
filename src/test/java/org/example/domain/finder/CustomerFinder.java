@@ -24,6 +24,6 @@ public class CustomerFinder extends Finder<Long,Customer> {
    * Start a new typed query.
    */
   protected QCustomer where() {
-     return new QCustomer();
+     return new QCustomer(db());
   }
 }
