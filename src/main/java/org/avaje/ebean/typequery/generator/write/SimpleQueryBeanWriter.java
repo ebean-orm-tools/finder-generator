@@ -97,6 +97,7 @@ public class SimpleQueryBeanWriter {
       writePackage();
       writeImports();
       writeClass();
+      writeAlias();
       writeFields();
       writeConstructors();
       writeClassEnd();
@@ -140,7 +141,9 @@ public class SimpleQueryBeanWriter {
     importTypes.remove("org.avaje.ebean.typequery.TQRootBean");
     importTypes.remove("com.avaje.ebean.EbeanServer");
     importTypes.add("org.avaje.ebean.typequery.TQAssocBean");
-    importTypes.add(config.getEntityBeanPackage()+"."+origShortName);
+    importTypes.add("org.avaje.ebean.typequery.TQProperty");
+
+    importTypes.add(config.getEntityBeanPackage() + "." + origShortName);
     if (!config.isAopStyle()) {
       importTypes.add("org.avaje.ebean.typequery.TQPath");
     }
@@ -163,6 +166,7 @@ public class SimpleQueryBeanWriter {
   protected void writeConstructors() throws IOException {
 
     if (writingAssocBean) {
+      writeAssocBeanFetch();
       writeAssocBeanConstructor();
     } else {
       writeRootBeanConstructor();
@@ -174,19 +178,21 @@ public class SimpleQueryBeanWriter {
    */
   protected void writeRootBeanConstructor() throws IOException {
 
+    writer.append(NEWLINE);
+    writer.append("  /**").append(NEWLINE);
+    writer.append("   * Construct with a given EbeanServer.").append(NEWLINE);
+    writer.append("   */").append(NEWLINE);
+    writer.append("  public Q").append(shortName).append("(EbeanServer server) {").append(NEWLINE);
+    writer.append("    super(").append(shortName).append(".class, server);").append(NEWLINE);
+    writer.append("  }").append(NEWLINE);
+    writer.append(NEWLINE);
+
     if (config.isAopStyle()) {
       writer.append("  /**").append(NEWLINE);
       writer.append("   * Construct using the default EbeanServer.").append(NEWLINE);
       writer.append("   */").append(NEWLINE);
       writer.append("  public Q").append(shortName).append("() {").append(NEWLINE);
       writer.append("    super(").append(shortName).append(".class);").append(NEWLINE);
-      writer.append("  }").append(NEWLINE);
-      writer.append(NEWLINE);
-      writer.append("  /**").append(NEWLINE);
-      writer.append("   * Construct with a given EbeanServer.").append(NEWLINE);
-      writer.append("   */").append(NEWLINE);
-      writer.append("  public Q").append(shortName).append("(EbeanServer server) {").append(NEWLINE);
-      writer.append("    super(").append(shortName).append(".class, server);").append(NEWLINE);
       writer.append("  }").append(NEWLINE);
 
     } else {
@@ -208,6 +214,25 @@ public class SimpleQueryBeanWriter {
       }
       writer.append("  }").append(NEWLINE);
     }
+
+    writer.append("  /**").append(NEWLINE);
+    writer.append("   * Construct for Alias.").append(NEWLINE);
+    writer.append("   */").append(NEWLINE);
+    writer.append("  private Q").append(shortName).append("(boolean dummy) {").append(NEWLINE);
+    writer.append("    super(dummy);").append(NEWLINE);
+    writer.append("  }").append(NEWLINE);
+  }
+
+  protected void writeAssocBeanFetch() throws IOException {
+
+    writer.append("  /**").append(NEWLINE);
+    writer.append("   * Eagerly fetch this association loading the specified properties.").append(NEWLINE);
+    writer.append("   */").append(NEWLINE);
+    writer.append("  @SafeVarargs").append(NEWLINE);
+    writer.append("  public final R fetch(TQProperty<Q").append(shortName).append(">... properties) {").append(NEWLINE);
+    writer.append("    return fetchProperties(properties);").append(NEWLINE);
+    writer.append("  }").append(NEWLINE);
+    writer.append(NEWLINE);
   }
 
   /**
@@ -274,12 +299,18 @@ public class SimpleQueryBeanWriter {
   protected void writeClass() throws IOException {
 
     if (writingAssocBean) {
+      writer.append("/**").append(NEWLINE);
+      writer.append(" * Association query bean for ").append(shortName).append(".").append(NEWLINE);
+      writer.append(" */").append(NEWLINE);
       //public class QAssocContact<R>
       writer.append("@TypeQueryBean").append(NEWLINE);
       writer.append("public class ").append("Q").append(shortName);
       writer.append("<R> extends TQAssocBean<").append(origShortName).append(",R> {").append(NEWLINE);
 
     } else {
+      writer.append("/**").append(NEWLINE);
+      writer.append(" * Query bean for ").append(shortName).append(".").append(NEWLINE);
+      writer.append(" */").append(NEWLINE);
       //  public class QContact extends TQRootBean<Contact,QContact> {
       writer.append("@TypeQueryBean").append(NEWLINE);
       writer.append("public class ").append("Q").append(shortName)
@@ -287,6 +318,23 @@ public class SimpleQueryBeanWriter {
     }
 
     writer.append(NEWLINE);
+  }
+
+  protected void writeAlias() throws IOException {
+    if (!writingAssocBean) {
+      writer.append("  private static final Q").append(shortName).append(" _alias = new Q");
+      writer.append(shortName).append("(true);").append(NEWLINE);
+      writer.append(NEWLINE);
+
+      writer.append("  /**").append(NEWLINE);
+      writer.append("   * Return the shared 'Alias' instance used to provide properties to ").append(NEWLINE);
+      writer.append("   * <code>select()</code> and <code>fetch()</code> ").append(NEWLINE);
+      writer.append("   */").append(NEWLINE);
+      writer.append("  public static Q").append(shortName).append(" alias() {").append(NEWLINE);
+      writer.append("    return _alias;").append(NEWLINE);
+      writer.append("  }").append(NEWLINE);
+      writer.append(NEWLINE);
+    }
   }
 
   protected void writeClassEnd() throws IOException {
