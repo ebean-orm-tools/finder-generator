@@ -7,6 +7,7 @@ import org.example.domain.Country;
 import org.example.domain.Customer;
 import org.example.domain.Order;
 import org.example.domain.query.QContact;
+import org.example.domain.query.QCustomer;
 import org.example.domain.query.QOrder;
 import org.junit.Test;
 
@@ -58,10 +59,13 @@ public class ExampleQuery extends BaseTestCase {
   @Test
   public void testOrder() {
 
-    QOrder order = QOrder.alias();
+    QOrder ord = QOrder.alias();
+    QCustomer cus = QCustomer.alias();
 
     List<Order> orders = new QOrder()
-        .select(order.orderDate, order.status)
+        .select(ord.orderDate, ord.status)
+        .customer.fetch(cus.name)
+
         .customer.name.ilike("rob")
         .orderBy()
         .customer.name.asc()
