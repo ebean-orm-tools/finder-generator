@@ -8,13 +8,34 @@ import org.avaje.ebean.typequery.TypeQueryBean;
 import org.example.domain.ContactNote;
 import org.example.domain.query.assoc.QAssocContact;
 
+/**
+ * Query bean for ContactNote.
+ */
 @TypeQueryBean
 public class QContactNote extends TQRootBean<ContactNote,QContactNote> {
+
+  private static final QContactNote _alias = new QContactNote(true);
+
+  /**
+   * Return the shared 'Alias' instance used to provide properties to 
+   * <code>select()</code> and <code>fetch()</code> 
+   */
+  public static QContactNote alias() {
+    return _alias;
+  }
 
   public PUuid<QContactNote> id;
   public QAssocContact<QContactNote> contact;
   public PString<QContactNote> title;
   public PString<QContactNote> note;
+
+
+  /**
+   * Construct with a given EbeanServer.
+   */
+  public QContactNote(EbeanServer server) {
+    super(ContactNote.class, server);
+  }
 
   /**
    * Construct using the default EbeanServer.
@@ -22,11 +43,10 @@ public class QContactNote extends TQRootBean<ContactNote,QContactNote> {
   public QContactNote() {
     super(ContactNote.class);
   }
-
   /**
-   * Construct with a given EbeanServer.
+   * Construct for Alias.
    */
-  public QContactNote(EbeanServer server) {
-    super(ContactNote.class, server);
+  private QContactNote(boolean dummy) {
+    super(dummy);
   }
 }

@@ -4,9 +4,13 @@ import org.avaje.ebean.typequery.PLong;
 import org.avaje.ebean.typequery.PString;
 import org.avaje.ebean.typequery.PTimestamp;
 import org.avaje.ebean.typequery.TQAssocBean;
+import org.avaje.ebean.typequery.TQProperty;
 import org.avaje.ebean.typequery.TypeQueryBean;
 import org.example.domain.Address;
 
+/**
+ * Association query bean for AssocAddress.
+ */
 @TypeQueryBean
 public class QAssocAddress<R> extends TQAssocBean<Address,R> {
 
@@ -18,6 +22,14 @@ public class QAssocAddress<R> extends TQAssocBean<Address,R> {
   public PString<R> line2;
   public PString<R> city;
   public QAssocCountry<R> country;
+
+  /**
+   * Eagerly fetch this association loading the specified properties.
+   */
+  @SafeVarargs
+  public final R fetch(TQProperty<QAssocAddress>... properties) {
+    return fetchProperties(properties);
+  }
 
   public QAssocAddress(String name, R root) {
     super(name, root);

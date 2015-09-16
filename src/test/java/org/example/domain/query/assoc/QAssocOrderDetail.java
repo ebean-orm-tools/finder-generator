@@ -5,9 +5,13 @@ import org.avaje.ebean.typequery.PInteger;
 import org.avaje.ebean.typequery.PLong;
 import org.avaje.ebean.typequery.PTimestamp;
 import org.avaje.ebean.typequery.TQAssocBean;
+import org.avaje.ebean.typequery.TQProperty;
 import org.avaje.ebean.typequery.TypeQueryBean;
 import org.example.domain.OrderDetail;
 
+/**
+ * Association query bean for AssocOrderDetail.
+ */
 @TypeQueryBean
 public class QAssocOrderDetail<R> extends TQAssocBean<OrderDetail,R> {
 
@@ -20,6 +24,14 @@ public class QAssocOrderDetail<R> extends TQAssocBean<OrderDetail,R> {
   public PInteger<R> shipQty;
   public PDouble<R> unitPrice;
   public QAssocProduct<R> product;
+
+  /**
+   * Eagerly fetch this association loading the specified properties.
+   */
+  @SafeVarargs
+  public final R fetch(TQProperty<QAssocOrderDetail>... properties) {
+    return fetchProperties(properties);
+  }
 
   public QAssocOrderDetail(String name, R root) {
     super(name, root);
