@@ -5,8 +5,12 @@ import org.example.BaseTestCase;
 import org.example.domain.Contact;
 import org.example.domain.Country;
 import org.example.domain.Customer;
+import org.example.domain.Order;
 import org.example.domain.query.QContact;
+import org.example.domain.query.QOrder;
 import org.junit.Test;
+
+import java.util.List;
 
 /**
  */
@@ -54,12 +58,15 @@ public class ExampleQuery extends BaseTestCase {
   @Test
   public void testOrder() {
 
-//    List<Order> orders = new QOrder()
-//        .customer.name.ilike("rob")
-//        .orderBy()
-//        .customer.name.asc()
-//        .orderDate.asc()
-//        .findList();
+    QOrder order = QOrder.alias();
+
+    List<Order> orders = new QOrder()
+        .select(order.orderDate, order.status)
+        .customer.name.ilike("rob")
+        .orderBy()
+        .customer.name.asc()
+        .orderDate.asc()
+        .findList();
 
 //        .shippingAddress.city.ieq("auckla")
 //        .shippingAddress.country.code.eq("NZ")
