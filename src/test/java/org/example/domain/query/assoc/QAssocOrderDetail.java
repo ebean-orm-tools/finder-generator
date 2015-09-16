@@ -8,6 +8,7 @@ import org.avaje.ebean.typequery.TQAssocBean;
 import org.avaje.ebean.typequery.TQProperty;
 import org.avaje.ebean.typequery.TypeQueryBean;
 import org.example.domain.OrderDetail;
+import org.example.domain.query.QOrderDetail;
 
 /**
  * Association query bean for AssocOrderDetail.
@@ -29,7 +30,7 @@ public class QAssocOrderDetail<R> extends TQAssocBean<OrderDetail,R> {
    * Eagerly fetch this association loading the specified properties.
    */
   @SafeVarargs
-  public final R fetch(TQProperty<QAssocOrderDetail>... properties) {
+  public final R fetch(TQProperty<QOrderDetail>... properties) {
     return fetchProperties(properties);
   }
 

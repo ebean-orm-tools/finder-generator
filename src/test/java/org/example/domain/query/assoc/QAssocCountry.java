@@ -5,6 +5,7 @@ import org.avaje.ebean.typequery.TQAssocBean;
 import org.avaje.ebean.typequery.TQProperty;
 import org.avaje.ebean.typequery.TypeQueryBean;
 import org.example.domain.Country;
+import org.example.domain.query.QCountry;
 
 /**
  * Association query bean for AssocCountry.
@@ -20,7 +21,7 @@ public class QAssocCountry<R> extends TQAssocBean<Country,R> {
    * Eagerly fetch this association loading the specified properties.
    */
   @SafeVarargs
-  public final R fetch(TQProperty<QAssocCountry>... properties) {
+  public final R fetch(TQProperty<QCountry>... properties) {
     return fetchProperties(properties);
   }
 

@@ -11,6 +11,7 @@ import org.avaje.ebean.typequery.TQProperty;
 import org.avaje.ebean.typequery.TypeQueryBean;
 import org.example.domain.Customer;
 import org.example.domain.Customer.Status;
+import org.example.domain.query.QCustomer;
 
 /**
  * Association query bean for AssocCustomer.
@@ -35,7 +36,7 @@ public class QAssocCustomer<R> extends TQAssocBean<Customer,R> {
    * Eagerly fetch this association loading the specified properties.
    */
   @SafeVarargs
-  public final R fetch(TQProperty<QAssocCustomer>... properties) {
+  public final R fetch(TQProperty<QCustomer>... properties) {
     return fetchProperties(properties);
   }
 

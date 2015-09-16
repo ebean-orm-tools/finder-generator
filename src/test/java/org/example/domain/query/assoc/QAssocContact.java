@@ -7,6 +7,7 @@ import org.avaje.ebean.typequery.TQAssocBean;
 import org.avaje.ebean.typequery.TQProperty;
 import org.avaje.ebean.typequery.TypeQueryBean;
 import org.example.domain.Contact;
+import org.example.domain.query.QContact;
 
 /**
  * Association query bean for AssocContact.
@@ -29,7 +30,7 @@ public class QAssocContact<R> extends TQAssocBean<Contact,R> {
    * Eagerly fetch this association loading the specified properties.
    */
   @SafeVarargs
-  public final R fetch(TQProperty<QAssocContact>... properties) {
+  public final R fetch(TQProperty<QContact>... properties) {
     return fetchProperties(properties);
   }
 

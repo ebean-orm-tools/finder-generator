@@ -9,6 +9,7 @@ import org.avaje.ebean.typequery.TQAssocBean;
 import org.avaje.ebean.typequery.TQProperty;
 import org.avaje.ebean.typequery.TypeQueryBean;
 import org.example.domain.Product;
+import org.example.domain.query.QProduct;
 
 /**
  * Association query bean for AssocProduct.
@@ -29,7 +30,7 @@ public class QAssocProduct<R> extends TQAssocBean<Product,R> {
    * Eagerly fetch this association loading the specified properties.
    */
   @SafeVarargs
-  public final R fetch(TQProperty<QAssocProduct>... properties) {
+  public final R fetch(TQProperty<QProduct>... properties) {
     return fetchProperties(properties);
   }
 
