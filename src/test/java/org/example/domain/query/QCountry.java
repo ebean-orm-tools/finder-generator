@@ -41,6 +41,7 @@ public class QCountry extends TQRootBean<Country,QCountry> {
   public QCountry() {
     super(Country.class);
   }
+
   /**
    * Construct for Alias.
    */

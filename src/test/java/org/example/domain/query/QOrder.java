@@ -54,6 +54,7 @@ public class QOrder extends TQRootBean<Order,QOrder> {
   public QOrder() {
     super(Order.class);
   }
+
   /**
    * Construct for Alias.
    */

@@ -43,6 +43,7 @@ public class QContactNote extends TQRootBean<ContactNote,QContactNote> {
   public QContactNote() {
     super(ContactNote.class);
   }
+
   /**
    * Construct for Alias.
    */

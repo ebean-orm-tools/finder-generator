@@ -49,6 +49,7 @@ public class QProduct extends TQRootBean<Product,QProduct> {
   public QProduct() {
     super(Product.class);
   }
+
   /**
    * Construct for Alias.
    */

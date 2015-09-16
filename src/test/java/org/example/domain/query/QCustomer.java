@@ -57,6 +57,7 @@ public class QCustomer extends TQRootBean<Customer,QCustomer> {
   public QCustomer() {
     super(Customer.class);
   }
+
   /**
    * Construct for Alias.
    */

@@ -51,6 +51,7 @@ public class QOrderDetail extends TQRootBean<OrderDetail,QOrderDetail> {
   public QOrderDetail() {
     super(OrderDetail.class);
   }
+
   /**
    * Construct for Alias.
    */

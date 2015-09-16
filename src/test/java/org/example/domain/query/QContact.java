@@ -51,6 +51,7 @@ public class QContact extends TQRootBean<Contact,QContact> {
   public QContact() {
     super(Contact.class);
   }
+
   /**
    * Construct for Alias.
    */
