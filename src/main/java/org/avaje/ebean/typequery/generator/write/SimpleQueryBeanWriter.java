@@ -215,6 +215,7 @@ public class SimpleQueryBeanWriter {
       writer.append("  }").append(NEWLINE);
     }
 
+    writer.append(NEWLINE);
     writer.append("  /**").append(NEWLINE);
     writer.append("   * Construct for Alias.").append(NEWLINE);
     writer.append("   */").append(NEWLINE);
