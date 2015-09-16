@@ -35,6 +35,7 @@ public class SimpleQueryBeanWriter {
   protected boolean writingAssocBean;
 
   protected String destPackage;
+  protected String origDestPackage;
 
   protected String shortName;
   protected String origShortName;
@@ -113,6 +114,7 @@ public class SimpleQueryBeanWriter {
   public void writeAssocBean() throws IOException {
 
     writingAssocBean = true;
+    origDestPackage = destPackage;
     destPackage = destPackage+".assoc";
     origShortName = shortName;
     shortName = "Assoc"+shortName;
@@ -141,9 +143,12 @@ public class SimpleQueryBeanWriter {
     importTypes.remove("org.avaje.ebean.typequery.TQRootBean");
     importTypes.remove("com.avaje.ebean.EbeanServer");
     importTypes.add("org.avaje.ebean.typequery.TQAssocBean");
-    importTypes.add("org.avaje.ebean.typequery.TQProperty");
-
     importTypes.add(config.getEntityBeanPackage() + "." + origShortName);
+    if (classMeta.isEntity()) {
+      importTypes.add("org.avaje.ebean.typequery.TQProperty");
+      importTypes.add(origDestPackage + ".Q" + origShortName);
+    }
+
     if (!config.isAopStyle()) {
       importTypes.add("org.avaje.ebean.typequery.TQPath");
     }
@@ -226,14 +231,16 @@ public class SimpleQueryBeanWriter {
 
   protected void writeAssocBeanFetch() throws IOException {
 
-    writer.append("  /**").append(NEWLINE);
-    writer.append("   * Eagerly fetch this association loading the specified properties.").append(NEWLINE);
-    writer.append("   */").append(NEWLINE);
-    writer.append("  @SafeVarargs").append(NEWLINE);
-    writer.append("  public final R fetch(TQProperty<Q").append(shortName).append(">... properties) {").append(NEWLINE);
-    writer.append("    return fetchProperties(properties);").append(NEWLINE);
-    writer.append("  }").append(NEWLINE);
-    writer.append(NEWLINE);
+    if (classMeta.isEntity()) {
+      writer.append("  /**").append(NEWLINE);
+      writer.append("   * Eagerly fetch this association loading the specified properties.").append(NEWLINE);
+      writer.append("   */").append(NEWLINE);
+      writer.append("  @SafeVarargs").append(NEWLINE);
+      writer.append("  public final R fetch(TQProperty<Q").append(origShortName).append(">... properties) {").append(NEWLINE);
+      writer.append("    return fetchProperties(properties);").append(NEWLINE);
+      writer.append("  }").append(NEWLINE);
+      writer.append(NEWLINE);
+    }
   }
 
   /**
