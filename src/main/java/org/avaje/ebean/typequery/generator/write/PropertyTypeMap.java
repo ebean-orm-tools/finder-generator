@@ -19,6 +19,11 @@ import java.util.UUID;
  */
 public class PropertyTypeMap {
 
+  /**
+   * Property type for Db Json properties.
+   */
+  private final PropertyType dbJsonType = new PropertyType("PJson");
+
   private Map<String,PropertyType> map = new HashMap<>();
 
   public PropertyTypeMap() {
@@ -98,8 +103,18 @@ public class PropertyTypeMap {
     map.put(org.joda.time.LocalTime.class.getName(), new PropertyType("PJodaLocalTime"));
   }
 
+  /**
+   * Return the property type for the given class description.
+   */
   public PropertyType getType(String classDesc) {
 
     return map.get(classDesc);
+  }
+
+  /**
+   * Return the Db Json property type (for DbJson and DbJsonB).
+   */
+  public PropertyType getDbJsonType() {
+    return dbJsonType;
   }
 }

@@ -56,6 +56,10 @@ public class GenerationMetaData {
       return type;
     }
 
+    if (EntityBeanPropertyReader.dbJsonField(field)) {
+      return propertyMap.getDbJsonType();
+    }
+
     EntityBeanPropertyReader anEnum = enumMap.get(fieldTypeClassName);
     if (anEnum != null) {
       // change inner class $ to a period

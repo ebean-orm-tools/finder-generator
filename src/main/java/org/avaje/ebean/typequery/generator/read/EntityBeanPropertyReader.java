@@ -26,6 +26,10 @@ public class EntityBeanPropertyReader extends ClassNode {
 
   public static final String TRANSIENT_ANNOTATION = "Ljavax/persistence/Transient;";
 
+  public static final String DBJSONB_ANNOTATION = "Lcom/avaje/ebean/annotation/DbJsonB;";
+
+  public static final String DBJSON_ANNOTATION = "Lcom/avaje/ebean/annotation/DbJson;";
+
   public static final String ID_ANNOTATION = "Ljavax/persistence/Id;";
 
   public static final String ENUM = "java/lang/Enum";
@@ -107,6 +111,16 @@ public class EntityBeanPropertyReader extends ClassNode {
   }
 
   /**
+   * Return true if it is a DbJson field.
+   */
+  public static boolean dbJsonField(FieldNode field) {
+
+    // note transient modifier fields are already filtered out
+    // along with static fields and ebean added fields
+    return hasAnnotation(field, DBJSONB_ANNOTATION) || hasAnnotation(field, DBJSON_ANNOTATION);
+  }
+
+  /**
    * Return true if it is a persistent field.
    */
   protected boolean persistentField(FieldNode field) {
@@ -120,7 +134,7 @@ public class EntityBeanPropertyReader extends ClassNode {
     return hasAnnotation(field, ID_ANNOTATION);
   }
 
-  protected boolean hasAnnotation(FieldNode field, String annotationDesc) {
+  protected static boolean hasAnnotation(FieldNode field, String annotationDesc) {
 
     // note transient modifier fields are already filtered out
     // along with static fields and ebean added fields
