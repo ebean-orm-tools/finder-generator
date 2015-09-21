@@ -4,7 +4,7 @@
 
   <groupId>org.avaje.ebeanorm</groupId>
   <artifactId>avaje-ebeanorm-typequery-generator</artifactId>
-  <version>1.4.3-SNAPSHOT</version>
+  <version>1.5.1-SNAPSHOT</version>
   
   <parent>
     <groupId>org.avaje</groupId>
