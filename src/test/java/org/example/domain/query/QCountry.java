@@ -9,6 +9,8 @@ import org.example.domain.query.assoc.QAssocAttributes;
 
 /**
  * Query bean for Country.
+ * 
+ * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.
  */
 @TypeQueryBean
 public class QCountry extends TQRootBean<Country,QCountry> {

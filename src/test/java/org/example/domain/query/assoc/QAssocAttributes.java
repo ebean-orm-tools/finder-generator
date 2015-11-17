@@ -7,6 +7,8 @@ import org.example.domain.Attributes;
 
 /**
  * Association query bean for AssocAttributes.
+ * 
+ * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.
  */
 @TypeQueryBean
 public class QAssocAttributes<R> extends TQAssocBean<Attributes,R> {

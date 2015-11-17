@@ -12,6 +12,8 @@ import org.example.domain.query.QOrderDetail;
 
 /**
  * Association query bean for AssocOrderDetail.
+ * 
+ * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.
  */
 @TypeQueryBean
 public class QAssocOrderDetail<R> extends TQAssocBean<OrderDetail,R> {

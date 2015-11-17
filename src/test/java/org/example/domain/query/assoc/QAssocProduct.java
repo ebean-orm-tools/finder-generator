@@ -13,6 +13,8 @@ import org.example.domain.query.QProduct;
 
 /**
  * Association query bean for AssocProduct.
+ * 
+ * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.
  */
 @TypeQueryBean
 public class QAssocProduct<R> extends TQAssocBean<Product,R> {

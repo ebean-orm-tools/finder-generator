@@ -13,6 +13,8 @@ import org.example.domain.query.QOrder;
 
 /**
  * Association query bean for AssocOrder.
+ * 
+ * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.
  */
 @TypeQueryBean
 public class QAssocOrder<R> extends TQAssocBean<Order,R> {

@@ -15,6 +15,8 @@ import org.example.domain.query.QCustomer;
 
 /**
  * Association query bean for AssocCustomer.
+ * 
+ * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.
  */
 @TypeQueryBean
 public class QAssocCustomer<R> extends TQAssocBean<Customer,R> {

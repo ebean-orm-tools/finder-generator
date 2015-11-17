@@ -13,6 +13,8 @@ import org.example.domain.query.assoc.QAssocProduct;
 
 /**
  * Query bean for OrderDetail.
+ * 
+ * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.
  */
 @TypeQueryBean
 public class QOrderDetail extends TQRootBean<OrderDetail,QOrderDetail> {

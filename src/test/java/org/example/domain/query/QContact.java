@@ -12,6 +12,8 @@ import org.example.domain.query.assoc.QAssocCustomer;
 
 /**
  * Query bean for Contact.
+ * 
+ * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.
  */
 @TypeQueryBean
 public class QContact extends TQRootBean<Contact,QContact> {

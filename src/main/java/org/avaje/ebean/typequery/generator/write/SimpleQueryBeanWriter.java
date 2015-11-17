@@ -309,6 +309,8 @@ public class SimpleQueryBeanWriter {
     if (writingAssocBean) {
       writer.append("/**").append(NEWLINE);
       writer.append(" * Association query bean for ").append(shortName).append(".").append(NEWLINE);
+      writer.append(" * ").append(NEWLINE);
+      writer.append(" * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.").append(NEWLINE);
       writer.append(" */").append(NEWLINE);
       //public class QAssocContact<R>
       writer.append("@TypeQueryBean").append(NEWLINE);
@@ -318,6 +320,8 @@ public class SimpleQueryBeanWriter {
     } else {
       writer.append("/**").append(NEWLINE);
       writer.append(" * Query bean for ").append(shortName).append(".").append(NEWLINE);
+      writer.append(" * ").append(NEWLINE);
+      writer.append(" * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.").append(NEWLINE);
       writer.append(" */").append(NEWLINE);
       //  public class QContact extends TQRootBean<Contact,QContact> {
       writer.append("@TypeQueryBean").append(NEWLINE);

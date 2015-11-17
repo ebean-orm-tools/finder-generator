@@ -12,6 +12,8 @@ import org.example.domain.Product;
 
 /**
  * Query bean for Product.
+ * 
+ * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.
  */
 @TypeQueryBean
 public class QProduct extends TQRootBean<Product,QProduct> {

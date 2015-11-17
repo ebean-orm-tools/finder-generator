@@ -11,6 +11,8 @@ import org.example.domain.query.assoc.QAssocCountry;
 
 /**
  * Query bean for Address.
+ * 
+ * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.
  */
 @TypeQueryBean
 public class QAddress extends TQRootBean<Address,QAddress> {

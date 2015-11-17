@@ -11,6 +11,8 @@ import org.example.domain.query.QAddress;
 
 /**
  * Association query bean for AssocAddress.
+ * 
+ * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.
  */
 @TypeQueryBean
 public class QAssocAddress<R> extends TQAssocBean<Address,R> {

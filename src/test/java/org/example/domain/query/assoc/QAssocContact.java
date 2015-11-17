@@ -11,6 +11,8 @@ import org.example.domain.query.QContact;
 
 /**
  * Association query bean for AssocContact.
+ * 
+ * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.
  */
 @TypeQueryBean
 public class QAssocContact<R> extends TQAssocBean<Contact,R> {

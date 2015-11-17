@@ -10,6 +10,8 @@ import org.example.domain.query.assoc.QAssocContact;
 
 /**
  * Query bean for ContactNote.
+ * 
+ * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.
  */
 @TypeQueryBean
 public class QContactNote extends TQRootBean<ContactNote,QContactNote> {

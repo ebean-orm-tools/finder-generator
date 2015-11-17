@@ -9,6 +9,8 @@ import org.example.domain.query.QCountry;
 
 /**
  * Association query bean for AssocCountry.
+ * 
+ * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.
  */
 @TypeQueryBean
 public class QAssocCountry<R> extends TQAssocBean<Country,R> {
