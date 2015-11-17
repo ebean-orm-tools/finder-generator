@@ -1,6 +1,7 @@
 package org.example.domain;
 
 import org.example.domain.finder.ProductFinder;
+import org.example.domain.other.BaseModel;
 import org.joda.time.DateTime;
 
 import javax.persistence.Entity;

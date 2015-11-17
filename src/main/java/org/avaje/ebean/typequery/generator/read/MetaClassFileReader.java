@@ -14,6 +14,28 @@ import java.io.InputStream;
  */
 public class MetaClassFileReader {
 
+
+  /**
+   * Read a class classFile and return the EntityBeanPropertyReader.
+   */
+  public EntityBeanPropertyReader readClassViaClassPath(String className) throws IOException {
+
+    ClassLoader classLoader = this.getClass().getClassLoader();
+    InputStream is = classLoader.getResourceAsStream(className.replace('.','/') + ".class");
+    if (is == null) {
+      throw new IOException("No resource for "+className);
+    }
+    try {
+      ClassReader cr2 = new ClassReader(is);
+      EntityBeanPropertyReader classNode = new EntityBeanPropertyReader();
+      cr2.accept(classNode, 0);
+      return classNode;
+
+    } finally {
+      is.close();
+    }
+  }
+
   /**
    * Read a class classFile and return the EntityBeanPropertyReader.
    */

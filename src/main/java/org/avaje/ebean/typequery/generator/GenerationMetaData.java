@@ -109,23 +109,28 @@ public class GenerationMetaData {
     return className.substring(startPos + 1);
   }
 
+  /**
+   * Add all the class metadata based on the type (Enum/Entity etc).
+   */
   public void addAll(Collection<EntityBeanPropertyReader> classMetaData) {
 
-    separateTypes(classMetaData);
+    for (EntityBeanPropertyReader classMeta : classMetaData) {
+      addClassMeta(classMeta);
+    }
   }
 
-  protected void separateTypes(Collection<EntityBeanPropertyReader> classMetaData) {
-
-    for (EntityBeanPropertyReader classMeta : classMetaData) {
-      if (classMeta.isEnum()) {
-        enumMap.put(asDotNotation(classMeta.name), classMeta);
+  /**
+   * Add the class metadata based on the type (Enum/Entity etc).
+   */
+  public void addClassMeta(EntityBeanPropertyReader classMeta) {
+    String className = asDotNotation(classMeta.name);
+    if (classMeta.isEnum()) {
+      enumMap.put(className, classMeta);
+    } else {
+      if (classMeta.isEntity() || classMeta.isEmbeddable()) {
+        entityMap.put(className, classMeta);
       } else {
-        String className = asDotNotation(classMeta.name);
-        if (classMeta.isEntity() || classMeta.isEmbeddable()) {
-          entityMap.put(className, classMeta);
-        } else {
-          otherMap.put(className, classMeta);
-        }
+        otherMap.put(className, classMeta);
       }
     }
   }

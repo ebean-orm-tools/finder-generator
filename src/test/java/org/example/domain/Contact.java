@@ -1,6 +1,7 @@
 package org.example.domain;
 
 import org.example.domain.finder.ContactFinder;
+import org.example.domain.other.BaseModel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

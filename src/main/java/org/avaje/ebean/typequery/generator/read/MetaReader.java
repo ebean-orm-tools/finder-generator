@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,13 +102,36 @@ public class MetaReader {
   }
 
   /**
+   * Read the class metadata for the given className.
+   *
+   * Typically used to load referenced MappedSuperclass metadata from different
+   * packages or from the classpath.
+   */
+  public EntityBeanPropertyReader readViaClassPath(String superClassName) throws IOException {
+
+    // first try the local file system
+    String localClassFile = sourceDirectory + "/" + superClassName.replace('.','/')+".class";
+    File classFile = new File(localClassFile);
+    if (classFile.exists()) {
+      return classFileReader.readClassFile(classFile);
+    }
+
+    // load via classpath
+    return classFileReader.readClassViaClassPath(superClassName);
+  }
+
+  /**
    * Read the raw class file getting the meta data (fields, annotations etc).
    */
   private void readClassMeta(File classFile) {
     try {
       EntityBeanPropertyReader classMeta = classFileReader.readClassFile(classFile);
-      logger.info("read class meta data for {}", classMeta.name);
-      classMetaData.add(classMeta);
+      if (classMeta.isInterestingClass()) {
+        logger.info("read class meta data for {}", classMeta.name);
+        classMetaData.add(classMeta);
+      } else {
+        logger.debug("... ignoring class {}", classMeta.name);
+      }
     } catch (Exception e) {
       throw new RuntimeException("Error transforming file " + classFile.getAbsolutePath(), e);
     }

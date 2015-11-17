@@ -20,6 +20,8 @@ public class EntityBeanPropertyReader extends ClassNode {
 
   protected static final Logger logger = LoggerFactory.getLogger(EntityBeanPropertyReader.class);
 
+  public static final String MAPPEDSUPERCLASS_ANNOTATION= "Ljavax/persistence/MappedSuperclass;";
+
   public static final String EMBEDDABLE_ANNOTATION= "Ljavax/persistence/Embeddable;";
 
   public static final String ENTITY_ANNOTATION = "Ljavax/persistence/Entity;";
@@ -93,7 +95,10 @@ public class EntityBeanPropertyReader extends ClassNode {
     if (!"java.lang.Object".equals(superClassName)) {
       // look for mappedSuperclass or inheritance etc
       EntityBeanPropertyReader superClass = generationMetaData.getSuperClass(superClassName);
-      if (superClass != null) {
+      if (superClass == null) {
+        logger.warn("... missing super type {}", superClassName);
+
+      } else {
         logger.debug("... super type {}", superClassName);
         superClass.addClassProperties(allFields, generationMetaData);
       }
@@ -151,6 +156,13 @@ public class EntityBeanPropertyReader extends ClassNode {
   }
 
   /**
+   * Return the superClass name.
+   */
+  public String getSuperClass() {
+    return superName;
+  }
+
+  /**
    * Return true if this is an Enum type.
    */
   public boolean isEnum() {
@@ -185,6 +197,26 @@ public class EntityBeanPropertyReader extends ClassNode {
     }
     return false;
   }
+
+  /**
+   * Return true if this is an Enum, Entity or related class.
+   */
+  public boolean isInterestingClass() {
+    if (isEnum()) {
+      return true;
+    }
+    if (visibleAnnotations != null) {
+      for (AnnotationNode annotation : visibleAnnotations) {
+        if (annotation.desc.equals(ENTITY_ANNOTATION)
+            || annotation.desc.equals(EMBEDDABLE_ANNOTATION)
+            || annotation.desc.equals(MAPPEDSUPERCLASS_ANNOTATION)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
 
   /**
    * Not interested in static, transient or Ebean internal fields.

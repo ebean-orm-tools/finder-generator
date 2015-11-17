@@ -4,7 +4,6 @@ import com.avaje.ebean.ExpressionList;
 import org.example.BaseTestCase;
 import org.example.domain.Contact;
 import org.example.domain.Country;
-import org.example.domain.Customer;
 import org.example.domain.Order;
 import org.example.domain.query.QContact;
 import org.example.domain.query.QCustomer;

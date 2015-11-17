@@ -123,10 +123,55 @@ public class Generator {
 
     generationMetaData.addAll(reader.getClassMetaData());
 
+    // load any MappedSuperclass that are in different packages etc
+    for (EntityBeanPropertyReader classMeta : generationMetaData.getAllEntities()) {
+      if (!classMeta.isEnum()) {
+        loadMappedSuper(classMeta, reader);
+      }
+    }
+
+    // actually generate the type query bean source
     for (EntityBeanPropertyReader classMeta : generationMetaData.getAllEntities()) {
       logger.info("generate for {}", classMeta.name);
       generateTypeQueryBeans(classMeta);
     }
+  }
+
+  /**
+   * Load the class metadata for MappedSuperclass that have not already been loaded.
+   */
+  private void loadMappedSuper(EntityBeanPropertyReader classMeta, MetaReader reader) {
+    String superClassName = asDotNotation(classMeta.getSuperClass());
+    if (!"java.lang.Object".equals(superClassName)) {
+      EntityBeanPropertyReader superClass = generationMetaData.getSuperClass(superClassName);
+      if (superClass == null) {
+        superClass = readViaClassPath(superClassName, reader);
+      }
+      if (superClass != null) {
+        loadMappedSuper(superClass, reader);
+      }
+    }
+  }
+
+  /**
+   * Load the class metadata for a given mapped superclass class.
+   */
+  private EntityBeanPropertyReader readViaClassPath(String superClassName, MetaReader reader) {
+
+    try {
+      EntityBeanPropertyReader classMeta = reader.readViaClassPath(superClassName);
+      generationMetaData.addClassMeta(classMeta);
+
+      return classMeta;
+
+    } catch (IOException e) {
+      logger.error("Error trying to read class metadata for "+superClassName, e);
+      return null;
+    }
+  }
+
+  protected String asDotNotation(String path) {
+    return path.replace('/', '.');
   }
 
   protected void generateManifest() throws IOException {

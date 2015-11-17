@@ -1,4 +1,4 @@
-package org.example.domain;
+package org.example.domain.other;
 
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.CreatedTimestamp;
@@ -23,16 +23,16 @@ import java.sql.Timestamp;
 public abstract class BaseModel extends Model {
 
   @Id
-  Long id;
+  protected Long id;
 
   @Version
-  Long version;
+  protected Long version;
 
   @CreatedTimestamp
-  Timestamp whenCreated;
+  protected Timestamp whenCreated;
 
   @UpdatedTimestamp
-  Timestamp whenUpdated;
+  protected Timestamp whenUpdated;
 
   public Long getId() {
     return id;

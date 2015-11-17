@@ -1,6 +1,8 @@
 package org.example.domain;
 
 import org.example.domain.finder.AddressFinder;
+import org.example.domain.other.BaseModel;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -15,7 +17,6 @@ import javax.validation.constraints.Size;
 public class Address extends BaseModel {
 
   public static final AddressFinder find = new AddressFinder();
-
 
   @Size(max = 100)
   String line1;

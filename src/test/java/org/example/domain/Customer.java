@@ -1,6 +1,7 @@
 package org.example.domain;
 
 import org.example.domain.finder.CustomerFinder;
+import org.example.domain.other.BaseModel;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

@@ -1,9 +1,7 @@
 package org.example.domain;
 
 import org.example.domain.finder.OrderFinder;
-import org.example.domain.finder.OrderFinder;
-import org.example.domain.finder.OrderFinder;
-import com.avaje.ebean.Model;
+import org.example.domain.other.BaseModel;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
