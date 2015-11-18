@@ -139,11 +139,9 @@ public class SimpleQueryBeanWriter {
    */
   protected void prepareAssocBeanImports() {
 
-    importTypes.remove(asDotNotation(classMeta.name));
     importTypes.remove("org.avaje.ebean.typequery.TQRootBean");
     importTypes.remove("com.avaje.ebean.EbeanServer");
     importTypes.add("org.avaje.ebean.typequery.TQAssocBean");
-    importTypes.add(getEntityBeanImport());
     if (classMeta.isEntity()) {
       importTypes.add("org.avaje.ebean.typequery.TQProperty");
       importTypes.add(origDestPackage + ".Q" + origShortName);
@@ -162,11 +160,6 @@ public class SimpleQueryBeanWriter {
         importsIterator.remove();
       }
     }
-
-  }
-
-  private String getEntityBeanImport() {
-    return classMeta.name.replaceAll("/", "\\.");
   }
 
   /**
