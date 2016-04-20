@@ -56,7 +56,6 @@ public class SimpleFinderWriter {
     this.shortName = deriveShortName(classMeta.name);
   }
 
-
   /**
    * Write the Finder.
    */
