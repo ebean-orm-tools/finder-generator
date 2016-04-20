@@ -41,6 +41,8 @@ public class SimpleFinderWriter {
 
   protected boolean addWhereMethod;
 
+  protected boolean addTextMethod;
+
   protected boolean addPublicMethods;
 
   public SimpleFinderWriter(GeneratorConfig config, EntityBeanPropertyReader classMeta, GenerationMetaData generationMetaData) {
@@ -49,6 +51,7 @@ public class SimpleFinderWriter {
     this.generationMetaData = generationMetaData;
     this.finderPackage = config.getDestFinderPackage();
     this.addWhereMethod = config.isAddFinderWhereMethod();
+    this.addTextMethod = config.isAddFinderTextMethod();
     this.addPublicMethods = config.isAddFinderWherePublic();
     this.shortName = deriveShortName(classMeta.name);
   }
@@ -130,9 +133,6 @@ public class SimpleFinderWriter {
   protected void writeMethods() throws IOException {
 
     if (addWhereMethod) {
-      /**
-       * Start a new typed query.
-       */
       writer.append(NEWLINE);
       writer.append("  /**").append(NEWLINE);
       writer.append("   * Start a new typed query.").append(NEWLINE);
@@ -140,6 +140,17 @@ public class SimpleFinderWriter {
       writer.append("  ").append(getModifier()).append(" Q").append(shortName).append(" where() {").append(NEWLINE);
       writer.append("     return new Q").append(shortName).append("(db());").append(NEWLINE);
       writer.append("  }").append(NEWLINE);
+
+      if (addTextMethod) {
+        // only added if where() is also added
+        writer.append(NEWLINE);
+        writer.append("  /**").append(NEWLINE);
+        writer.append("   * Start a new document store query.").append(NEWLINE);
+        writer.append("   */").append(NEWLINE);
+        writer.append("  ").append(getModifier()).append(" Q").append(shortName).append(" text() {").append(NEWLINE);
+        writer.append("     return new Q").append(shortName).append("(db()).text();").append(NEWLINE);
+        writer.append("  }").append(NEWLINE);
+      }
     }
   }
 

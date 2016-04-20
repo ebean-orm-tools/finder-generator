@@ -40,6 +40,8 @@ public class GeneratorConfig {
 
   boolean addFinderWhereMethod = true;
 
+  boolean addFinderTextMethod = true;
+
   boolean addFinderWherePublic;
 
   boolean overwriteExistingFinders;
@@ -218,6 +220,23 @@ public class GeneratorConfig {
    */
   public void setAddFinderWhereMethod(boolean addFinderWhereMethod) {
     this.addFinderWhereMethod = addFinderWhereMethod;
+  }
+
+  /**
+   * Return true if the text() method should be included on the generated finder.
+   * <p>
+   * This defaults to true.
+   * </p>
+   */
+  public boolean isAddFinderTextMethod() {
+    return addFinderTextMethod;
+  }
+
+  /**
+   * Set if the text() method should be included on the generated finder.
+   */
+  public void setAddFinderTextMethod(boolean addFinderTextMethod) {
+    this.addFinderTextMethod = addFinderTextMethod;
   }
 
   /**
