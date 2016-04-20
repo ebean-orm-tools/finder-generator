@@ -52,19 +52,19 @@ public class SimpleFinderLinkWriter {
   /**
    * Write the find field into the entity bean if we don't think it is there.
    */
-  public void write() throws IOException {
+  public boolean write() throws IOException {
 
     File file = getEntitySourceFile();
     if (!file.exists()) {
       logger.warn("Could not find entity bean source java file {}", file.getAbsoluteFile());
-      return;
+      return false;
     }
 
     String finderDefn = shortName + "Finder find = new " + shortName + "Finder();";
 
     if (checkForExistingFinder(file, finderDefn)) {
-      logger.warn("Existing find field on entity {}", shortName);
-      return;
+      logger.debug("... existing find field on entity {}", shortName);
+      return false;
     }
 
     String classDefn = "public class " + shortName + " ";
@@ -93,6 +93,7 @@ public class SimpleFinderLinkWriter {
 
     writer.flush();
     writer.close();
+    return true;
   }
 
   /**

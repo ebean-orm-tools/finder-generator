@@ -59,17 +59,17 @@ public class SimpleFinderWriter {
   /**
    * Write the Finder.
    */
-  public void write() throws IOException {
+  public boolean write() throws IOException {
 
     File file = createFile();
     if (file.exists() && !config.isOverwriteExistingFinders()) {
-      logger.debug("skip existing finder - {}", file.getAbsoluteFile());
-      return;
+      logger.debug("... skip existing finder - {}", file.getAbsoluteFile());
+      return false;
     }
 
     FieldNode idProperty = classMeta.getIdProperty(generationMetaData);
     if (idProperty == null) {
-      return;
+      return false;
     }
     String typeDesc = idProperty.desc.substring(1, idProperty.desc.length() - 1);
     Type objectType = Type.getObjectType(typeDesc);
@@ -96,6 +96,7 @@ public class SimpleFinderWriter {
     writeClassEnd();
     writer.flush();
     writer.close();
+    return true;
   }
 
   /**

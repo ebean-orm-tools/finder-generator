@@ -1,6 +1,7 @@
 package org.avaje.ebean.typequery.generator.read;
 
 import org.avaje.ebean.typequery.generator.GenerationMetaData;
+import org.avaje.ebean.typequery.generator.Generator;
 import org.avaje.ebean.typequery.generator.asm.FieldVisitor;
 import org.avaje.ebean.typequery.generator.asm.MethodVisitor;
 import org.avaje.ebean.typequery.generator.asm.Opcodes;
@@ -96,8 +97,9 @@ public class EntityBeanPropertyReader extends ClassNode {
       // look for mappedSuperclass or inheritance etc
       EntityBeanPropertyReader superClass = generationMetaData.getSuperClass(superClassName);
       if (superClass == null) {
-        logger.warn("... missing super type {}", superClassName);
-
+        if (!superClassName.equals(Generator.EBEAN_MODEL)) {
+          logger.warn("... missing super type {}", superClassName);
+        }
       } else {
         logger.debug("... super type {}", superClassName);
         superClass.addClassProperties(allFields, generationMetaData);

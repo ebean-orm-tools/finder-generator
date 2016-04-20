@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Reads meta data on entity beans by reading the .class files and generates
@@ -19,9 +21,19 @@ public class Generator {
 
   private static final Logger logger = LoggerFactory.getLogger(Generator.class);
 
+  public static final String EBEAN_MODEL = "com.avaje.ebean.Model";
+
   private final GeneratorConfig config;
 
   private final GenerationMetaData generationMetaData;
+
+  private boolean loadedMetaData;
+
+  private int queryBeanCount;
+
+  private Set<String> finders = new LinkedHashSet<>();
+
+  private Set<String> finderLinks = new LinkedHashSet<>();
 
   /**
    * Construct with configuration for reading and writing.
@@ -29,6 +41,35 @@ public class Generator {
   public Generator(GeneratorConfig config) {
     this.config = config;
     this.generationMetaData = new GenerationMetaData(config);
+  }
+
+  /**
+   * Return the set of entities loaded.
+   */
+  public Set<String> getLoadedEntities() {
+    loadMetaData();
+    return generationMetaData.getLoadedEntities();
+  }
+
+  /**
+   * Return the number of query beans generated.
+   */
+  public int getQueryBeanCount() {
+    return queryBeanCount;
+  }
+
+  /**
+   * Return the set of finders generated.
+   */
+  public Set<String> getFinders() {
+    return finders;
+  }
+
+  /**
+   * Return the set of finders linked to entity beans.
+   */
+  public Set<String> getFinderLinks() {
+    return finderLinks;
   }
 
   /**
@@ -86,9 +127,10 @@ public class Generator {
    */
   public void generateFinders() throws IOException {
 
+    loadMetaData();
+
     for (EntityBeanPropertyReader classMeta : generationMetaData.getAllEntities()) {
       if (classMeta.isEntity()) {
-        logger.info("generate finder for {}", classMeta.name);
         generateFinder(classMeta);
       }
     }
@@ -98,9 +140,11 @@ public class Generator {
    * For each of the entity beans add a finder field into them if they don't already have one.
    */
   public void modifyEntityBeansAddFinderField() throws IOException {
+
+    loadMetaData();
+
     for (EntityBeanPropertyReader classMeta : generationMetaData.getAllEntities()) {
       if (classMeta.isEntity()) {
-        logger.info("link finder for {}", classMeta.name);
         linkFinder(classMeta);
       }
     }
@@ -108,28 +152,41 @@ public class Generator {
 
   protected void generateFinder(EntityBeanPropertyReader classMeta) throws IOException {
     SimpleFinderWriter writer = new SimpleFinderWriter(config, classMeta, generationMetaData);
-    writer.write();
+    if (writer.write()) {
+      logger.debug("... generated finder for {}", classMeta.name);
+      finders.add(classMeta.name);
+    }
   }
 
   protected void linkFinder(EntityBeanPropertyReader classMeta) throws IOException {
     SimpleFinderLinkWriter writer = new SimpleFinderLinkWriter(config, classMeta);
-    writer.write();
+    if (writer.write()) {
+      logger.debug("... added link to finder for {}", classMeta.name);
+      finderLinks.add(classMeta.name);
+    }
+  }
+
+  protected void loadMetaData() {
+
+    if (!loadedMetaData) {
+      MetaReader reader = new MetaReader(config.getClassesDirectory());
+      reader.process(config.getEntityBeanPackage());
+
+      generationMetaData.addAll(reader.getClassMetaData());
+
+      // load any MappedSuperclass that are in different packages etc
+      for (EntityBeanPropertyReader classMeta : generationMetaData.getAllEntities()) {
+        if (!classMeta.isEnum()) {
+          loadMappedSuper(classMeta, reader);
+        }
+      }
+      loadedMetaData = true;
+    }
   }
 
   protected void generateBeans() throws IOException {
 
-    MetaReader reader = new MetaReader(config.getClassesDirectory());
-    reader.process(config.getEntityBeanPackage());
-
-    generationMetaData.addAll(reader.getClassMetaData());
-
-    // load any MappedSuperclass that are in different packages etc
-    for (EntityBeanPropertyReader classMeta : generationMetaData.getAllEntities()) {
-      if (!classMeta.isEnum()) {
-        loadMappedSuper(classMeta, reader);
-      }
-    }
-
+    loadMetaData();
     // actually generate the type query bean source
     for (EntityBeanPropertyReader classMeta : generationMetaData.getAllEntities()) {
       logger.info("generate for {}", classMeta.name);
@@ -159,9 +216,11 @@ public class Generator {
   private EntityBeanPropertyReader readViaClassPath(String superClassName, MetaReader reader) {
 
     try {
+      if (superClassName.equals(EBEAN_MODEL)) {
+        return null;
+      }
       EntityBeanPropertyReader classMeta = reader.readViaClassPath(superClassName);
       generationMetaData.addClassMeta(classMeta);
-
       return classMeta;
 
     } catch (IOException e) {
@@ -186,6 +245,7 @@ public class Generator {
     SimpleQueryBeanWriter writer = new SimpleQueryBeanWriter(config, classMeta, generationMetaData);
     writer.writeRootBean();
     writer.writeAssocBean();
+    queryBeanCount++;
   }
 
 }

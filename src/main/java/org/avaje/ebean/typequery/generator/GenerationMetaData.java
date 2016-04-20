@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Meta data gathered on the beans as part of the generation.
@@ -30,6 +31,13 @@ public class GenerationMetaData {
 
   public GenerationMetaData(GeneratorConfig config) {
     this.config = config;
+  }
+
+  /**
+   * Return the set of entities loaded.
+   */
+  public Set<String> getLoadedEntities() {
+    return entityMap.keySet();
   }
 
   /**
