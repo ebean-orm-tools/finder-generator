@@ -26,4 +26,11 @@ public class OrderFinder extends Finder<Long,Order> {
   protected QOrder where() {
      return new QOrder(db());
   }
+
+  /**
+   * Start a new document store query.
+   */
+  protected QOrder text() {
+     return new QOrder(db()).text();
+  }
 }

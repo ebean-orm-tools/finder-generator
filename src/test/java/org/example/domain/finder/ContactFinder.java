@@ -26,4 +26,11 @@ public class ContactFinder extends Finder<Long,Contact> {
   protected QContact where() {
      return new QContact(db());
   }
+
+  /**
+   * Start a new document store query.
+   */
+  protected QContact text() {
+     return new QContact(db()).text();
+  }
 }

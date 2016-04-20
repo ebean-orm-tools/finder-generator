@@ -26,4 +26,11 @@ public class ProductFinder extends Finder<Long,Product> {
   protected QProduct where() {
      return new QProduct(db());
   }
+
+  /**
+   * Start a new document store query.
+   */
+  protected QProduct text() {
+     return new QProduct(db()).text();
+  }
 }

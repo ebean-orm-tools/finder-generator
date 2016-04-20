@@ -26,4 +26,11 @@ public class CountryFinder extends Finder<String,Country> {
   protected QCountry where() {
      return new QCountry(db());
   }
+
+  /**
+   * Start a new document store query.
+   */
+  protected QCountry text() {
+     return new QCountry(db()).text();
+  }
 }

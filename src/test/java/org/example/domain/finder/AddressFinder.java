@@ -26,4 +26,11 @@ public class AddressFinder extends Finder<Long,Address> {
   protected QAddress where() {
      return new QAddress(db());
   }
+
+  /**
+   * Start a new document store query.
+   */
+  protected QAddress text() {
+     return new QAddress(db()).text();
+  }
 }

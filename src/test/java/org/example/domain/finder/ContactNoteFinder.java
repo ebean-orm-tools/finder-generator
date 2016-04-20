@@ -27,4 +27,11 @@ public class ContactNoteFinder extends Finder<UUID,ContactNote> {
   protected QContactNote where() {
      return new QContactNote(db());
   }
+
+  /**
+   * Start a new document store query.
+   */
+  protected QContactNote text() {
+     return new QContactNote(db()).text();
+  }
 }

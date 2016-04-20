@@ -26,4 +26,11 @@ public class OrderDetailFinder extends Finder<Long,OrderDetail> {
   protected QOrderDetail where() {
      return new QOrderDetail(db());
   }
+
+  /**
+   * Start a new document store query.
+   */
+  protected QOrderDetail text() {
+     return new QOrderDetail(db()).text();
+  }
 }
