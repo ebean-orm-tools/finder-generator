@@ -1,2 +1,2 @@
-# -avaje-ebeanorm-typequery-generator
-Code generator for  avaje-ebeanorm-typequery
+# finder-generator
+Generates "Finders" and can generate "query beans" from compiled classes
