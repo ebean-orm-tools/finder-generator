@@ -23,6 +23,7 @@ public class Order extends BaseModel {
 
   public static final OrderFinder find = new OrderFinder();
 
+
   public enum Status {
     NEW, APPROVED, SHIPPED, COMPLETE
   }

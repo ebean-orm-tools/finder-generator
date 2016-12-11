@@ -1,12 +1,12 @@
 package org.example.domain.query;
 
-import com.avaje.ebean.EbeanServer;
-import org.avaje.ebean.typequery.PDouble;
-import org.avaje.ebean.typequery.PInteger;
-import org.avaje.ebean.typequery.PLong;
-import org.avaje.ebean.typequery.PTimestamp;
-import org.avaje.ebean.typequery.TQRootBean;
-import org.avaje.ebean.typequery.TypeQueryBean;
+import io.ebean.EbeanServer;
+import io.ebean.typequery.PDouble;
+import io.ebean.typequery.PInteger;
+import io.ebean.typequery.PLong;
+import io.ebean.typequery.PTimestamp;
+import io.ebean.typequery.TQRootBean;
+import io.ebean.typequery.TypeQueryBean;
 import org.example.domain.OrderDetail;
 import org.example.domain.query.assoc.QAssocOrder;
 import org.example.domain.query.assoc.QAssocProduct;

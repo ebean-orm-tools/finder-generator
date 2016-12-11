@@ -1,14 +1,14 @@
 package org.example.domain.query.assoc;
 
-import org.avaje.ebean.typequery.PBoolean;
-import org.avaje.ebean.typequery.PEnum;
-import org.avaje.ebean.typequery.PLong;
-import org.avaje.ebean.typequery.PString;
-import org.avaje.ebean.typequery.PTimestamp;
-import org.avaje.ebean.typequery.PUtilDate;
-import org.avaje.ebean.typequery.TQAssocBean;
-import org.avaje.ebean.typequery.TQProperty;
-import org.avaje.ebean.typequery.TypeQueryBean;
+import io.ebean.typequery.PBoolean;
+import io.ebean.typequery.PEnum;
+import io.ebean.typequery.PLong;
+import io.ebean.typequery.PString;
+import io.ebean.typequery.PTimestamp;
+import io.ebean.typequery.PUtilDate;
+import io.ebean.typequery.TQAssocBean;
+import io.ebean.typequery.TQProperty;
+import io.ebean.typequery.TypeQueryBean;
 import org.example.domain.Customer;
 import org.example.domain.Customer.Status;
 import org.example.domain.query.QCustomer;

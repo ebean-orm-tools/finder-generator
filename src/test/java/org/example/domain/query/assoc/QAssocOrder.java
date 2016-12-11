@@ -1,12 +1,12 @@
 package org.example.domain.query.assoc;
 
-import org.avaje.ebean.typequery.PEnum;
-import org.avaje.ebean.typequery.PLong;
-import org.avaje.ebean.typequery.PSqlDate;
-import org.avaje.ebean.typequery.PTimestamp;
-import org.avaje.ebean.typequery.TQAssocBean;
-import org.avaje.ebean.typequery.TQProperty;
-import org.avaje.ebean.typequery.TypeQueryBean;
+import io.ebean.typequery.PEnum;
+import io.ebean.typequery.PLong;
+import io.ebean.typequery.PSqlDate;
+import io.ebean.typequery.PTimestamp;
+import io.ebean.typequery.TQAssocBean;
+import io.ebean.typequery.TQProperty;
+import io.ebean.typequery.TypeQueryBean;
 import org.example.domain.Order;
 import org.example.domain.Order.Status;
 import org.example.domain.query.QOrder;

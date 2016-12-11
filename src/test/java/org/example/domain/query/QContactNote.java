@@ -1,10 +1,10 @@
 package org.example.domain.query;
 
-import com.avaje.ebean.EbeanServer;
-import org.avaje.ebean.typequery.PString;
-import org.avaje.ebean.typequery.PUuid;
-import org.avaje.ebean.typequery.TQRootBean;
-import org.avaje.ebean.typequery.TypeQueryBean;
+import io.ebean.EbeanServer;
+import io.ebean.typequery.PString;
+import io.ebean.typequery.PUuid;
+import io.ebean.typequery.TQRootBean;
+import io.ebean.typequery.TypeQueryBean;
 import org.example.domain.ContactNote;
 import org.example.domain.query.assoc.QAssocContact;
 

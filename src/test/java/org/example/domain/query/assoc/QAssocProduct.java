@@ -1,13 +1,13 @@
 package org.example.domain.query.assoc;
 
-import org.avaje.ebean.typequery.PJodaDateTime;
-import org.avaje.ebean.typequery.PLong;
-import org.avaje.ebean.typequery.PMonth;
-import org.avaje.ebean.typequery.PString;
-import org.avaje.ebean.typequery.PTimestamp;
-import org.avaje.ebean.typequery.TQAssocBean;
-import org.avaje.ebean.typequery.TQProperty;
-import org.avaje.ebean.typequery.TypeQueryBean;
+import io.ebean.typequery.PJodaDateTime;
+import io.ebean.typequery.PLong;
+import io.ebean.typequery.PMonth;
+import io.ebean.typequery.PString;
+import io.ebean.typequery.PTimestamp;
+import io.ebean.typequery.TQAssocBean;
+import io.ebean.typequery.TQProperty;
+import io.ebean.typequery.TypeQueryBean;
 import org.example.domain.Product;
 import org.example.domain.query.QProduct;
 

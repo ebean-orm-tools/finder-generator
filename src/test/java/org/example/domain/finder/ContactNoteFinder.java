@@ -1,6 +1,6 @@
 package org.example.domain.finder;
 
-import com.avaje.ebean.Finder;
+import io.ebean.Finder;
 import java.util.UUID;
 import org.example.domain.ContactNote;
 import org.example.domain.query.QContactNote;

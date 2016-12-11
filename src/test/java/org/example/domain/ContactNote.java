@@ -1,6 +1,5 @@
 package org.example.domain;
 
-import org.example.domain.finder.ContactNoteFinder;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
@@ -10,7 +9,7 @@ import java.util.UUID;
 @Entity
 public class ContactNote {
 
-  public static final ContactNoteFinder find = new ContactNoteFinder();
+  //public static final ContactNoteFinder find = new ContactNoteFinder();
 
 
   @Id

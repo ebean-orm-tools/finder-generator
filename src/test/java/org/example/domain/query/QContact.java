@@ -1,11 +1,11 @@
 package org.example.domain.query;
 
-import com.avaje.ebean.EbeanServer;
-import org.avaje.ebean.typequery.PLong;
-import org.avaje.ebean.typequery.PString;
-import org.avaje.ebean.typequery.PTimestamp;
-import org.avaje.ebean.typequery.TQRootBean;
-import org.avaje.ebean.typequery.TypeQueryBean;
+import io.ebean.EbeanServer;
+import io.ebean.typequery.PLong;
+import io.ebean.typequery.PString;
+import io.ebean.typequery.PTimestamp;
+import io.ebean.typequery.TQRootBean;
+import io.ebean.typequery.TypeQueryBean;
 import org.example.domain.Contact;
 import org.example.domain.query.assoc.QAssocContactNote;
 import org.example.domain.query.assoc.QAssocCustomer;

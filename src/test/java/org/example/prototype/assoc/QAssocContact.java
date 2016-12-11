@@ -1,8 +1,8 @@
 package org.example.prototype.assoc;
 
-import org.avaje.ebean.typequery.PLong;
-import org.avaje.ebean.typequery.PString;
-import org.avaje.ebean.typequery.TQPath;
+import io.ebean.typequery.PLong;
+import io.ebean.typequery.PString;
+import io.ebean.typequery.TQPath;
 
 public class QAssocContact<R> {
 

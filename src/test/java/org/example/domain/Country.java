@@ -1,7 +1,5 @@
 package org.example.domain;
 
-//import org.example.domain.finder.CountryFinder;
-
 import org.example.domain.finder.CountryFinder;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;

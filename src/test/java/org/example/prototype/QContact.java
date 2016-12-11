@@ -1,8 +1,8 @@
 package org.example.prototype;
 
-import org.avaje.ebean.typequery.PLong;
-import org.avaje.ebean.typequery.PString;
-import org.avaje.ebean.typequery.TQRootBean;
+import io.ebean.typequery.PLong;
+import io.ebean.typequery.PString;
+import io.ebean.typequery.TQRootBean;
 import org.example.domain.Contact;
 import org.example.prototype.assoc.QAssocContactNote;
 

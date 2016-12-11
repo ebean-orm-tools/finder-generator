@@ -1,9 +1,9 @@
 package org.example.domain.query.assoc;
 
-import org.avaje.ebean.typequery.PString;
-import org.avaje.ebean.typequery.TQAssocBean;
-import org.avaje.ebean.typequery.TQProperty;
-import org.avaje.ebean.typequery.TypeQueryBean;
+import io.ebean.typequery.PString;
+import io.ebean.typequery.TQAssocBean;
+import io.ebean.typequery.TQProperty;
+import io.ebean.typequery.TypeQueryBean;
 import org.example.domain.Country;
 import org.example.domain.query.QCountry;
 

@@ -1,6 +1,6 @@
 package org.example.domain;
 
-import org.example.domain.finder.ContactFinder;
+//import org.example.domain.finder.ContactFinder;
 import org.example.domain.other.BaseModel;
 
 import javax.persistence.Column;
@@ -17,7 +17,7 @@ import java.util.List;
 @Table(name = "be_contact")
 public class Contact extends BaseModel {
 
-  public static final ContactFinder find = new ContactFinder();
+  //public static final ContactFinder find = new ContactFinder();
 
   @Column(length = 50)
   String firstName;
