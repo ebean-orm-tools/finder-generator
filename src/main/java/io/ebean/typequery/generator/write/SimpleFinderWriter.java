@@ -112,19 +112,7 @@ public class SimpleFinderWriter {
    */
   protected void writeConstructors() throws IOException {
 
-    writer.append("  /**").append(NEWLINE);
-    writer.append("   * Construct using the default EbeanServer.").append(NEWLINE);
-    writer.append("   */").append(NEWLINE);
-    writer.append("  public ").append(shortName).append("Finder() {").append(NEWLINE);
-    writer.append("    super(").append(shortName).append(".class);").append(NEWLINE);
-    writer.append("  }").append(NEWLINE);
-    writer.append(NEWLINE);
-    writer.append("  /**").append(NEWLINE);
-    writer.append("   * Construct with a given EbeanServer.").append(NEWLINE);
-    writer.append("   */").append(NEWLINE);
-    writer.append("  public ").append(shortName).append("Finder(String serverName) {").append(NEWLINE);
-    writer.append("    super(").append(shortName).append(".class, serverName);").append(NEWLINE);
-    writer.append("  }").append(NEWLINE);
+    config.lang().finderConstructors(writer, shortName);
   }
 
   /**
@@ -132,24 +120,11 @@ public class SimpleFinderWriter {
    */
   protected void writeMethods() throws IOException {
 
+    String modifier = getModifier();
     if (addWhereMethod) {
-      writer.append(NEWLINE);
-      writer.append("  /**").append(NEWLINE);
-      writer.append("   * Start a new typed query.").append(NEWLINE);
-      writer.append("   */").append(NEWLINE);
-      writer.append("  ").append(getModifier()).append(" Q").append(shortName).append(" where() {").append(NEWLINE);
-      writer.append("     return new Q").append(shortName).append("(db());").append(NEWLINE);
-      writer.append("  }").append(NEWLINE);
-
+      config.lang().finderWhere(writer, shortName, modifier);
       if (addTextMethod) {
-        // only added if where() is also added
-        writer.append(NEWLINE);
-        writer.append("  /**").append(NEWLINE);
-        writer.append("   * Start a new document store query.").append(NEWLINE);
-        writer.append("   */").append(NEWLINE);
-        writer.append("  ").append(getModifier()).append(" Q").append(shortName).append(" text() {").append(NEWLINE);
-        writer.append("     return new Q").append(shortName).append("(db()).text();").append(NEWLINE);
-        writer.append("  }").append(NEWLINE);
+        config.lang().finderText(writer, shortName, modifier);
       }
     }
   }
@@ -166,11 +141,7 @@ public class SimpleFinderWriter {
    */
   protected void writeClass() throws IOException {
 
-    //  public class QContact extends TQRootBean<Contact,QContact> {
-
-    writer.append("public class ").append("").append(shortName).append("Finder")
-        .append(" extends Finder<").append(idTypeShortName).append(",").append(shortName).append("> {").append(NEWLINE);
-
+    config.lang().finderClass(writer, shortName, idTypeShortName);
     writer.append(NEWLINE);
   }
 
@@ -184,13 +155,17 @@ public class SimpleFinderWriter {
   protected void writeImports() throws IOException {
 
     for (String importType : importTypes) {
-      writer.append("import ").append(importType).append(";").append(NEWLINE);
+      writer.append("import ").append(importType);
+      config.appendLangSemiColon(writer);
+      writer.append(NEWLINE);
     }
     writer.append(NEWLINE);
   }
 
   protected void writePackage() throws IOException {
-    writer.append("package ").append(finderPackage).append(";").append(NEWLINE).append(NEWLINE);
+    writer.append("package ").append(finderPackage);
+    config.appendLangSemiColon(writer);
+    writer.append(NEWLINE).append(NEWLINE);
   }
 
   protected File createFile() throws IOException {
@@ -205,7 +180,7 @@ public class SimpleFinderWriter {
       logger.error("Failed to create directory [{}] for generated code", packageDir.getAbsoluteFile());
     }
 
-    String fileName = shortName + "Finder.java";
+    String fileName = shortName + "Finder."+config.getLang();
     return new File(packageDir, fileName);
   }
 

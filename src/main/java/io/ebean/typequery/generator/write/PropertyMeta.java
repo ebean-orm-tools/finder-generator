@@ -26,6 +26,10 @@ public class PropertyMeta {
     this.type = type;
   }
 
+  public String getName() {
+    return name;
+  }
+
   /**
    * Return true if this is an associated bean property (OneToMany, ManyToOne etc).
    */

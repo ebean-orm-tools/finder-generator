@@ -60,14 +60,14 @@ public class SimpleFinderLinkWriter {
       return false;
     }
 
-    String finderDefn = shortName + "Finder find = new " + shortName + "Finder();";
+    String finderDefn = config.lang().finderDefn(shortName);
 
     if (checkForExistingFinder(file, finderDefn)) {
       logger.debug("... existing find field on entity {}", shortName);
       return false;
     }
 
-    String classDefn = "public class " + shortName + " ";
+    String classDefn = "class " + shortName + " ";
 
     FileWriter writer = new FileWriter(file, false);
 
@@ -76,19 +76,46 @@ public class SimpleFinderLinkWriter {
 
     // loop the existing source and write it again including the
     // import and the finder field
-    for (String sourceLine : existingSource) {
+
+    boolean javaLang = config.isJava();
+
+    int size = existingSource.size();
+    for (int i = 0; i < size; i++) {
+      String sourceLine = existingSource.get(i);
 
       if (!addedImport && sourceLine.startsWith("import ")) {
-        writer.append("import ").append(finderPackage).append(".").append(shortName).append("Finder;");
+        writer.append("import ").append(finderPackage).append(".").append(shortName).append("Finder");
+        config.appendLangSemiColon(writer);
         writer.append(newLine);
         addedImport = true;
       }
-      writer.append(sourceLine).append(newLine);
-      if (!addedField && sourceLine.startsWith(classDefn)) {
-        writer.append(newLine);
-        writer.append("  public static final ").append(finderDefn).append(newLine);
-        addedField = true;
+
+      if (javaLang) {
+        writer.append(sourceLine).append(newLine);
+        if (!addedField && sourceLine.startsWith(classDefn)) {
+          writer.append(newLine);
+          writer.append("  public static final ").append(finderDefn).append(newLine);
+          addedField = true;
+        }
+      } else {
+        boolean atEnd = (size - i < 2);
+        if (!addedField && atEnd && sourceLine.trim().equals("}")) {
+          // Add Kotlin companion prior to last
+          addedField = true;
+          writer.append(newLine);
+          writer.append("  ").append(finderDefn).append(newLine);
+          writer.append(sourceLine).append(newLine);
+        } else {
+          writer.append(sourceLine).append(newLine);
+        }
       }
+    }
+
+    if (!addedField && !javaLang) {
+      // Kotlin with no final "}"
+      writer.append(newLine);
+      writer.append("{  ").append(finderDefn).append(newLine);
+      writer.append("}").append(newLine);
     }
 
     writer.flush();
@@ -139,7 +166,7 @@ public class SimpleFinderLinkWriter {
 
     File packageDir = new File(destDir, packageAsDir);
 
-    String fileName = shortName + ".java";
+    String fileName = shortName + "." + config.getLang();
     return new File(packageDir, fileName);
   }
 

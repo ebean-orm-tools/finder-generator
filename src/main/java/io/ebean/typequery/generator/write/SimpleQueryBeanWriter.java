@@ -180,63 +180,14 @@ public class SimpleQueryBeanWriter {
    */
   protected void writeRootBeanConstructor() throws IOException {
 
-    writer.append(NEWLINE);
-    writer.append("  /**").append(NEWLINE);
-    writer.append("   * Construct with a given EbeanServer.").append(NEWLINE);
-    writer.append("   */").append(NEWLINE);
-    writer.append("  public Q").append(shortName).append("(EbeanServer server) {").append(NEWLINE);
-    writer.append("    super(").append(shortName).append(".class, server);").append(NEWLINE);
-    writer.append("  }").append(NEWLINE);
-    writer.append(NEWLINE);
+    config.lang().rootBeanConstructor(writer, shortName);
 
-    if (config.isAopStyle()) {
-      writer.append("  /**").append(NEWLINE);
-      writer.append("   * Construct using the default EbeanServer.").append(NEWLINE);
-      writer.append("   */").append(NEWLINE);
-      writer.append("  public Q").append(shortName).append("() {").append(NEWLINE);
-      writer.append("    super(").append(shortName).append(".class);").append(NEWLINE);
-      writer.append("  }").append(NEWLINE);
 
-    } else {
-      // verbose manual style requiring manual depth control (non-AOP)
-      writer.append("  public Q").append(shortName).append("() {").append(NEWLINE);
-      writer.append("    this(").append(String.valueOf(config.getMaxPathTraversalDepth())).append(");").append(NEWLINE);
-      writer.append("  }").append(NEWLINE);
-
-      writer.append("  public Q").append(shortName).append("(int maxDepth) {").append(NEWLINE);
-      writer.append("    super(").append(shortName).append(".class);").append(NEWLINE);
-      writer.append("    setRoot(this);").append(NEWLINE);
-
-      for (PropertyMeta property : properties) {
-        property.writeConstructorSimple(writer, shortName, false);
-      }
-
-      for (PropertyMeta property : properties) {
-        property.writeConstructorAssoc(writer, shortName, false);
-      }
-      writer.append("  }").append(NEWLINE);
-    }
-
-    writer.append(NEWLINE);
-    writer.append("  /**").append(NEWLINE);
-    writer.append("   * Construct for Alias.").append(NEWLINE);
-    writer.append("   */").append(NEWLINE);
-    writer.append("  private Q").append(shortName).append("(boolean dummy) {").append(NEWLINE);
-    writer.append("    super(dummy);").append(NEWLINE);
-    writer.append("  }").append(NEWLINE);
   }
 
   protected void writeAssocBeanFetch() throws IOException {
-
     if (classMeta.isEntity()) {
-      writer.append("  /**").append(NEWLINE);
-      writer.append("   * Eagerly fetch this association loading the specified properties.").append(NEWLINE);
-      writer.append("   */").append(NEWLINE);
-      writer.append("  @SafeVarargs").append(NEWLINE);
-      writer.append("  public final R fetch(TQProperty<Q").append(origShortName).append(">... properties) {").append(NEWLINE);
-      writer.append("    return fetchProperties(properties);").append(NEWLINE);
-      writer.append("  }").append(NEWLINE);
-      writer.append(NEWLINE);
+      config.lang().fetch(writer, origShortName);
     }
   }
 
@@ -244,34 +195,7 @@ public class SimpleQueryBeanWriter {
    * Write constructor for 'assoc' type query bean.
    */
   protected void writeAssocBeanConstructor() throws IOException {
-
-    if (config.isAopStyle()) {
-      // minimal constructor
-      writer.append("  public Q").append(shortName).append("(String name, R root) {").append(NEWLINE);
-      writer.append("    super(name, root);").append(NEWLINE);
-      writer.append("  }").append(NEWLINE);
-
-    } else {
-      // generate the constructor for non-AOP manual/verbose style
-      writer.append("  public Q").append(shortName).append("(String name, R root, int depth) {").append(NEWLINE);
-      writer.append("    this(name, root, null, depth);").append(NEWLINE);
-      writer.append("  }").append(NEWLINE);
-
-      writer.append("  public Q").append(shortName).append("(String name, R root, String prefix, int depth) {").append(NEWLINE);
-      writer.append("    super(name, root, prefix);").append(NEWLINE);
-      writer.append("    String path = TQPath.add(prefix, name);").append(NEWLINE);
-      for (PropertyMeta property : properties) {
-        property.writeConstructorSimple(writer, shortName, true);
-      }
-      if (hasAssocProperties()) {
-        writer.append("    if (--depth > 0) {").append(NEWLINE);
-        for (PropertyMeta property : properties) {
-          property.writeConstructorAssoc(writer, shortName, true);
-        }
-        writer.append("    }").append(NEWLINE);
-      }
-      writer.append("  }").append(NEWLINE);
-    }
+    config.lang().assocBeanConstructor(writer, shortName);
   }
 
   /**
@@ -292,7 +216,8 @@ public class SimpleQueryBeanWriter {
   protected void writeFields() throws IOException {
 
     for (PropertyMeta property : properties) {
-      property.writeFieldDefn(writer, shortName, writingAssocBean);
+      String typeDefn = property.getTypeDefn(shortName, writingAssocBean);
+      config.lang().fieldDefn(writer, property.getName(), typeDefn);
       writer.append(NEWLINE);
     }
     writer.append(NEWLINE);
@@ -311,8 +236,7 @@ public class SimpleQueryBeanWriter {
       writer.append(" */").append(NEWLINE);
       //public class QAssocContact<R>
       writer.append("@TypeQueryBean").append(NEWLINE);
-      writer.append("public class ").append("Q").append(shortName);
-      writer.append("<R> extends TQAssocBean<").append(origShortName).append(",R> {").append(NEWLINE);
+      config.lang().beginAssocClass(writer, shortName, origShortName);
 
     } else {
       writer.append("/**").append(NEWLINE);
@@ -322,8 +246,7 @@ public class SimpleQueryBeanWriter {
       writer.append(" */").append(NEWLINE);
       //  public class QContact extends TQRootBean<Contact,QContact> {
       writer.append("@TypeQueryBean").append(NEWLINE);
-      writer.append("public class ").append("Q").append(shortName)
-          .append(" extends TQRootBean<").append(shortName).append(",Q").append(shortName).append("> {").append(NEWLINE);
+      config.lang().beginClass(writer, shortName);
     }
 
     writer.append(NEWLINE);
@@ -331,18 +254,7 @@ public class SimpleQueryBeanWriter {
 
   protected void writeAlias() throws IOException {
     if (!writingAssocBean) {
-      writer.append("  private static final Q").append(shortName).append(" _alias = new Q");
-      writer.append(shortName).append("(true);").append(NEWLINE);
-      writer.append(NEWLINE);
-
-      writer.append("  /**").append(NEWLINE);
-      writer.append("   * Return the shared 'Alias' instance used to provide properties to ").append(NEWLINE);
-      writer.append("   * <code>select()</code> and <code>fetch()</code> ").append(NEWLINE);
-      writer.append("   */").append(NEWLINE);
-      writer.append("  public static Q").append(shortName).append(" alias() {").append(NEWLINE);
-      writer.append("    return _alias;").append(NEWLINE);
-      writer.append("  }").append(NEWLINE);
-      writer.append(NEWLINE);
+      config.lang().alias(writer, shortName);
     }
   }
 
@@ -356,13 +268,17 @@ public class SimpleQueryBeanWriter {
   protected void writeImports() throws IOException {
 
     for (String importType : importTypes) {
-      writer.append("import ").append(importType).append(";").append(NEWLINE);
+      writer.append("import ").append(importType);
+      config.appendLangSemiColon(writer);
+      writer.append(NEWLINE);
     }
     writer.append(NEWLINE);
   }
 
   protected void writePackage() throws IOException {
-    writer.append("package ").append(destPackage).append(";").append(NEWLINE).append(NEWLINE);
+    writer.append("package ").append(destPackage);
+    config.appendLangSemiColon(writer);
+    writer.append(NEWLINE).append(NEWLINE);
   }
 
 
@@ -378,7 +294,7 @@ public class SimpleQueryBeanWriter {
       logger.error("Failed to create directory [{}] for generated code", packageDir.getAbsoluteFile());
     }
 
-    String fileName = "Q"+shortName+".java";
+    String fileName = "Q"+shortName+"." + config.getLang();
     File dest = new File(packageDir, fileName);
 
     logger.info("writing {}", dest.getAbsolutePath());

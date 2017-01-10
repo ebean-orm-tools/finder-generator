@@ -1,5 +1,12 @@
 package io.ebean.typequery.generator;
 
+import io.ebean.typequery.generator.write.JavaLangAdapter;
+import io.ebean.typequery.generator.write.KotlinLangAdapter;
+import io.ebean.typequery.generator.write.LangAdapter;
+
+import java.io.IOException;
+import java.io.Writer;
+
 /**
  * Configuration for the code generation.
  *
@@ -19,6 +26,8 @@ package io.ebean.typequery.generator;
  * }</pre>
  */
 public class GeneratorConfig {
+
+  String lang = "java";
 
   /**
    * The directory where the compiled classes are found.
@@ -52,6 +61,37 @@ public class GeneratorConfig {
    * The maximum path depth allowed in the generated code (non AOP manual style).
    */
   int maxPathTraversalDepth = 4;
+
+  LangAdapter languageAdapter = new JavaLangAdapter();
+
+  /**
+   * Return the language.
+   */
+  public String getLang() {
+    return lang;
+  }
+
+  /**
+   * Set the language;
+   */
+  public void setLang(String lang) {
+    this.lang = lang;
+    this.languageAdapter = new KotlinLangAdapter();
+  }
+
+  /**
+   * Return true if we are generating Java.
+   */
+  public boolean isJava() {
+    return "java".equals(lang);
+  }
+
+  /**
+   * Return true if we are generating Kotlin.
+   */
+  public boolean isKotlin() {
+    return "kt".equals(lang);
+  }
 
   /**
    * Return the directory path to the compiled classes.
@@ -312,5 +352,15 @@ public class GeneratorConfig {
    */
   public void setAopStyle(boolean aopStyle) {
     this.aopStyle = aopStyle;
+  }
+
+  public void appendLangSemiColon(Writer writer) throws IOException {
+    if (isJava()) {
+      writer.append(";");
+    }
+  }
+
+  public LangAdapter lang() {
+    return languageAdapter;
   }
 }
