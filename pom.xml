@@ -4,7 +4,7 @@
 
   <groupId>io.ebean.tools</groupId>
   <artifactId>finder-generator</artifactId>
-  <version>3.1.2-SNAPSHOT</version>
+  <version>4.1.1-SNAPSHOT</version>
 
   <parent>
     <groupId>org.avaje</groupId>
