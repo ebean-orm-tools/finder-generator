@@ -4,7 +4,7 @@
 
   <groupId>io.ebean.tools</groupId>
   <artifactId>finder-generator</artifactId>
-  <version>4.2.1</version>
+  <version>4.2.2-SNAPSHOT</version>
 
   <parent>
     <groupId>org.avaje</groupId>
@@ -14,7 +14,7 @@
 
   <scm>
     <developerConnection>scm:git:https://github.com/ebean-orm-tools/finder-generator.git</developerConnection>
-    <tag>finder-generator-4.2.1</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <properties>
