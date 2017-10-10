@@ -71,9 +71,8 @@ public class SimpleFinderWriter {
     if (idProperty == null) {
       return false;
     }
-    String typeDesc = idProperty.desc.substring(1, idProperty.desc.length() - 1);
-    Type objectType = Type.getObjectType(typeDesc);
-    String className = objectType.getClassName();
+    Type idType = idObjectType(idProperty.desc);
+    String className = idType.getClassName();
     if (!className.startsWith("java.lang.")) {
       importTypes.add(className);
     }
@@ -99,12 +98,13 @@ public class SimpleFinderWriter {
     return true;
   }
 
-  /**
-   * Return the short name for the given class name.
-   */
-  private String getShortName(String className) {
-    int pos = className.lastIndexOf('.');
-    return pos == -1 ? className : className.substring(pos + 1);
+  private Type idObjectType(String desc) {
+    if (desc.length() == 1) {
+      Type primitiveType = Type.getType(desc);
+      return PrimitiveHelper.getObjectWrapper(primitiveType);
+    } else {
+      return Type.getObjectType(desc.substring(1, desc.length() - 1));
+    }
   }
 
   /**
@@ -113,6 +113,14 @@ public class SimpleFinderWriter {
   protected void writeConstructors() throws IOException {
 
     config.lang().finderConstructors(writer, shortName);
+  }
+
+  /**
+   * Return the short name for the given class name.
+   */
+  private String getShortName(String className) {
+    int pos = className.lastIndexOf('.');
+    return pos == -1 ? className : className.substring(pos + 1);
   }
 
   /**
