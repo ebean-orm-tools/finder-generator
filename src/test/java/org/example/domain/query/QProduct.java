@@ -5,7 +5,6 @@ import io.ebean.typequery.PJodaDateTime;
 import io.ebean.typequery.PLong;
 import io.ebean.typequery.PMonth;
 import io.ebean.typequery.PString;
-import io.ebean.typequery.PTimestamp;
 import io.ebean.typequery.TQRootBean;
 import io.ebean.typequery.TypeQueryBean;
 import org.example.domain.Product;
@@ -29,9 +28,6 @@ public class QProduct extends TQRootBean<Product,QProduct> {
   }
 
   public PLong<QProduct> id;
-  public PLong<QProduct> version;
-  public PTimestamp<QProduct> whenCreated;
-  public PTimestamp<QProduct> whenUpdated;
   public PString<QProduct> sku;
   public PString<QProduct> name;
   public PJodaDateTime<QProduct> jdDateTime;

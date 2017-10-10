@@ -4,7 +4,6 @@ import io.ebean.typequery.PJodaDateTime;
 import io.ebean.typequery.PLong;
 import io.ebean.typequery.PMonth;
 import io.ebean.typequery.PString;
-import io.ebean.typequery.PTimestamp;
 import io.ebean.typequery.TQAssocBean;
 import io.ebean.typequery.TQProperty;
 import io.ebean.typequery.TypeQueryBean;
@@ -20,9 +19,6 @@ import org.example.domain.query.QProduct;
 public class QAssocProduct<R> extends TQAssocBean<Product,R> {
 
   public PLong<R> id;
-  public PLong<R> version;
-  public PTimestamp<R> whenCreated;
-  public PTimestamp<R> whenUpdated;
   public PString<R> sku;
   public PString<R> name;
   public PJodaDateTime<R> jdDateTime;

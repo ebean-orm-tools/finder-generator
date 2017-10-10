@@ -17,7 +17,6 @@ public class KotlinLangAdapter implements LangAdapter {
   public void beginAssocClass(FileWriter writer, String shortName, String origShortName) throws IOException {
     writer.append("class ").append("Q").append(shortName);
     writer.append("<R>(name: String, root: R) : TQAssocBean<").append(origShortName).append(",R>(name, root) {").append(NEWLINE);
-
   }
 
   @Override
@@ -78,19 +77,7 @@ public class KotlinLangAdapter implements LangAdapter {
   @Override
   public void finderConstructors(FileWriter writer, String shortName) throws IOException {
 
-
-    writer.append("  val alias = Q").append(shortName).append("._alias")
-        .append(NEWLINE).append(NEWLINE);
-
-    writer.append("  /**").append(NEWLINE);
-    writer.append("   * Construct using the default EbeanServer.").append(NEWLINE);
-    writer.append("   */").append(NEWLINE);
-    writer.append("  constructor() : super(").append(shortName).append("::class.java)").append(NEWLINE);
-    writer.append(NEWLINE);
-    writer.append("  /**").append(NEWLINE);
-    writer.append("   * Construct with a given EbeanServer.").append(NEWLINE);
-    writer.append("   */").append(NEWLINE);
-    writer.append("  constructor(serverName: String) : super(").append(shortName).append("::class.java, serverName)").append(NEWLINE);
+    writer.append("  val alias = Q").append(shortName).append("._alias").append(NEWLINE);
   }
 
   @Override
@@ -117,12 +104,16 @@ public class KotlinLangAdapter implements LangAdapter {
 
   @Override
   public void finderClass(FileWriter writer, String shortName, String idTypeShortName) throws IOException {
+
+    //open class AddressFinder : Finder<Long, Address>(Address::class.java) {
+
     writer.append("open class ").append("").append(shortName).append("Finder")
-        .append(" : Finder<").append(idTypeShortName).append(",").append(shortName).append("> {").append(NEWLINE);
+        .append(" : Finder<").append(idTypeShortName).append(", ")
+        .append(shortName).append(">(").append(shortName).append("::class.java) {").append(NEWLINE);
   }
 
   @Override
   public String finderDefn(String shortName) {
-    return "companion object : " + shortName + "Finder()";
+    return "companion object Find : " + shortName + "Finder()";
   }
 }

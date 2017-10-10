@@ -60,9 +60,10 @@ public class SimpleFinderLinkWriter {
       return false;
     }
 
+    String searchDefn = shortName+"Finder()";
     String finderDefn = config.lang().finderDefn(shortName);
 
-    if (checkForExistingFinder(file, finderDefn)) {
+    if (checkForExistingFinder(file, searchDefn)) {
       logger.debug("... existing find field on entity {}", shortName);
       return false;
     }
@@ -90,32 +91,16 @@ public class SimpleFinderLinkWriter {
         addedImport = true;
       }
 
-      if (javaLang) {
-        writer.append(sourceLine).append(newLine);
-        if (!addedField && sourceLine.startsWith(classDefn)) {
-          writer.append(newLine);
+      writer.append(sourceLine).append(newLine);
+      if (!addedField && sourceLine.contains(classDefn)) {
+        writer.append(newLine);
+        if (javaLang) {
           writer.append("  public static final ").append(finderDefn).append(newLine);
-          addedField = true;
-        }
-      } else {
-        boolean atEnd = (size - i < 2);
-        if (!addedField && atEnd && sourceLine.trim().equals("}")) {
-          // Add Kotlin companion prior to last
-          addedField = true;
-          writer.append(newLine);
-          writer.append("  ").append(finderDefn).append(newLine);
-          writer.append(sourceLine).append(newLine);
         } else {
-          writer.append(sourceLine).append(newLine);
+          writer.append("  ").append(finderDefn).append(newLine);
         }
+        addedField = true;
       }
-    }
-
-    if (!addedField && !javaLang) {
-      // Kotlin with no final "}"
-      writer.append(newLine);
-      writer.append("{  ").append(finderDefn).append(newLine);
-      writer.append("}").append(newLine);
     }
 
     writer.flush();
