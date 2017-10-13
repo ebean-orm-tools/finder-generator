@@ -68,7 +68,7 @@ public class SimpleFinderLinkWriter {
       return false;
     }
 
-    String classDefn = "class " + shortName + " ";
+    String classDefn = "public class " + shortName + " ";
 
     FileWriter writer = new FileWriter(file, false);
 
