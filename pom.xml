@@ -18,7 +18,7 @@
   </scm>
 
   <properties>
-    <kotlin.version>1.0.6</kotlin.version>
+    <kotlin.version>1.1.51</kotlin.version>
   </properties>
 
   <dependencies>
@@ -69,6 +69,13 @@
       <artifactId>avaje-composite-testing-ebean</artifactId>
       <version>4.1</version>
       <type>pom</type>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.2.3</version>
       <scope>test</scope>
     </dependency>
 

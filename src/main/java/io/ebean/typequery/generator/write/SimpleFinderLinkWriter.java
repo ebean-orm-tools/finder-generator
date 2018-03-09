@@ -41,12 +41,17 @@ public class SimpleFinderLinkWriter {
    */
   protected String newLine = "\n";
 
+  private final String classDefnSpace;
+  private final String classDefnBracket;
+
   public SimpleFinderLinkWriter(GeneratorConfig config, EntityBeanPropertyReader classMeta) {
     this.config = config;
     this.classMeta = classMeta;
     this.entityBeanPackage = config.getEntityBeanPackage();
     this.finderPackage = config.getDestFinderPackage();
     this.shortName = deriveShortName(classMeta.name);
+    this.classDefnSpace = "class " + shortName + " ";
+    this.classDefnBracket = "class " + shortName + "(";
   }
 
   /**
@@ -68,7 +73,6 @@ public class SimpleFinderLinkWriter {
       return false;
     }
 
-    String classDefn = "class " + shortName + " ";
 
     FileWriter writer = new FileWriter(file, false);
 
@@ -92,7 +96,7 @@ public class SimpleFinderLinkWriter {
       }
 
       writer.append(sourceLine).append(newLine);
-      if (!addedField && sourceLine.contains(classDefn)) {
+      if (!addedField && sourceLineContainsClassDefn(sourceLine)) {
         writer.append(newLine);
         if (javaLang) {
           writer.append("  public static final ").append(finderDefn).append(newLine);
@@ -106,6 +110,13 @@ public class SimpleFinderLinkWriter {
     writer.flush();
     writer.close();
     return true;
+  }
+
+  /**
+   * Match for RHS space (Java mostly) pr open bracket (Kotlin).
+   */
+  boolean sourceLineContainsClassDefn(String sourceLine) {
+    return sourceLine.contains(classDefnBracket) || sourceLine.contains(classDefnSpace);
   }
 
   /**
