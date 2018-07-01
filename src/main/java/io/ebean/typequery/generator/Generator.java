@@ -4,7 +4,6 @@ import io.ebean.typequery.generator.read.EntityBeanPropertyReader;
 import io.ebean.typequery.generator.read.MetaReader;
 import io.ebean.typequery.generator.write.SimpleFinderLinkWriter;
 import io.ebean.typequery.generator.write.SimpleFinderWriter;
-import io.ebean.typequery.generator.write.SimpleManifestWriter;
 import io.ebean.typequery.generator.write.SimpleQueryBeanWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,9 +118,7 @@ public class Generator {
    * }</pre>
    */
   public void generateQueryBeans() throws IOException {
-
     generateBeans();
-    generateManifest();
   }
 
   /**
@@ -238,11 +235,6 @@ public class Generator {
 
   protected String asDotNotation(String path) {
     return path.replace('/', '.');
-  }
-
-  protected void generateManifest() throws IOException {
-    SimpleManifestWriter writer = new SimpleManifestWriter(config);
-    writer.write();
   }
 
   protected void generateTypeQueryBeans(EntityBeanPropertyReader classMeta) throws IOException {
