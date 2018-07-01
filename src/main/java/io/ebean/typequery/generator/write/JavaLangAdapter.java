@@ -5,6 +5,26 @@ import java.io.IOException;
 
 public class JavaLangAdapter implements LangAdapter {
 
+	private boolean finderConstructorForNamedServer;
+
+	public JavaLangAdapter() {
+		String namedEnv = System.getenv("EBEAN_FINDER_NAMEDSERVER");
+		if ("true".equalsIgnoreCase(namedEnv)) {
+			finderConstructorForNamedServer = true;
+		}
+		String namedProp = System.getProperty("finder.namedServer");
+		if ("true".equalsIgnoreCase(namedProp)) {
+			finderConstructorForNamedServer = true;
+		}
+	}
+
+	/**
+	 * Turn on finder constructor for named servers.
+	 */
+	public void setFinderConstructorForNamedServer(boolean finderConstructorForNamedServer) {
+		this.finderConstructorForNamedServer = finderConstructorForNamedServer;
+	}
+
 	@Override
 	public void beginClass(FileWriter writer, String shortName) throws IOException {
 		writer.append("public class ").append("Q").append(shortName)
@@ -99,13 +119,14 @@ public class JavaLangAdapter implements LangAdapter {
 		writer.append("    super(").append(shortName).append(".class);").append(NEWLINE);
 		writer.append("  }").append(NEWLINE);
 		writer.append(NEWLINE);
-		writer.append("  /**").append(NEWLINE);
-		writer.append("   * Construct with a given EbeanServer.").append(NEWLINE);
-		writer.append("   */").append(NEWLINE);
-		writer.append("  public ").append(shortName).append("Finder(String serverName) {").append(NEWLINE);
-		writer.append("    super(").append(shortName).append(".class, serverName);").append(NEWLINE);
-		writer.append("  }").append(NEWLINE);
-
+		if (finderConstructorForNamedServer) {
+			writer.append("  /**").append(NEWLINE);
+			writer.append("   * Construct with a given EbeanServer.").append(NEWLINE);
+			writer.append("   */").append(NEWLINE);
+			writer.append("  public ").append(shortName).append("Finder(String serverName) {").append(NEWLINE);
+			writer.append("    super(").append(shortName).append(".class, serverName);").append(NEWLINE);
+			writer.append("  }").append(NEWLINE);
+		}
 	}
 
 	@Override
