@@ -2,6 +2,7 @@ package io.ebean.typequery.generator;
 
 import io.ebean.typequery.generator.read.EntityBeanPropertyReader;
 import io.ebean.typequery.generator.write.PropertyType;
+import io.ebean.typequery.generator.write.PropertyTypeArray;
 import io.ebean.typequery.generator.write.PropertyTypeAssoc;
 import io.ebean.typequery.generator.write.PropertyTypeEnum;
 import io.ebean.typequery.generator.write.PropertyTypeMap;
@@ -66,6 +67,11 @@ public class GenerationMetaData {
 
     if (EntityBeanPropertyReader.dbJsonField(field)) {
       return propertyMap.getDbJsonType();
+    }
+
+    if (EntityBeanPropertyReader.dbArrayField(field)) {
+      String collectParamType = deriveCollectionParameterType(field.signature);
+      return new PropertyTypeArray(collectParamType, deriveShortName(collectParamType));
     }
 
     EntityBeanPropertyReader anEnum = enumMap.get(fieldTypeClassName);
