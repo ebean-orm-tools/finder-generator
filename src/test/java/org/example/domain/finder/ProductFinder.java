@@ -13,12 +13,6 @@ public class ProductFinder extends Finder<Long,Product> {
     super(Product.class);
   }
 
-  /**
-   * Construct with a given EbeanServer.
-   */
-  public ProductFinder(String serverName) {
-    super(Product.class, serverName);
-  }
 
   /**
    * Start a new typed query.
