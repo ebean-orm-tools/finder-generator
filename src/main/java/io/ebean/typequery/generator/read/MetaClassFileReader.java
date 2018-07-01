@@ -1,6 +1,6 @@
 package io.ebean.typequery.generator.read;
 
-import io.ebean.typequery.generator.asm.ClassReader;
+import org.objectweb.asm.ClassReader;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -15,68 +15,68 @@ import java.io.InputStream;
 public class MetaClassFileReader {
 
 
-	/**
-	 * Read a class classFile and return the EntityBeanPropertyReader.
-	 */
-	public EntityBeanPropertyReader readClassViaClassPath(String className) throws IOException {
+  /**
+   * Read a class classFile and return the EntityBeanPropertyReader.
+   */
+  public EntityBeanPropertyReader readClassViaClassPath(String className) throws IOException {
 
-		ClassLoader classLoader = this.getClass().getClassLoader();
-		InputStream is = classLoader.getResourceAsStream(className.replace('.', '/') + ".class");
-		if (is == null) {
-			throw new IOException("No resource for " + className);
-		}
-		try {
-			ClassReader cr2 = new ClassReader(is);
-			EntityBeanPropertyReader classNode = new EntityBeanPropertyReader();
-			cr2.accept(classNode, 0);
-			return classNode;
+    ClassLoader classLoader = this.getClass().getClassLoader();
+    InputStream is = classLoader.getResourceAsStream(className.replace('.', '/') + ".class");
+    if (is == null) {
+      throw new IOException("No resource for " + className);
+    }
+    try {
+      ClassReader cr2 = new ClassReader(is);
+      EntityBeanPropertyReader classNode = new EntityBeanPropertyReader();
+      cr2.accept(classNode, 0);
+      return classNode;
 
-		} finally {
-			is.close();
-		}
-	}
+    } finally {
+      is.close();
+    }
+  }
 
-	/**
-	 * Read a class classFile and return the EntityBeanPropertyReader.
-	 */
-	public EntityBeanPropertyReader readClassFile(File classFile) throws IOException {
+  /**
+   * Read a class classFile and return the EntityBeanPropertyReader.
+   */
+  public EntityBeanPropertyReader readClassFile(File classFile) throws IOException {
 
-		byte[] classfileBuffer = readBytes(classFile);
+    byte[] classfileBuffer = readBytes(classFile);
 
-		ClassReader cr2 = new ClassReader(classfileBuffer);
-		EntityBeanPropertyReader classNode = new EntityBeanPropertyReader();
+    ClassReader cr2 = new ClassReader(classfileBuffer);
+    EntityBeanPropertyReader classNode = new EntityBeanPropertyReader();
 
-		//ClassNode is a ClassVisitor
-		cr2.accept(classNode, 0);
+    //ClassNode is a ClassVisitor
+    cr2.accept(classNode, 0);
 
-		return classNode;
-	}
+    return classNode;
+  }
 
-	private byte[] readBytes(File file) throws IOException {
+  private byte[] readBytes(File file) throws IOException {
 
-		FileInputStream fis = new FileInputStream(file);
-		try {
-			return readBytes(fis);
-		} finally {
-			fis.close();
-		}
-	}
+    FileInputStream fis = new FileInputStream(file);
+    try {
+      return readBytes(fis);
+    } finally {
+      fis.close();
+    }
+  }
 
-	private byte[] readBytes(InputStream is) throws IOException {
+  private byte[] readBytes(InputStream is) throws IOException {
 
-		BufferedInputStream bis = new BufferedInputStream(is);
-		ByteArrayOutputStream baos = new ByteArrayOutputStream(4096);
+    BufferedInputStream bis = new BufferedInputStream(is);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream(4096);
 
-		byte[] buf = new byte[1028];
+    byte[] buf = new byte[1028];
 
-		int len;
-		while ((len = bis.read(buf, 0, buf.length)) > -1) {
-			baos.write(buf, 0, len);
-		}
-		baos.flush();
-		baos.close();
-		return baos.toByteArray();
-	}
+    int len;
+    while ((len = bis.read(buf, 0, buf.length)) > -1) {
+      baos.write(buf, 0, len);
+    }
+    baos.flush();
+    baos.close();
+    return baos.toByteArray();
+  }
 
 
 }
