@@ -154,7 +154,7 @@ public class SimpleFinderWriter {
 	}
 
 	protected void writeClassEnd() throws IOException {
-		writer.append("}").append(NEWLINE);
+    config.lang().finderClassEnd(writer);
 	}
 
 	/**

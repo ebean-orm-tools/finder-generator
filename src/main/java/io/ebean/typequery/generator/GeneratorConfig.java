@@ -4,8 +4,11 @@ import io.ebean.typequery.generator.write.JavaLangAdapter;
 import io.ebean.typequery.generator.write.KotlinLangAdapter;
 import io.ebean.typequery.generator.write.LangAdapter;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Configuration for the code generation.
@@ -27,42 +30,44 @@ import java.io.Writer;
  */
 public class GeneratorConfig {
 
-	String lang = "java";
+	private String lang = "java";
 
 	/**
 	 * The directory where the compiled classes are found.
 	 * Default to maven target/classes.
 	 */
-	String classesDirectory = "target/classes";
+  private String classesDirectory = "target/classes";
 
-	String entityBeanPackage;
+  private String entityBeanPackage;
 
-	String destDirectory = "src/main/java";
+  private List<File> entityClassFiles;
 
-	String destResourceDirectory = "src/main/resources";
+  private String destDirectory = "src/main/java";
 
-	String destPackage;
+  private String destResourceDirectory = "src/main/resources";
 
-	String destAssocPackage;
+  private String destPackage;
 
-	String destFinderPackage;
+  private String destAssocPackage;
 
-	boolean addFinderWhereMethod = true;
+  private String destFinderPackage;
 
-	boolean addFinderTextMethod = true;
+  private boolean addFinderWhereMethod = true;
 
-	boolean addFinderWherePublic;
+  private boolean addFinderTextMethod = true;
 
-	boolean overwriteExistingFinders;
+  private boolean addFinderWherePublic;
 
-	boolean aopStyle = true;
+  private boolean overwriteExistingFinders;
+
+  private boolean aopStyle = true;
 
 	/**
 	 * The maximum path depth allowed in the generated code (non AOP manual style).
 	 */
-	int maxPathTraversalDepth = 4;
+  private int maxPathTraversalDepth = 4;
 
-	LangAdapter languageAdapter = new JavaLangAdapter();
+  private LangAdapter languageAdapter = new JavaLangAdapter();
 
 	/**
 	 * Return the language.
@@ -145,7 +150,28 @@ public class GeneratorConfig {
 		}
 	}
 
-	/**
+  /**
+   * Return a list of specific entity classes to run generation on.
+   */
+  public List<File> getEntityClassFiles() {
+    return entityClassFiles;
+  }
+
+  /**
+   * Set specific entity classes to run generation on.
+   */
+	public void setEntityClassFiles(List<File> entityClassFiles) {
+	  this.entityClassFiles = entityClassFiles;
+  }
+
+  /**
+   * Set a single specific entity class to run generation on.
+   */
+  public void setEntityClassFile(File entityClassFile) {
+    this.entityClassFiles = Collections.singletonList(entityClassFile);
+  }
+
+  /**
 	 * Return the destination directory where the generated java source code will be written to.
 	 */
 	public String getDestDirectory() {

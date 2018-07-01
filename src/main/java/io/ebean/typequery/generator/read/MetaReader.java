@@ -36,6 +36,15 @@ public class MetaReader {
 	}
 
 	/**
+	 * Read a specific entity class files to read the meta data for.
+	 */
+	public void processFiles(List<File> entityClassFiles) {
+		for (File entityClassFile : entityClassFiles) {
+			readClassMeta(entityClassFile);
+		}
+	}
+
+	/**
 	 * Process all the comma delimited list of packages.
 	 * <p>
 	 * Package names are effectively converted into a directory on the file
@@ -95,7 +104,7 @@ public class MetaReader {
 
 				} else {
 					// possibly a common mistake... mixing .java and .class
-					logger.warn("Expecting a .class file but got " + file.getAbsolutePath() + " ... ignoring");
+					logger.debug("Expecting a .class file but got " + file.getAbsolutePath() + " ... ignoring");
 				}
 			}
 		}

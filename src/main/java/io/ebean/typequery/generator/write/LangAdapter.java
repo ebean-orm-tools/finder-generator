@@ -29,6 +29,8 @@ public interface LangAdapter {
 
 	void finderClass(FileWriter writer, String shortName, String idTypeShortName) throws IOException;
 
+	void finderClassEnd(FileWriter writer) throws IOException;
+
 	String finderDefn(String shortName);
 
 }

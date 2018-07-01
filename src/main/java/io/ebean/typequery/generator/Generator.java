@@ -9,8 +9,10 @@ import io.ebean.typequery.generator.write.SimpleQueryBeanWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -170,7 +172,12 @@ public class Generator {
 
 		if (!loadedMetaData) {
 			MetaReader reader = new MetaReader(config.getClassesDirectory());
-			reader.process(config.getEntityBeanPackage());
+			List<File> entityClassFiles = config.getEntityClassFiles();
+			if (entityClassFiles != null) {
+				reader.processFiles(entityClassFiles);
+			} else {
+				reader.process(config.getEntityBeanPackage());
+			}
 
 			generationMetaData.addAll(reader.getClassMetaData());
 

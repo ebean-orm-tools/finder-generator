@@ -138,6 +138,11 @@ public class JavaLangAdapter implements LangAdapter {
 	}
 
 	@Override
+	public void finderClassEnd(FileWriter writer) throws IOException {
+		writer.append("}").append(NEWLINE);
+	}
+
+	@Override
 	public String finderDefn(String shortName) {
 		return shortName + "Finder find = new " + shortName + "Finder();";
 	}
