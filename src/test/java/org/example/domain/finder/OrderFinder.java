@@ -13,12 +13,6 @@ public class OrderFinder extends Finder<Long,Order> {
     super(Order.class);
   }
 
-  /**
-   * Construct with a given EbeanServer.
-   */
-  public OrderFinder(String serverName) {
-    super(Order.class, serverName);
-  }
 
   /**
    * Start a new typed query.

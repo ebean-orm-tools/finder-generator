@@ -13,12 +13,6 @@ public class CountryFinder extends Finder<String,Country> {
     super(Country.class);
   }
 
-  /**
-   * Construct with a given EbeanServer.
-   */
-  public CountryFinder(String serverName) {
-    super(Country.class, serverName);
-  }
 
   /**
    * Start a new typed query.

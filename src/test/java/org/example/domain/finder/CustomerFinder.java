@@ -13,12 +13,6 @@ public class CustomerFinder extends Finder<Long,Customer> {
     super(Customer.class);
   }
 
-  /**
-   * Construct with a given EbeanServer.
-   */
-  public CustomerFinder(String serverName) {
-    super(Customer.class, serverName);
-  }
 
   /**
    * Start a new typed query.

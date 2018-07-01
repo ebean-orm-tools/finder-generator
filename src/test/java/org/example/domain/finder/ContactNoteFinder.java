@@ -14,12 +14,6 @@ public class ContactNoteFinder extends Finder<UUID,ContactNote> {
     super(ContactNote.class);
   }
 
-  /**
-   * Construct with a given EbeanServer.
-   */
-  public ContactNoteFinder(String serverName) {
-    super(ContactNote.class, serverName);
-  }
 
   /**
    * Start a new typed query.

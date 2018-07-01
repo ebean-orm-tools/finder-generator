@@ -13,12 +13,6 @@ public class AddressFinder extends Finder<Long,Address> {
     super(Address.class);
   }
 
-  /**
-   * Construct with a given EbeanServer.
-   */
-  public AddressFinder(String serverName) {
-    super(Address.class, serverName);
-  }
 
   /**
    * Start a new typed query.

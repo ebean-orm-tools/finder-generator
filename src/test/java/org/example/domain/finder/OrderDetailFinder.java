@@ -13,12 +13,6 @@ public class OrderDetailFinder extends Finder<Long,OrderDetail> {
     super(OrderDetail.class);
   }
 
-  /**
-   * Construct with a given EbeanServer.
-   */
-  public OrderDetailFinder(String serverName) {
-    super(OrderDetail.class, serverName);
-  }
 
   /**
    * Start a new typed query.

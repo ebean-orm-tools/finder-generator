@@ -13,12 +13,6 @@ public class ContactFinder extends Finder<Long,Contact> {
     super(Contact.class);
   }
 
-  /**
-   * Construct with a given EbeanServer.
-   */
-  public ContactFinder(String serverName) {
-    super(Contact.class, serverName);
-  }
 
   /**
    * Start a new typed query.
