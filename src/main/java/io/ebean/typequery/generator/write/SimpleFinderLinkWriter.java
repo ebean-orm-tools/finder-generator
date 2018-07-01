@@ -82,6 +82,10 @@ public class SimpleFinderLinkWriter {
 		// import and the finder field
 
 		boolean javaLang = config.isJava();
+		int lastBrace = -1;
+		if (!javaLang) {
+			lastBrace = findLastCloseBrace();
+		}
 
 		int size = existingSource.size();
 		for (int i = 0; i < size; i++) {
@@ -95,13 +99,15 @@ public class SimpleFinderLinkWriter {
 			}
 
 			writer.append(sourceLine).append(newLine);
-			if (!addedField && sourceLineContainsClassDefn(sourceLine)) {
-				writer.append(newLine);
-				if (javaLang) {
+			if (javaLang) {
+				if (!addedField && sourceLineContainsClassDefn(sourceLine)) {
+					writer.append(newLine);
+					addedField = true;
 					writer.append("  public static final ").append(finderDefn).append(newLine);
-				} else {
-					writer.append("  ").append(finderDefn).append(newLine);
 				}
+			} else if (i == lastBrace) {
+				// for kotlin add just before the last brace
+				writer.append(newLine).append("  ").append(finderDefn).append(newLine);
 				addedField = true;
 			}
 		}
@@ -110,6 +116,19 @@ public class SimpleFinderLinkWriter {
 		writer.close();
 		return true;
 	}
+
+  /**
+   * Return the line just before the last close brace.
+   */
+  private int findLastCloseBrace() {
+    int size = existingSource.size();
+    for (int i = size - 1; i > size - 4; i--) {
+      if (existingSource.get(i).trim().equals("}")) {
+        return i - 1;
+      }
+    }
+    return -1;
+  }
 
 	/**
 	 * Match for RHS space (Java mostly) pr open bracket (Kotlin).
@@ -152,7 +171,7 @@ public class SimpleFinderLinkWriter {
 	/**
 	 * Return the file for the entity bean source.
 	 */
-	protected File getEntitySourceFile() throws IOException {
+	protected File getEntitySourceFile() {
 
 		String destDirectory = config.getDestDirectory();
 		File destDir = new File(destDirectory);
