@@ -136,7 +136,7 @@ public class MetaReader {
 		try {
 			EntityBeanPropertyReader classMeta = classFileReader.readClassFile(classFile);
 			if (classMeta.isInterestingClass()) {
-				logger.info("read class meta data for {}", classMeta.name);
+				logger.debug("read class meta data for {}", classMeta.name);
 				classMetaData.add(classMeta);
 			} else {
 				logger.debug("... ignoring class {}", classMeta.name);
