@@ -82,9 +82,13 @@ public class SimpleFinderLinkWriter {
     // import and the finder field
 
     boolean javaLang = config.isJava();
-    int lastBrace = -1;
+    int lastCloseKotlin = -1;
+    int lastBraceKotlin = -1;
     if (!javaLang) {
-      lastBrace = findLastCloseBrace();
+      lastBraceKotlin = findLastCloseBrace();
+      if (lastBraceKotlin == -1) {
+        lastCloseKotlin = findLastClose();
+      }
     }
 
     int size = existingSource.size();
@@ -98,17 +102,32 @@ public class SimpleFinderLinkWriter {
         addedImport = true;
       }
 
-      writer.append(sourceLine).append(newLine);
+      writer.append(sourceLine);
       if (javaLang) {
+        writer.append(newLine);
         if (!addedField && sourceLineContainsClassDefn(sourceLine)) {
           writer.append(newLine);
           addedField = true;
           writer.append("  public static final ").append(finderDefn).append(newLine);
         }
-      } else if (i == lastBrace) {
-        // for kotlin add just before the last brace
-        writer.append(newLine).append("  ").append(finderDefn).append(newLine);
-        addedField = true;
+      } else {
+        if (lastCloseKotlin == -1) {
+          writer.append(newLine);
+          if (i == lastBraceKotlin) {
+            // for kotlin add just before the last brace
+            writer.append(newLine).append("  ").append(finderDefn).append(newLine);
+            addedField = true;
+          }
+        } else {
+          if (i == lastCloseKotlin) {
+            writer.append(" {").append(newLine);
+            writer.append(newLine).append("  ").append(finderDefn).append(newLine);
+            writer.append("}").append(newLine);
+            addedField = true;
+          } else {
+            writer.append(newLine);
+          }
+        }
       }
     }
 
@@ -125,6 +144,16 @@ public class SimpleFinderLinkWriter {
     for (int i = size - 1; i > size - 4; i--) {
       if (existingSource.get(i).trim().equals("}")) {
         return i - 1;
+      }
+    }
+    return -1;
+  }
+
+  private int findLastClose() {
+    int size = existingSource.size();
+    for (int i = size - 1; i > size - 4; i--) {
+      if (existingSource.get(i).trim().endsWith(")")) {
+        return i;
       }
     }
     return -1;
