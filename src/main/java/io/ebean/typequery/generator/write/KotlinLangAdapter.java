@@ -2,6 +2,7 @@ package io.ebean.typequery.generator.write;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 
 public class KotlinLangAdapter implements LangAdapter {
 
@@ -32,14 +33,31 @@ public class KotlinLangAdapter implements LangAdapter {
   }
 
   @Override
-  public void assocBeanConstructor(FileWriter writer, String shortName) throws IOException {
+  public void assocBeanConstructor(FileWriter writer, String shortName) {
     // not required for kotlin as part of type definition
   }
 
   @Override
   public void fetch(FileWriter writer, String origShortName) throws IOException {
-    // currently a generics issue here ...
-    writer.append("  // type safe fetch(properties) using varargs not supported yet ...").append(NEWLINE);
+
+      writeAssocBeanFetch(writer, origShortName, "", "Eagerly fetch this association loading the specified properties.");
+      writeAssocBeanFetch(writer, origShortName, "Query", "Eagerly fetch this association using a 'query join' loading the specified properties.");
+      writeAssocBeanFetch(writer, origShortName, "Lazy", "Use lazy loading for this association loading the specified properties.");
+  }
+
+  private void writeAssocBeanFetch(Writer writer, String origShortName, String fetchType, String comment) throws IOException {
+
+//    fun fetch(vararg properties: TQProperty<QContact>): R {
+//      return fetchProperties(*properties)
+//    }
+
+    writer.append("  /**").append(NEWLINE);
+    writer.append("   * ").append(comment).append(NEWLINE);
+    writer.append("   */").append(NEWLINE);
+    writer.append("  fun fetch").append(fetchType).append("(vararg properties: TQProperty<Q").append(origShortName).append(">) : R {").append(NEWLINE);
+    writer.append("    return fetch").append(fetchType).append("Properties(*properties)").append(NEWLINE);
+    writer.append("  }").append(NEWLINE);
+    writer.append(NEWLINE);
   }
 
   @Override
