@@ -131,6 +131,8 @@ public class Generator {
     for (EntityBeanPropertyReader classMeta : generationMetaData.getAllEntities()) {
       if (classMeta.isEntity()) {
         generateFinder(classMeta);
+      } else {
+        logger.debug("... not an entity bean - no finder generated for {}", classMeta.name);
       }
     }
   }
@@ -203,7 +205,7 @@ public class Generator {
    */
   private void loadMappedSuper(EntityBeanPropertyReader classMeta, MetaReader reader) {
     String superClassName = asDotNotation(classMeta.getSuperClass());
-    if (!"java.lang.Object".equals(superClassName)) {
+    if (!"java.lang.Object".equals(superClassName) && !"io.ebean.Model".equals(superClassName)) {
       EntityBeanPropertyReader superClass = generationMetaData.getSuperClass(superClassName);
       if (superClass == null) {
         superClass = readViaClassPath(superClassName, reader);

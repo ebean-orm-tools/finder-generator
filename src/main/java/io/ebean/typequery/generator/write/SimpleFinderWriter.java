@@ -69,6 +69,7 @@ public class SimpleFinderWriter {
 
     FieldNode idProperty = classMeta.getIdProperty(generationMetaData);
     if (idProperty == null) {
+      logger.info("... No @Id property found for {} - skipping finder generation", classMeta.name);
       return false;
     }
     Type idType = idObjectType(idProperty.desc);
