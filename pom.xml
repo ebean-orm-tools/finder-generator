@@ -24,6 +24,12 @@
   <dependencies>
 
     <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.25</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.ow2.asm</groupId>
       <artifactId>asm</artifactId>
       <version>7.0</version>
@@ -38,7 +44,7 @@
     <dependency>
       <groupId>io.ebean</groupId>
       <artifactId>ebean-querybean</artifactId>
-      <version>11.24.1</version>
+      <version>11.32.1</version>
       <scope>provided</scope>
     </dependency>
 
@@ -50,19 +56,6 @@
     </dependency>
 
     <dependency>
-      <groupId>io.ebean</groupId>
-      <artifactId>ebean</artifactId>
-      <version>11.24.1</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.25</version>
-    </dependency>
-
-    <dependency>
       <groupId>org.apache.ant</groupId>
       <artifactId>ant</artifactId>
       <version>1.7.0</version>
@@ -70,10 +63,16 @@
     </dependency>
 
     <dependency>
+      <groupId>io.ebean</groupId>
+      <artifactId>ebean</artifactId>
+      <version>11.32.1</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.avaje.composite</groupId>
-      <artifactId>avaje-composite-testing-ebean</artifactId>
-      <version>4.1</version>
-      <type>pom</type>
+      <artifactId>junit</artifactId>
+      <version>1.1</version>
       <scope>test</scope>
     </dependency>
 
@@ -90,12 +89,14 @@
       <version>1.0.0.GA</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-stdlib</artifactId>
       <version>${kotlin.version}</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-test</artifactId>
@@ -115,7 +116,7 @@
         <extensions>true</extensions>
         <configuration>
           <tiles>
-            <tile>io.ebean.tile:enhancement:6.1</tile>
+            <tile>io.ebean.tile:enhancement:7.4</tile>
           </tiles>
         </configuration>
       </plugin>

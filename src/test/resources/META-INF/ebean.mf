@@ -1,0 +1,2 @@
+packages: org.example
+querybean-packages: org.example.domain.query
