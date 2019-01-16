@@ -41,6 +41,11 @@ public class EntityBeanPropertyReader extends ClassNode {
 
   private List<FieldNode> allFields;
 
+  /**
+   * Set true if this entity is excluded from generation.
+   */
+  private boolean filterExclude;
+
   public EntityBeanPropertyReader() {
     super(Opcodes.ASM7);
   }
@@ -250,4 +255,17 @@ public class EntityBeanPropertyReader extends ClassNode {
     return ((access & Opcodes.ACC_STATIC) != 0 || (access & Opcodes.ACC_TRANSIENT) != 0);
   }
 
+  /**
+   * Set to exclude this entity bean from generation.
+   */
+  public void setFilterExclude(boolean filterExclude) {
+    this.filterExclude = filterExclude;
+  }
+
+  /**
+   * Return true if this is an entity bean that should be included in generation.
+   */
+  public boolean isGenerateEntity() {
+    return isEntity() && !filterExclude;
+  }
 }

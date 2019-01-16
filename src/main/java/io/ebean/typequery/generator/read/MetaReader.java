@@ -22,12 +22,32 @@ public class MetaReader {
 
   private final String sourceDirectory;
 
+  private final String filterEntityName;
+  private final boolean filterPrefixMatch;
+
   private List<File> topDirectories = new ArrayList<>();
 
-  /**
-   */
-  public MetaReader(String sourceDirectory) {
+  public MetaReader(String sourceDirectory, String filterEntityName) {
     this.sourceDirectory = trimSlash(sourceDirectory);
+    if (filterEntityName == null || filterEntityName.isEmpty()) {
+      this.filterEntityName = null;
+      this.filterPrefixMatch = false;
+    } else {
+      this.filterPrefixMatch = filterPrefix(filterEntityName);
+      this.filterEntityName = filterTrim(filterPrefixMatch, filterEntityName.toLowerCase());
+    }
+  }
+
+  private boolean filterPrefix(String filterEntityName) {
+    return filterEntityName.endsWith("*") || filterEntityName.endsWith("%");
+  }
+
+  private String filterTrim(boolean prefixMatch, String entityNameFilter) {
+    if (prefixMatch) {
+      return entityNameFilter.substring(0, entityNameFilter.length() - 1);
+    } else {
+      return entityNameFilter + ".class";
+    }
   }
 
   /**
@@ -139,6 +159,9 @@ public class MetaReader {
   private void readClassMeta(File classFile) {
     try {
       EntityBeanPropertyReader classMeta = classFileReader.readClassFile(classFile);
+      if (filterExclude(classFile)) {
+        classMeta.setFilterExclude(true);
+      }
       if (classMeta.isInterestingClass()) {
         logger.debug("read class meta data for {}", classMeta.name);
         classMetaData.add(classMeta);
@@ -147,6 +170,21 @@ public class MetaReader {
       }
     } catch (Exception e) {
       throw new RuntimeException("Error transforming file " + classFile.getAbsolutePath(), e);
+    }
+  }
+
+  /**
+   * Return true if this is an entity bean that should be excluded from generation.
+   */
+  private boolean filterExclude(File classFile) {
+    if (filterEntityName == null || filterEntityName.isEmpty()) {
+      return false;
+    }
+    String fileName = classFile.getName().toLowerCase();
+    if (filterPrefixMatch) {
+      return !fileName.startsWith(filterEntityName);
+    } else {
+      return !fileName.equals(filterEntityName);
     }
   }
 

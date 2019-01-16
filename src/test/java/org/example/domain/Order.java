@@ -23,7 +23,6 @@ public class Order extends BaseModel {
 
   public static final OrderFinder find = new OrderFinder();
 
-
   public enum Status {
     NEW, APPROVED, SHIPPED, COMPLETE
   }
@@ -40,7 +39,7 @@ public class Order extends BaseModel {
 
   @ManyToOne
   Address shippingAddress;
-  
+
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
   @OrderBy("id asc")
   List<OrderDetail> details;
@@ -48,7 +47,7 @@ public class Order extends BaseModel {
   public String toString() {
     return id + " status:" + status + " customer:" + customer;
   }
-  
+
   /**
    * Return order date.
    */

@@ -129,7 +129,7 @@ public class Generator {
     loadMetaData();
 
     for (EntityBeanPropertyReader classMeta : generationMetaData.getAllEntities()) {
-      if (classMeta.isEntity()) {
+      if (classMeta.isGenerateEntity()) {
         generateFinder(classMeta);
       } else {
         logger.debug("... not an entity bean - no finder generated for {}", classMeta.name);
@@ -145,7 +145,7 @@ public class Generator {
     loadMetaData();
 
     for (EntityBeanPropertyReader classMeta : generationMetaData.getAllEntities()) {
-      if (classMeta.isEntity()) {
+      if (classMeta.isGenerateEntity()) {
         linkFinder(classMeta);
       }
     }
@@ -170,7 +170,7 @@ public class Generator {
   protected void loadMetaData() {
 
     if (!loadedMetaData) {
-      MetaReader reader = new MetaReader(config.getClassesDirectory());
+      MetaReader reader = new MetaReader(config.getClassesDirectory(), config.getEntityNameFilter());
       List<File> entityClassFiles = config.getEntityClassFiles();
       if (entityClassFiles != null) {
         reader.processFiles(entityClassFiles);

@@ -22,10 +22,12 @@ public class GeneratorTest {
     config.setOverwriteExistingFinders(true);
     //config.setLang("kt");
 
+    config.setEntityNameFilter("order*");
+
     Generator generator = new Generator(config);
     generator.generateQueryBeans();
     generator.generateFinders();
-    //generator.modifyEntityBeansAddFinderField();
+    generator.modifyEntityBeansAddFinderField();
 
   }
 }

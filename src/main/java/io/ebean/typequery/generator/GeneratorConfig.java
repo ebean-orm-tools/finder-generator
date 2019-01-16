@@ -68,6 +68,23 @@ public class GeneratorConfig {
   private LangAdapter languageAdapter = new JavaLangAdapter();
 
   /**
+   * Filter the entities to generate finders for based on this.
+   */
+  private String entityNameFilter;
+
+
+  public String getEntityNameFilter() {
+    return entityNameFilter;
+  }
+
+  /**
+   * Set a filter to limit the entities we generate finders for.
+   */
+  public void setEntityNameFilter(String entityNameFilter) {
+    this.entityNameFilter = entityNameFilter;
+  }
+
+  /**
    * Return the language.
    */
   public String getLang() {

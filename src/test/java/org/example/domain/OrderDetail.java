@@ -16,7 +16,6 @@ public class OrderDetail extends BaseModel {
 
   public static final OrderDetailFinder find = new OrderDetailFinder();
 
-
   @ManyToOne
   Order order;
 
