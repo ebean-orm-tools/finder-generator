@@ -22,6 +22,8 @@ public class MetaReader {
 
   private final String sourceDirectory;
 
+  private List<File> topDirectories = new ArrayList<>();
+
   /**
    */
   public MetaReader(String sourceDirectory) {
@@ -54,33 +56,27 @@ public class MetaReader {
   public void process(String packageNames) {
 
     if (packageNames == null) {
-      processPackage("", true);
+      processPackage("", true, true);
       return;
     }
 
     for (String pkgName : packageNames.split(",")) {
 
       String pkg = pkgName.trim().replace('.', '/');
-
-      boolean recurse = false;
-      if (pkg.endsWith("**")) {
-        recurse = true;
-        pkg = pkg.substring(0, pkg.length() - 2);
-
-      } else if (pkg.endsWith("*")) {
-        recurse = true;
-        pkg = pkg.substring(0, pkg.length() - 1);
-      }
-
-      processPackage(trimSlash(pkg), recurse);
+      processPackage(trimSlash(pkg), true, true);
     }
   }
 
 
-  private void processPackage(String dir, boolean recurse) {
+  public List<File> getTopDirectories() {
+    return topDirectories;
+  }
+
+  private void processPackage(String dir, boolean recurse, boolean top) {
 
     String dirPath = sourceDirectory + "/" + dir;
     File directory = new File(dirPath);
+    logger.debug("reading classes in {}", directory.getAbsolutePath());
     if (!directory.exists()) {
       File currentDir = new File(".");
       String m = "File not found " + dirPath + "  currentDir:" + currentDir.getAbsolutePath();
@@ -88,6 +84,10 @@ public class MetaReader {
     }
 
     readDirectory(dir, recurse, directory.listFiles());
+
+    if (top) {
+      topDirectories.add(directory);
+    }
   }
 
   private void readDirectory(String dir, boolean recurse, File[] files) {
@@ -99,7 +99,7 @@ public class MetaReader {
     for (File file : files) {
       if (file.isDirectory()) {
         if (recurse) {
-          processPackage(dir + "/" + file.getName(), true);
+          processPackage(dir + "/" + file.getName(), true, false);
         }
       } else {
 

@@ -49,11 +49,11 @@ public class SimpleFinderWriter {
     this.config = config;
     this.classMeta = classMeta;
     this.generationMetaData = generationMetaData;
-    this.finderPackage = config.getDestFinderPackage();
     this.addWhereMethod = config.isAddFinderWhereMethod();
     this.addTextMethod = config.isAddFinderTextMethod();
     this.addPublicMethods = config.isAddFinderWherePublic();
     this.shortName = deriveShortName(classMeta.name);
+    this.finderPackage = derivePackage(classMeta.name) + ".finder";
   }
 
   /**
@@ -212,6 +212,14 @@ public class SimpleFinderWriter {
       return name;
     }
     return name.substring(startPos + 1);
+  }
+
+  protected String derivePackage(String name) {
+    int startPos = name.lastIndexOf('/');
+    if (startPos == -1) {
+      return "";
+    }
+    return name.substring(0, startPos).replace('/', '.');
   }
 
 }

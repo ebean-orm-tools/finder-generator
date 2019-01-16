@@ -42,7 +42,7 @@ public class EntityBeanPropertyReader extends ClassNode {
   private List<FieldNode> allFields;
 
   public EntityBeanPropertyReader() {
-    super(Opcodes.ASM5);
+    super(Opcodes.ASM7);
   }
 
   @Override

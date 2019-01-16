@@ -186,6 +186,13 @@ public class Generator {
           loadMappedSuper(classMeta, reader);
         }
       }
+
+      if (generationMetaData.isEmpty()) {
+        logger.warn("Didn't load any metadata? " + reader.getTopDirectories());
+      } else {
+        logger.debug("... loaded metadata for {}", generationMetaData.getDescription());
+      }
+
       loadedMetaData = true;
     }
   }

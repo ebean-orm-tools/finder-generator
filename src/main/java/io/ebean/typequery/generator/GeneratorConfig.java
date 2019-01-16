@@ -50,8 +50,6 @@ public class GeneratorConfig {
 
   private String destAssocPackage;
 
-  private String destFinderPackage;
-
   private boolean addFinderWhereMethod = true;
 
   private boolean addFinderTextMethod = true;
@@ -241,9 +239,6 @@ public class GeneratorConfig {
   public void setDestPackage(String destPackage) {
     this.destPackage = destPackage;
     this.destAssocPackage = destPackage + ".assoc";
-    if (destFinderPackage == null) {
-      destFinderPackage = deriveFinderPackage(destPackage);
-    }
   }
 
   private String deriveFinderPackage(String destPackage) {
@@ -252,23 +247,6 @@ public class GeneratorConfig {
       return destPackage + ".finder";
     }
     return destPackage.substring(0, lastDotPos) + ".finder";
-  }
-
-  /**
-   * Return the package that the 'finders' if generated go into.
-   */
-  public String getDestFinderPackage() {
-    return destFinderPackage;
-  }
-
-  /**
-   * Set the package that the 'finders' if generated go into.
-   * <p>
-   * If not set this defaults to a 'finder' subpackage.
-   * </p>
-   */
-  public void setDestFinderPackage(String destFinderPackage) {
-    this.destFinderPackage = destFinderPackage;
   }
 
   /**

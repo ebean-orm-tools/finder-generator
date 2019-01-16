@@ -71,7 +71,8 @@ public class GenerationMetaData {
 
     if (EntityBeanPropertyReader.dbArrayField(field)) {
       String collectParamType = deriveCollectionParameterType(field.signature);
-      return new PropertyTypeArray(collectParamType, deriveShortName(collectParamType));
+      String shortType = langShortType(deriveShortName(collectParamType));
+      return new PropertyTypeArray(collectParamType, shortType);
     }
 
     EntityBeanPropertyReader anEnum = enumMap.get(fieldTypeClassName);
@@ -98,6 +99,13 @@ public class GenerationMetaData {
     }
 
     return null;
+  }
+
+  private String langShortType(String shortName) {
+    if (config.isKotlin() && "Integer".equals(shortName)) {
+      return "Int";
+    }
+    return shortName;
   }
 
   protected String deriveCollectionParameterType(String signature) {
@@ -157,4 +165,11 @@ public class GenerationMetaData {
     return entityMap.values();
   }
 
+  public String getDescription() {
+    return "entities: "+entityMap.size()+" enums:" +enumMap.size() + " others:" + otherMap.size();
+  }
+
+  public boolean isEmpty() {
+    return entityMap.isEmpty();
+  }
 }

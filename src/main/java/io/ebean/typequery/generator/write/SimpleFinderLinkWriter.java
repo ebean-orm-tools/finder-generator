@@ -25,7 +25,7 @@ public class SimpleFinderLinkWriter {
 
   protected final EntityBeanPropertyReader classMeta;
 
-  protected final String entityBeanPackage;
+  protected final String entityPackage;
 
   protected String finderPackage;
 
@@ -47,9 +47,9 @@ public class SimpleFinderLinkWriter {
   public SimpleFinderLinkWriter(GeneratorConfig config, EntityBeanPropertyReader classMeta) {
     this.config = config;
     this.classMeta = classMeta;
-    this.entityBeanPackage = config.getEntityBeanPackage();
-    this.finderPackage = config.getDestFinderPackage();
     this.shortName = deriveShortName(classMeta.name);
+    this.entityPackage = derivePackage(classMeta.name);
+    this.finderPackage = entityPackage + ".finder";
     this.classDefnSpace = "class " + shortName + " ";
     this.classDefnBracket = "class " + shortName + "(";
   }
@@ -202,19 +202,22 @@ public class SimpleFinderLinkWriter {
    */
   protected File getEntitySourceFile() {
 
-    String destDirectory = config.getDestDirectory();
-    File destDir = new File(destDirectory);
-
-    String packageAsDir = asSlashNotation(entityBeanPackage);
-
-    File packageDir = new File(destDir, packageAsDir);
-
+    File destDir = new File(config.getDestDirectory());
+    File packageDir = new File(destDir, asSlashNotation(entityPackage));
     String fileName = shortName + "." + config.getLang();
     return new File(packageDir, fileName);
   }
 
   protected String asSlashNotation(String path) {
     return path.replace('.', '/');
+  }
+
+  protected String derivePackage(String name) {
+    int startPos = name.lastIndexOf('/');
+    if (startPos == -1) {
+      return "";
+    }
+    return name.substring(0, startPos).replace('/', '.');
   }
 
   protected String deriveShortName(String name) {
