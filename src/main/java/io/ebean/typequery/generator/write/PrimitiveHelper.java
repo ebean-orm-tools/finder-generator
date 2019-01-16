@@ -6,7 +6,7 @@ import org.objectweb.asm.Type;
 /**
  * Maps primitive types to their Object types.
  */
-class PrimitiveHelper {
+public class PrimitiveHelper {
 
   private static Type INTEGER_OBJECT = Type.getType(Integer.class);
   private static Type SHORT_OBJECT = Type.getType(Short.class);
@@ -17,7 +17,7 @@ class PrimitiveHelper {
   private static Type BYTE_OBJECT = Type.getType(Byte.class);
   private static Type BOOLEAN_OBJECT = Type.getType(Boolean.class);
 
-  static Type getObjectWrapper(Type primitiveAsmType) {
+  public static Type getObjectWrapper(Type primitiveAsmType) {
 
     int sort = primitiveAsmType.getSort();
     switch (sort) {

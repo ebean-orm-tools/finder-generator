@@ -1,5 +1,6 @@
 package io.ebean.typequery.generator.read;
 
+import io.ebean.typequery.generator.GenerationMetaData;
 import org.objectweb.asm.ClassReader;
 
 import java.io.BufferedInputStream;
@@ -14,6 +15,11 @@ import java.io.InputStream;
  */
 public class MetaClassFileReader {
 
+  private final GenerationMetaData generationMetaData;
+
+  public MetaClassFileReader(GenerationMetaData generationMetaData) {
+    this.generationMetaData = generationMetaData;
+  }
 
   /**
    * Read a class classFile and return the EntityBeanPropertyReader.
@@ -27,7 +33,7 @@ public class MetaClassFileReader {
     }
     try {
       ClassReader cr2 = new ClassReader(is);
-      EntityBeanPropertyReader classNode = new EntityBeanPropertyReader();
+      EntityBeanPropertyReader classNode = new EntityBeanPropertyReader(generationMetaData);
       cr2.accept(classNode, 0);
       return classNode;
 
@@ -44,7 +50,7 @@ public class MetaClassFileReader {
     byte[] classfileBuffer = readBytes(classFile);
 
     ClassReader cr2 = new ClassReader(classfileBuffer);
-    EntityBeanPropertyReader classNode = new EntityBeanPropertyReader();
+    EntityBeanPropertyReader classNode = new EntityBeanPropertyReader(generationMetaData);
 
     //ClassNode is a ClassVisitor
     cr2.accept(classNode, 0);

@@ -170,7 +170,7 @@ public class Generator {
   protected void loadMetaData() {
 
     if (!loadedMetaData) {
-      MetaReader reader = new MetaReader(config.getClassesDirectory(), config.getEntityNameFilter());
+      MetaReader reader = new MetaReader(generationMetaData, config.getClassesDirectory(), config.getEntityNameFilter());
       List<File> entityClassFiles = config.getEntityClassFiles();
       if (entityClassFiles != null) {
         reader.processFiles(entityClassFiles);

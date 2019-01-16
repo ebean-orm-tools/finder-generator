@@ -1,5 +1,6 @@
 package io.ebean.typequery.generator.read;
 
+import io.ebean.typequery.generator.GenerationMetaData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,9 +17,9 @@ public class MetaReader {
 
   private static final Logger logger = LoggerFactory.getLogger(MetaReader.class);
 
-  private final MetaClassFileReader classFileReader = new MetaClassFileReader();
-
   private final List<EntityBeanPropertyReader> classMetaData = new ArrayList<>();
+
+  private final MetaClassFileReader classFileReader;
 
   private final String sourceDirectory;
 
@@ -27,8 +28,9 @@ public class MetaReader {
 
   private List<File> topDirectories = new ArrayList<>();
 
-  public MetaReader(String sourceDirectory, String filterEntityName) {
+  public MetaReader(GenerationMetaData generationMetaData, String sourceDirectory, String filterEntityName) {
     this.sourceDirectory = trimSlash(sourceDirectory);
+    this.classFileReader = new MetaClassFileReader(generationMetaData);
     if (filterEntityName == null || filterEntityName.isEmpty()) {
       this.filterEntityName = null;
       this.filterPrefixMatch = false;

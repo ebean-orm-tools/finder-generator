@@ -1,10 +1,8 @@
 package io.ebean.typequery.generator.write;
 
+import io.ebean.typequery.generator.EntityMeta;
 import io.ebean.typequery.generator.GenerationMetaData;
 import io.ebean.typequery.generator.GeneratorConfig;
-import io.ebean.typequery.generator.read.EntityBeanPropertyReader;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.FieldNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +23,7 @@ public class SimpleFinderWriter {
 
   protected final GeneratorConfig config;
 
-  protected final EntityBeanPropertyReader classMeta;
+  protected final EntityMeta classMeta;
 
   protected final GenerationMetaData generationMetaData;
 
@@ -45,15 +43,15 @@ public class SimpleFinderWriter {
 
   protected boolean addPublicMethods;
 
-  public SimpleFinderWriter(GeneratorConfig config, EntityBeanPropertyReader classMeta, GenerationMetaData generationMetaData) {
+  public SimpleFinderWriter(GeneratorConfig config, EntityMeta classMeta, GenerationMetaData generationMetaData) {
     this.config = config;
     this.classMeta = classMeta;
     this.generationMetaData = generationMetaData;
     this.addWhereMethod = config.isAddFinderWhereMethod();
     this.addTextMethod = config.isAddFinderTextMethod();
     this.addPublicMethods = config.isAddFinderWherePublic();
-    this.shortName = deriveShortName(classMeta.name);
-    this.finderPackage = derivePackage(classMeta.name) + ".finder";
+    this.shortName = deriveShortName(classMeta.getName());
+    this.finderPackage = derivePackage(classMeta.getName()) + ".finder";
   }
 
   /**
@@ -67,19 +65,17 @@ public class SimpleFinderWriter {
       return false;
     }
 
-    FieldNode idProperty = classMeta.getIdProperty(generationMetaData);
-    if (idProperty == null) {
-      logger.info("... No @Id property found for {} - skipping finder generation", classMeta.name);
+    String idClassName = classMeta.getIdClassName();
+    if (idClassName == null) {
+      logger.info("... No @Id property found for {} - skipping finder generation", classMeta.getName());
       return false;
     }
-    Type idType = idObjectType(idProperty.desc);
-    String className = idType.getClassName();
-    if (!className.startsWith("java.lang.")) {
-      importTypes.add(className);
+    if (!idClassName.startsWith("java.lang.")) {
+      importTypes.add(idClassName);
     }
-    idTypeShortName = getShortName(className);
+    idTypeShortName = getShortName(idClassName);
 
-    importTypes.add(asDotNotation(classMeta.name));
+    importTypes.add(asDotNotation(classMeta.getName()));
     importTypes.add("io.ebean.Finder");
 
     if (addWhereMethod) {
@@ -97,15 +93,6 @@ public class SimpleFinderWriter {
     writer.flush();
     writer.close();
     return true;
-  }
-
-  private Type idObjectType(String desc) {
-    if (desc.length() == 1) {
-      Type primitiveType = Type.getType(desc);
-      return PrimitiveHelper.getObjectWrapper(primitiveType);
-    } else {
-      return Type.getObjectType(desc.substring(1, desc.length() - 1));
-    }
   }
 
   /**

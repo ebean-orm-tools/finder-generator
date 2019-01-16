@@ -1,7 +1,7 @@
 package io.ebean.typequery.generator.write;
 
+import io.ebean.typequery.generator.EntityMeta;
 import io.ebean.typequery.generator.GeneratorConfig;
-import io.ebean.typequery.generator.read.EntityBeanPropertyReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +23,7 @@ public class SimpleFinderLinkWriter {
 
   protected final GeneratorConfig config;
 
-  protected final EntityBeanPropertyReader classMeta;
+  protected final EntityMeta classMeta;
 
   protected final String entityPackage;
 
@@ -44,11 +44,11 @@ public class SimpleFinderLinkWriter {
   private final String classDefnSpace;
   private final String classDefnBracket;
 
-  public SimpleFinderLinkWriter(GeneratorConfig config, EntityBeanPropertyReader classMeta) {
+  public SimpleFinderLinkWriter(GeneratorConfig config, EntityMeta classMeta) {
     this.config = config;
     this.classMeta = classMeta;
-    this.shortName = deriveShortName(classMeta.name);
-    this.entityPackage = derivePackage(classMeta.name);
+    this.shortName = deriveShortName(classMeta.getName());
+    this.entityPackage = derivePackage(classMeta.getName());
     this.finderPackage = entityPackage + ".finder";
     this.classDefnSpace = "class " + shortName + " ";
     this.classDefnBracket = "class " + shortName + "(";

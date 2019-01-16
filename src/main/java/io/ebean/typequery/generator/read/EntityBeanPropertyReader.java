@@ -1,10 +1,13 @@
 package io.ebean.typequery.generator.read;
 
+import io.ebean.typequery.generator.EntityMeta;
 import io.ebean.typequery.generator.GenerationMetaData;
 import io.ebean.typequery.generator.Generator;
+import io.ebean.typequery.generator.write.PrimitiveHelper;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
@@ -17,7 +20,7 @@ import java.util.List;
 /**
  * Read the class meta data using ASM ClassNode.
  */
-public class EntityBeanPropertyReader extends ClassNode {
+public class EntityBeanPropertyReader extends ClassNode implements EntityMeta {
 
   protected static final Logger logger = LoggerFactory.getLogger(EntityBeanPropertyReader.class);
 
@@ -46,8 +49,36 @@ public class EntityBeanPropertyReader extends ClassNode {
    */
   private boolean filterExclude;
 
-  public EntityBeanPropertyReader() {
+  private final GenerationMetaData generationMetaData;
+
+  public EntityBeanPropertyReader(GenerationMetaData generationMetaData) {
     super(Opcodes.ASM7);
+    this.generationMetaData = generationMetaData;
+  }
+
+  @Override
+  public String getName() {
+    return name;
+  }
+
+  @Override
+  public String getIdClassName() {
+
+    FieldNode idProperty = getIdProperty(generationMetaData);
+    if (idProperty == null) {
+      return null;
+    }
+    Type idType = idObjectType(idProperty.desc);
+    return idType.getClassName();
+  }
+
+  private Type idObjectType(String desc) {
+    if (desc.length() == 1) {
+      Type primitiveType = Type.getType(desc);
+      return PrimitiveHelper.getObjectWrapper(primitiveType);
+    } else {
+      return Type.getObjectType(desc.substring(1, desc.length() - 1));
+    }
   }
 
   @Override

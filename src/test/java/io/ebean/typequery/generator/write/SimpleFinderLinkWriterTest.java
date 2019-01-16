@@ -22,7 +22,7 @@ public class SimpleFinderLinkWriterTest {
 	}
 
 	private EntityBeanPropertyReader classMeta(String name) {
-		EntityBeanPropertyReader classMeta = new EntityBeanPropertyReader();
+		EntityBeanPropertyReader classMeta = new EntityBeanPropertyReader(null);
 		classMeta.name = name;
 		return classMeta;
 	}
