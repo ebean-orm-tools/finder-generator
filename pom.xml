@@ -44,7 +44,7 @@
     <dependency>
       <groupId>io.ebean</groupId>
       <artifactId>ebean-querybean</artifactId>
-      <version>11.32.1</version>
+      <version>11.34.1</version>
       <scope>provided</scope>
     </dependency>
 
@@ -65,7 +65,7 @@
     <dependency>
       <groupId>io.ebean</groupId>
       <artifactId>ebean</artifactId>
-      <version>11.32.1</version>
+      <version>11.36.1</version>
       <scope>test</scope>
     </dependency>
 

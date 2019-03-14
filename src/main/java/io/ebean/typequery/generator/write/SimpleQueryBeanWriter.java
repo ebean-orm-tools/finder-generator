@@ -95,7 +95,7 @@ public class SimpleQueryBeanWriter {
     importTypes.add(asDotNotation(classMeta.name));
     importTypes.add("io.ebean.typequery.TQRootBean");
     importTypes.add("io.ebean.typequery.TypeQueryBean");
-    importTypes.add("io.ebean.EbeanServer");
+    importTypes.add("io.ebean.Database");
 
     addClassProperties(classMeta);
   }
@@ -177,7 +177,7 @@ public class SimpleQueryBeanWriter {
   protected void prepareAssocBeanImports() {
 
     importTypes.remove("io.ebean.typequery.TQRootBean");
-    importTypes.remove("io.ebean.EbeanServer");
+    importTypes.remove("io.ebean.Database");
     importTypes.add("io.ebean.typequery.TQAssocBean");
     if (classMeta.isEntity()) {
       importTypes.add("io.ebean.typequery.TQProperty");

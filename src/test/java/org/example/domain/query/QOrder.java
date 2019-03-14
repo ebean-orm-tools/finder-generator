@@ -1,6 +1,6 @@
 package org.example.domain.query;
 
-import io.ebean.EbeanServer;
+import io.ebean.Database;
 import io.ebean.typequery.PEnum;
 import io.ebean.typequery.PLong;
 import io.ebean.typequery.PSqlDate;
@@ -44,14 +44,14 @@ public class QOrder extends TQRootBean<Order,QOrder> {
 
 
   /**
-   * Construct with a given EbeanServer.
+   * Construct with a given Database.
    */
-  public QOrder(EbeanServer server) {
-    super(Order.class, server);
+  public QOrder(Database database) {
+    super(Order.class, database);
   }
 
   /**
-   * Construct using the default EbeanServer.
+   * Construct using the default Database.
    */
   public QOrder() {
     super(Order.class);

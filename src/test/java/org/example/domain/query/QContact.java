@@ -1,6 +1,6 @@
 package org.example.domain.query;
 
-import io.ebean.EbeanServer;
+import io.ebean.Database;
 import io.ebean.typequery.PLong;
 import io.ebean.typequery.PString;
 import io.ebean.typequery.PTimestamp;
@@ -41,14 +41,14 @@ public class QContact extends TQRootBean<Contact,QContact> {
 
 
   /**
-   * Construct with a given EbeanServer.
+   * Construct with a given Database.
    */
-  public QContact(EbeanServer server) {
-    super(Contact.class, server);
+  public QContact(Database database) {
+    super(Contact.class, database);
   }
 
   /**
-   * Construct using the default EbeanServer.
+   * Construct using the default Database.
    */
   public QContact() {
     super(Contact.class);

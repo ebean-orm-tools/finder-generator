@@ -65,14 +65,14 @@ public class KotlinLangAdapter implements LangAdapter {
 
     writer.append(NEWLINE);
     writer.append("  /**").append(NEWLINE);
-    writer.append("   * Construct with a given EbeanServer.").append(NEWLINE);
+    writer.append("   * Construct with a given Database.").append(NEWLINE);
     writer.append("   */").append(NEWLINE);
-    writer.append("  constructor(server: EbeanServer) : super(").append(shortName).append("::class.java, server)");
+    writer.append("  constructor(database: Database) : super(").append(shortName).append("::class.java, database)");
     writer.append(NEWLINE);
     writer.append(NEWLINE);
 
     writer.append("  /**").append(NEWLINE);
-    writer.append("   * Construct using the default EbeanServer.").append(NEWLINE);
+    writer.append("   * Construct using the default Database.").append(NEWLINE);
     writer.append("   */").append(NEWLINE);
     writer.append("  constructor() : super(").append(shortName).append("::class.java)");
     writer.append(NEWLINE);

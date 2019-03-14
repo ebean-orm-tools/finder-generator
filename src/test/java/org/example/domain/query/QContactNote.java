@@ -1,6 +1,6 @@
 package org.example.domain.query;
 
-import io.ebean.EbeanServer;
+import io.ebean.Database;
 import io.ebean.typequery.PString;
 import io.ebean.typequery.PUuid;
 import io.ebean.typequery.TQRootBean;
@@ -33,14 +33,14 @@ public class QContactNote extends TQRootBean<ContactNote,QContactNote> {
 
 
   /**
-   * Construct with a given EbeanServer.
+   * Construct with a given Database.
    */
-  public QContactNote(EbeanServer server) {
-    super(ContactNote.class, server);
+  public QContactNote(Database database) {
+    super(ContactNote.class, database);
   }
 
   /**
-   * Construct using the default EbeanServer.
+   * Construct using the default Database.
    */
   public QContactNote() {
     super(ContactNote.class);

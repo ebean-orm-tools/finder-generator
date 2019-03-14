@@ -1,6 +1,6 @@
 package org.example.domain.query;
 
-import io.ebean.EbeanServer;
+import io.ebean.Database;
 import io.ebean.typequery.PString;
 import io.ebean.typequery.TQRootBean;
 import io.ebean.typequery.TypeQueryBean;
@@ -31,14 +31,14 @@ public class QCountry extends TQRootBean<Country,QCountry> {
 
 
   /**
-   * Construct with a given EbeanServer.
+   * Construct with a given Database.
    */
-  public QCountry(EbeanServer server) {
-    super(Country.class, server);
+  public QCountry(Database database) {
+    super(Country.class, database);
   }
 
   /**
-   * Construct using the default EbeanServer.
+   * Construct using the default Database.
    */
   public QCountry() {
     super(Country.class);

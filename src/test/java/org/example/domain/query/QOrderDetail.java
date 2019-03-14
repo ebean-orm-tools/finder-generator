@@ -1,6 +1,6 @@
 package org.example.domain.query;
 
-import io.ebean.EbeanServer;
+import io.ebean.Database;
 import io.ebean.typequery.PDouble;
 import io.ebean.typequery.PInteger;
 import io.ebean.typequery.PLong;
@@ -41,14 +41,14 @@ public class QOrderDetail extends TQRootBean<OrderDetail,QOrderDetail> {
 
 
   /**
-   * Construct with a given EbeanServer.
+   * Construct with a given Database.
    */
-  public QOrderDetail(EbeanServer server) {
-    super(OrderDetail.class, server);
+  public QOrderDetail(Database database) {
+    super(OrderDetail.class, database);
   }
 
   /**
-   * Construct using the default EbeanServer.
+   * Construct using the default Database.
    */
   public QOrderDetail() {
     super(OrderDetail.class);

@@ -7,7 +7,7 @@ import org.example.domain.query.QOrder;
 public class OrderFinder extends Finder<Long,Order> {
 
   /**
-   * Construct using the default EbeanServer.
+   * Construct using the default Database.
    */
   public OrderFinder() {
     super(Order.class);

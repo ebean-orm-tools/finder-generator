@@ -1,6 +1,6 @@
 package org.example.domain.query;
 
-import io.ebean.EbeanServer;
+import io.ebean.Database;
 import io.ebean.typequery.PBoolean;
 import io.ebean.typequery.PEnum;
 import io.ebean.typequery.PLong;
@@ -47,14 +47,14 @@ public class QCustomer extends TQRootBean<Customer,QCustomer> {
 
 
   /**
-   * Construct with a given EbeanServer.
+   * Construct with a given Database.
    */
-  public QCustomer(EbeanServer server) {
-    super(Customer.class, server);
+  public QCustomer(Database database) {
+    super(Customer.class, database);
   }
 
   /**
-   * Construct using the default EbeanServer.
+   * Construct using the default Database.
    */
   public QCustomer() {
     super(Customer.class);

@@ -1,6 +1,6 @@
 package org.example.domain.query;
 
-import io.ebean.EbeanServer;
+import io.ebean.Database;
 import io.ebean.typequery.PJodaDateTime;
 import io.ebean.typequery.PLong;
 import io.ebean.typequery.PMonth;
@@ -35,14 +35,14 @@ public class QProduct extends TQRootBean<Product,QProduct> {
 
 
   /**
-   * Construct with a given EbeanServer.
+   * Construct with a given Database.
    */
-  public QProduct(EbeanServer server) {
-    super(Product.class, server);
+  public QProduct(Database database) {
+    super(Product.class, database);
   }
 
   /**
-   * Construct using the default EbeanServer.
+   * Construct using the default Database.
    */
   public QProduct() {
     super(Product.class);

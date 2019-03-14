@@ -1,6 +1,6 @@
 package org.example.domain.query;
 
-import io.ebean.EbeanServer;
+import io.ebean.Database;
 import io.ebean.typequery.PLong;
 import io.ebean.typequery.PString;
 import io.ebean.typequery.PTimestamp;
@@ -38,14 +38,14 @@ public class QAddress extends TQRootBean<Address,QAddress> {
 
 
   /**
-   * Construct with a given EbeanServer.
+   * Construct with a given Database.
    */
-  public QAddress(EbeanServer server) {
-    super(Address.class, server);
+  public QAddress(Database database) {
+    super(Address.class, database);
   }
 
   /**
-   * Construct using the default EbeanServer.
+   * Construct using the default Database.
    */
   public QAddress() {
     super(Address.class);

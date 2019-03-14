@@ -58,15 +58,15 @@ public class JavaLangAdapter implements LangAdapter {
   public void rootBeanConstructor(FileWriter writer, String shortName) throws IOException {
     writer.append(NEWLINE);
     writer.append("  /**").append(NEWLINE);
-    writer.append("   * Construct with a given EbeanServer.").append(NEWLINE);
+    writer.append("   * Construct with a given Database.").append(NEWLINE);
     writer.append("   */").append(NEWLINE);
-    writer.append("  public Q").append(shortName).append("(EbeanServer server) {").append(NEWLINE);
-    writer.append("    super(").append(shortName).append(".class, server);").append(NEWLINE);
+    writer.append("  public Q").append(shortName).append("(Database database) {").append(NEWLINE);
+    writer.append("    super(").append(shortName).append(".class, database);").append(NEWLINE);
     writer.append("  }").append(NEWLINE);
     writer.append(NEWLINE);
 
     writer.append("  /**").append(NEWLINE);
-    writer.append("   * Construct using the default EbeanServer.").append(NEWLINE);
+    writer.append("   * Construct using the default Database.").append(NEWLINE);
     writer.append("   */").append(NEWLINE);
     writer.append("  public Q").append(shortName).append("() {").append(NEWLINE);
     writer.append("    super(").append(shortName).append(".class);").append(NEWLINE);
@@ -113,7 +113,7 @@ public class JavaLangAdapter implements LangAdapter {
   public void finderConstructors(FileWriter writer, String shortName) throws IOException {
 
     writer.append("  /**").append(NEWLINE);
-    writer.append("   * Construct using the default EbeanServer.").append(NEWLINE);
+    writer.append("   * Construct using the default Database.").append(NEWLINE);
     writer.append("   */").append(NEWLINE);
     writer.append("  public ").append(shortName).append("Finder() {").append(NEWLINE);
     writer.append("    super(").append(shortName).append(".class);").append(NEWLINE);
@@ -121,10 +121,10 @@ public class JavaLangAdapter implements LangAdapter {
     writer.append(NEWLINE);
     if (finderConstructorForNamedServer) {
       writer.append("  /**").append(NEWLINE);
-      writer.append("   * Construct with a given EbeanServer.").append(NEWLINE);
+      writer.append("   * Construct with a given Database.").append(NEWLINE);
       writer.append("   */").append(NEWLINE);
-      writer.append("  public ").append(shortName).append("Finder(String serverName) {").append(NEWLINE);
-      writer.append("    super(").append(shortName).append(".class, serverName);").append(NEWLINE);
+      writer.append("  public ").append(shortName).append("Finder(String databaseName) {").append(NEWLINE);
+      writer.append("    super(").append(shortName).append(".class, databaseName);").append(NEWLINE);
       writer.append("  }").append(NEWLINE);
     }
   }
