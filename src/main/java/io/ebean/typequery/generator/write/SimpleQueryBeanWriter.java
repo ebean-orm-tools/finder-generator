@@ -94,10 +94,12 @@ public class SimpleQueryBeanWriter {
    * Remove all imports that starts with <code>"java.lang."</code>.
    */
   private void ignoreJavaLangImportTypes() {
-    Iterator<String> it=importTypes.iterator();
-    while(it.hasNext()) {
-      String type=it.next();
-      if(type.startsWith("java.lang.")) it.remove();
+    Iterator<String> it = importTypes.iterator();
+    while (it.hasNext()) {
+      String type = it.next();
+      if (type.startsWith("java.lang.")) {
+        it.remove();
+      }
     }
   }
 
@@ -141,8 +143,11 @@ public class SimpleQueryBeanWriter {
     if (classMeta.isEntity()) {
       writer = createFileWriter();
 
-      if(config.isKotlin()) translateKotlinImportTypes();
-      else ignoreJavaLangImportTypes();
+      if (config.isKotlin()) {
+        translateKotlinImportTypes();
+      } else {
+        ignoreJavaLangImportTypes();
+      }
 
       writePackage();
       writeImports();
