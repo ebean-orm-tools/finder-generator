@@ -29,8 +29,10 @@ import java.util.List;
  * }</pre>
  */
 public class GeneratorConfig {
+  public final static String LANG_JAVA="java";
+  public final static String LANG_KOTLIN="kt";
 
-  private String lang = "java";
+  private String lang = LANG_JAVA;
 
   /**
    * The directory where the compiled classes are found.
@@ -93,24 +95,29 @@ public class GeneratorConfig {
 
   /**
    * Set the language;
+   * @param lang language name {@link #LANG_JAVA} or {@link #LANG_KOTLIN}.
    */
   public void setLang(String lang) {
+    if(LANG_JAVA.equals(lang)) {
+      this.languageAdapter = new JavaLangAdapter();
+    } else if(LANG_KOTLIN.equals(lang)) {
+      this.languageAdapter = new KotlinLangAdapter();
+    } else throw new IllegalArgumentException("Supported values are: "+LANG_JAVA+", "+LANG_KOTLIN);
     this.lang = lang;
-    this.languageAdapter = new KotlinLangAdapter();
   }
 
   /**
    * Return true if we are generating Java.
    */
   public boolean isJava() {
-    return "java".equals(lang);
+    return LANG_JAVA.equals(lang);
   }
 
   /**
    * Return true if we are generating Kotlin.
    */
   public boolean isKotlin() {
-    return "kt".equals(lang);
+    return LANG_KOTLIN.equals(lang);
   }
 
   /**
