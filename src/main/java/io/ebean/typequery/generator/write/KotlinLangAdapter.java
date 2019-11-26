@@ -127,12 +127,13 @@ public class KotlinLangAdapter implements LangAdapter {
     writer.append("open class ").append("").append(shortName).append("Finder")
       .append(" : Finder<").append(idTypeShortName).append(", ")
       .append(shortName).append(">(").append(shortName).append("::class.java)")
+      .append(" {")
       .append(NEWLINE);
   }
 
   @Override
   public void finderClassEnd(FileWriter writer) {
-    // do nothing
+    writer.append("}").append(NEWLINE);
   }
 
   @Override
