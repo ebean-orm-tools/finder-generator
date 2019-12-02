@@ -153,13 +153,13 @@ public class JavaLangAdapter implements LangAdapter {
   }
 
   @Override
-  public void finderClass(FileWriter writer, String shortName, String idTypeShortName) throws IOException {
+  public void finderClass(FileWriter writer, String shortName, String idTypeShortName, boolean withMethods) throws IOException {
     writer.append("public class ").append("").append(shortName).append("Finder")
       .append(" extends Finder<").append(idTypeShortName).append(",").append(shortName).append("> {").append(NEWLINE);
   }
 
   @Override
-  public void finderClassEnd(FileWriter writer) throws IOException {
+  public void finderClassEnd(FileWriter writer, boolean withMethods) throws IOException {
     writer.append("}").append(NEWLINE);
   }
 

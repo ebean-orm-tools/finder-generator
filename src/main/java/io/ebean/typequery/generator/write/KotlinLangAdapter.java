@@ -40,9 +40,9 @@ public class KotlinLangAdapter implements LangAdapter {
   @Override
   public void fetch(FileWriter writer, String origShortName) throws IOException {
 
-      writeAssocBeanFetch(writer, origShortName, "", "Eagerly fetch this association loading the specified properties.");
-      writeAssocBeanFetch(writer, origShortName, "Query", "Eagerly fetch this association using a 'query join' loading the specified properties.");
-      writeAssocBeanFetch(writer, origShortName, "Lazy", "Use lazy loading for this association loading the specified properties.");
+    writeAssocBeanFetch(writer, origShortName, "", "Eagerly fetch this association loading the specified properties.");
+    writeAssocBeanFetch(writer, origShortName, "Query", "Eagerly fetch this association using a 'query join' loading the specified properties.");
+    writeAssocBeanFetch(writer, origShortName, "Lazy", "Use lazy loading for this association loading the specified properties.");
   }
 
   private void writeAssocBeanFetch(Writer writer, String origShortName, String fetchType, String comment) throws IOException {
@@ -120,20 +120,25 @@ public class KotlinLangAdapter implements LangAdapter {
   }
 
   @Override
-  public void finderClass(FileWriter writer, String shortName, String idTypeShortName) throws IOException {
+  public void finderClass(FileWriter writer, String shortName, String idTypeShortName, boolean withMethods) throws IOException {
 
     //open class AddressFinder : Finder<Long, Address>(Address::class.java)
 
     writer.append("open class ").append("").append(shortName).append("Finder")
       .append(" : Finder<").append(idTypeShortName).append(", ")
-      .append(shortName).append(">(").append(shortName).append("::class.java)")
-      .append(" {")
-      .append(NEWLINE);
+      .append(shortName).append(">(").append(shortName).append("::class.java)");
+    if (withMethods) {
+      writer.append(" {");
+    }
+    writer.append(NEWLINE);
   }
 
   @Override
-  public void finderClassEnd(FileWriter writer) {
-    writer.append("}").append(NEWLINE);
+  public void finderClassEnd(FileWriter writer, boolean withMethods) throws IOException {
+    if (withMethods) {
+      writer.append(" {");
+    }
+    writer.append(NEWLINE);
   }
 
   @Override

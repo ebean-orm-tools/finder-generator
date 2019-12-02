@@ -137,12 +137,14 @@ public class SimpleFinderWriter {
    */
   protected void writeClass() throws IOException {
 
-    config.lang().finderClass(writer, shortName, idTypeShortName);
+    boolean withMethods = addWhereMethod || addTextMethod;
+    config.lang().finderClass(writer, shortName, idTypeShortName, withMethods);
     writer.append(NEWLINE);
   }
 
   protected void writeClassEnd() throws IOException {
-    config.lang().finderClassEnd(writer);
+    boolean withMethods = addWhereMethod || addTextMethod;
+    config.lang().finderClassEnd(writer, withMethods);
   }
 
   /**
