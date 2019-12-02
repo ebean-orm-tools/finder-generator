@@ -52,9 +52,9 @@ public class GeneratorConfig {
 
   private String destAssocPackage;
 
-  private boolean addFinderWhereMethod = true;
+  private boolean addFinderWhereMethod;
 
-  private boolean addFinderTextMethod = true;
+  private boolean addFinderTextMethod;
 
   private boolean addFinderWherePublic;
 
